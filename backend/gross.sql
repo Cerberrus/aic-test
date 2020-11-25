@@ -1,3 +1,12 @@
+create table if not exists admin
+(
+	id int unsigned auto_increment
+		primary key,
+	name varchar(100) not null ,
+	login varchar(100) not null ,
+	password varchar(500) not null
+);
+
 create table if not exists coordinate_type
 (
 	id int unsigned auto_increment
@@ -42,9 +51,10 @@ create table if not exists job_request
 	id int unsigned auto_increment
 		primary key,
 	job_vacancy_id int unsigned not null,
-	name varchar(200) not null,
+	`date` datetime default current_date not null;
+	`name` varchar(200) not null,
 	happy_date date not null,
-	phone_number int unsigned null,
+	phone_number int unsigned not null,
 	sex tinyint(1) not null,
 	email varchar(200) not null,
 	resume_text varchar(800) null,
@@ -61,7 +71,7 @@ create table if not exists setting
 	id int auto_increment
 		primary key,
 	`key` int not null,
-	value varchar(500) not null,
+	`value` varchar(500) not null,
 	constraint setting_key_uindex
 		unique (`key`)
 );
