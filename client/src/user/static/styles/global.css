@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'Raleway';
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+    src: local(''),
+    url('../fonts/raleway-v18-latin_cyrillic-500.woff2') format('woff2'),
+    url('../fonts/raleway-v18-latin_cyrillic-500.woff') format('woff');
+}
+
+:root {
+    /* Цвета */
+    --color-black:      #000000;
+    --color-white:      #ffffff;
+    --color-red:        #FF6666;
+    --color-yellow:     #FFDF31;
+    --color-lightGreen: #10C300;
+    --color-gray:       #B3B3B3;
+    --color-darkGray:   #F5F5F5;
+
+    /* Шрифты */
+    --font-raleway: 'Raleway', 'Arial', sans-serif;
+
+    /* Другое */
+    --container-width:  1108px;
+    --header-height:    111px;
+}
+
+.page {
+
+}
+
+.page__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font: var(--font-raleway);
+    font-size: 18px;
+    color: var(--color-black);
+}
+
+main {
+    flex-grow: 1;
+}
+
+h1, h2 {
+    font: var(--font-raleway);
+}
+
+image {
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+svg {
+    user-select: none;
+}
+
+.container{
+    padding-left:  calc(50% - var(--container-width) / 2) !important;
+    padding-right: calc(50% - var(--container-width) / 2) !important;
+}
+
+.visuallyHidden{
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+}
