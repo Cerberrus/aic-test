@@ -1,0 +1,23 @@
+.gallery__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 30px;
+}
+
+.gallery__item:nth-of-type(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.gallery__item {
+    min-height: 255px;
+    border-radius: 8px;
+    background-color: var(--color-gray);
+}
+
+.gallery__button {
+    width: 100%;
+    margin-top: 30px;
+    text-align: center;
+    background-color: var(--color-gray);
+}

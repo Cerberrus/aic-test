@@ -7,7 +7,7 @@ import Header from "~user/components/header/header"
 import Footer from "~user/components/footer/footer"
 
 //For tree shaking
-const HomePage = loadable(() => import('~user/pages/home/home'))
+import HomePage from '~user/pages/home/home'
 const FormPage = loadable(() => import('~user/pages/form/form'))
 
 //Import static files
@@ -17,7 +17,7 @@ import fontRaleway from '~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2
 export default class App extends Component {
     render() {
         return (
-            <div styleName="page__body">
+            <div className="page__body">
                 <Helmet
                     defaultTitle ="гросс маркет"
                     titleTemplate="гросс маркет - %s"
