@@ -1,4 +1,7 @@
 const mysql = require('mysql2')
+const dotenv = require('dotenv')
+dotenv.config()
+
 let instance = null
 
 class DataBase {
@@ -12,7 +15,7 @@ class DataBase {
             database :process.env.DATABASE_NAME,
             user     :process.env.DATABASE_USER,
             password :process.env.DATABASE_PASSWORD})
-
+        console.log("Database connected!")
         instance = this
         return instance;
     }
@@ -22,4 +25,4 @@ class DataBase {
     }
 }
 
-module.exports = Database
+module.exports = new DataBase().getConnection()
