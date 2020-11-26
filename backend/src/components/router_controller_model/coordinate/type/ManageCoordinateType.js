@@ -1,4 +1,4 @@
-const connection = require('../../../../database/DataBase')
+const connection = require('../../../database/DataBase')
 
 const getCoordinateTypeList=async ()=>{
     const [result] = await connection.execute('select * from coordinate_type')

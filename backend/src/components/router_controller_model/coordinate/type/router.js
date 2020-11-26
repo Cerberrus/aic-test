@@ -4,20 +4,20 @@ const controller = require('./controller')
 const router = express.Router()
 
 router.get(
-    '/api/coordinate',
-    controller.toGetCoordinateList
+    '/api/coordinate-type',
+    controller.toGetCoordinateTypeList
 )
 router.post(
-    '/api/coordinate',
-    controller.toPostCoordinate
+    '/api/coordinate-type',
+    controller.toPostCoordinateType
 )
 router.put(
-    '/api/coordinate/:id',
-    controller.toUpdateCoordinate
+    '/api/coordinate-type/:id',
+    controller.toUpdateCoordinateType
 )
 router.delete(
-    '/api/coordinate/:id',
-    controller.toDeleteCoordinate
+    '/api/coordinate-type/:id',
+    controller.toDeleteCoordinateType
 )
 
 module.exports = router

@@ -1,35 +1,35 @@
-const manageCoordinate = require('./model/ManageCoordinate')
+const manageCoordinate = require('./ManageCoordinateType')
 
-const toGetCoordinateList=async (req, res)=>{
+const toGetCoordinateTypeList=async (req, res)=>{
     try{
-        const data = await manageCoordinate.getCoordinateList()
+        const data = await manageCoordinate.getCoordinateTypeList()
         res.status(200).json(data)
     }
     catch (e) {
         res.status(404).send
     }
 }
-const toPostCoordinate=async (req, res)=>{
+const toPostCoordinateType=async (req, res)=>{
     try{
-        const data = await manageCoordinate.postCoordinate(req.query)
+        const data = await manageCoordinate.postCoordinateType(req.query)
         res.status(200).json(data)
     }
     catch (e) {
         res.status(404).send
     }
 }
-const toUpdateCoordinate=async (req, res)=>{
+const toUpdateCoordinateType=async (req, res)=>{
     try{
-        const data = await manageCoordinate.updateCoordinate(req.params, req.query)
+        const data = await manageCoordinate.updateCoordinateType(req.params, req.query)
         res.status(200).json(data)
     }
     catch (e) {
         res.status(404).send
     }
 }
-const toDeleteCoordinate=async (req, res)=>{
+const toDeleteCoordinateType=async (req, res)=>{
     try{
-        const data = await manageCoordinate.deleteCoordinate(req.params)
+        const data = await manageCoordinate.deleteCoordinateType(req.params)
         res.status(200).json(data)
     }
     catch (e) {
@@ -38,8 +38,8 @@ const toDeleteCoordinate=async (req, res)=>{
 }
 
 module.exports = {
-    toGetCoordinateList,
-    toPostCoordinate,
-    toUpdateCoordinate,
-    toDeleteCoordinate
+    toGetCoordinateTypeList,
+    toPostCoordinateType,
+    toUpdateCoordinateType,
+    toDeleteCoordinateType
 }
