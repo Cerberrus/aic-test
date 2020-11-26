@@ -1,4 +1,4 @@
-const manage = require('./model/ManageJobRequest')
+const manage = require('./model/ManageRequest')
 
 const toGetJobRequestList=async (req, res)=>{
     try{
