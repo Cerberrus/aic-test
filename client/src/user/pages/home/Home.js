@@ -11,6 +11,7 @@ export default class Home extends Component {
         return (
             <>
                 <Helmet>
+                    <title>Главная</title>
                     <meta name="description" content="Home page" />
                 </Helmet>
                 <main>

@@ -1,6 +1,6 @@
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
 
-const {externals: {isProd}} = require('./base.config')
+const {externals: {isProd, alias}} = require('./base.config')
 
 const svgoConfig = () => {
     let config
@@ -43,6 +43,7 @@ module.exports =  {
                     loader: 'svg-sprite-loader',
                     options: {
                         extract: true,
+                        publicPath : `${alias.user}/static/icons`,
                         spriteFilename: './img/sprite.[hash:8].svg'
                     }
                 },

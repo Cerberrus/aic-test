@@ -6,20 +6,23 @@ import loadable from "@loadable/component"
 import Header from "~user/components/header/header"
 import Footer from "~user/components/footer/footer"
 
+//For tree shaking
 const HomePage = loadable(() => import('~user/pages/home/home'))
 const FormPage = loadable(() => import('~user/pages/form/form'))
 
+//Import static files
 import "../../static/styles/global.css"
+import fontRaleway from '~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2'
 
 export default class App extends Component {
     render() {
         return (
-            <>
-                <Helmet>
-                    defaultTitle="гросс маркет"
+            <div styleName="page__body">
+                <Helmet
+                    defaultTitle ="гросс маркет"
                     titleTemplate="гросс маркет - %s"
-
-                    <link rel="preload" href="~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2" as="font" />
+                >
+                    <link rel="preload" href={fontRaleway} as="font" />
                 </Helmet>
 
                 <Header />
@@ -28,7 +31,7 @@ export default class App extends Component {
                     <Route       path="/form" component={FormPage} />
                 </Switch>
                 <Footer />
-            </>
+            </div>
         )
     }
 }

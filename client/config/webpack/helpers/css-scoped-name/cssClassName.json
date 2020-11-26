@@ -30,5 +30,13 @@
   "nav__icon": "E",
   "social": "F",
   "social__link": "G",
-  "social__icon": "H"
+  "social__icon": "H",
+  "page__body": "a",
+  "button": "b",
+  "button_yellow": "c",
+  "header": "e",
+  "header__logoWrapper": "f",
+  "header__logo": "g",
+  "header__name": "h",
+  "header__link": "i"
 }
