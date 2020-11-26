@@ -4,24 +4,20 @@ const controller = require('./controller')
 const router = express.Router()
 
 router.get(
-    '/api/job-request',
-    controller.toGetJobRequestList
-)
-router.get(
-    '/api/job-request/:id',
-    controller.toGetJobRequest
+    '/api/job-request-status',
+    controller.toGetJobRequestStatusList
 )
 router.post(
-    '/api/job-request',
-    controller.toPostJobRequest
+    '/api/job-request-status',
+    controller.toPostJobRequestStatus
 )
 router.put(
-    '/api/job-request/:id',
-    controller.toUpdateJobRequest
+    '/api/job-request-status/:id',
+    controller.toUpdateJobRequestStatus
 )
 router.delete(
-    '/api/job-request/:id',
-    controller.toDeleteJobRequest
+    '/api/job-request-status/:id',
+    controller.toDeleteJobRequestStatus
 )
 
 module.exports = router
