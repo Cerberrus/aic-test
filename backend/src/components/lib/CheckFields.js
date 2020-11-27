@@ -5,4 +5,4 @@ checkExist =(object, fields)=>{
     }
     return true
 }
-module.exports = {checkExist}
+module.exports = {checkExist, factoryCheckExist}
