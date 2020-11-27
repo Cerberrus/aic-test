@@ -1,3 +1,4 @@
+/* Global styles */
 @font-face {
     font-family: 'Raleway';
     font-display: swap;
@@ -8,33 +9,43 @@
     url('../fonts/raleway-v18-latin_cyrillic-500.woff') format('woff');
 }
 
+/* Properties */
 :root {
-    /* Цвета */
+    /* Colors */
     --color-black:      #000000;
     --color-white:      #ffffff;
     --color-red:        #FF6666;
     --color-yellow:     #FFDF31;
     --color-lightGreen: #10C300;
-    --color-gray:       #B3B3B3;
-    --color-darkGray:   #F5F5F5;
+    --color-gray:       #F5F5F5;
+    --color-darkGray:   #B3B3B3;
 
-    /* Шрифты */
-    --font-raleway: 'Raleway', 'Arial', sans-serif;
+    /* Fonts */
+    --font-raleway: 'Raleway', 'Arial', 'Helvetica', sans-serif;
 
-    /* Другое */
+    /* Other */
     --container-width:  1108px;
     --header-height:    111px;
 }
 
-.page {
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
+body {
+    word-break: break-word;
 }
 
 .page__body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font: var(--font-raleway);
+    min-height: 100vh;
+    font-family: var(--font-raleway);
     font-size: 18px;
     color: var(--color-black);
 }
@@ -43,29 +54,80 @@ main {
     flex-grow: 1;
 }
 
-h1, h2 {
-    font: var(--font-raleway);
+h2 {
+    margin-bottom: 35px;
+    font-size: 32px;
 }
 
-image {
-    height: auto;
+a {
+    color: var(--color-black);
+    text-decoration: none;
+}
+
+.button {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    color: var(--color-black);
+    cursor: pointer;
+    outline: none;
+}
+
+.button_yellow {
+    background-color: var(--color-yellow);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
     max-width: 100%;
+    height: auto;
     object-fit: cover;
+    object-position: center;
 }
 
 svg {
     user-select: none;
 }
 
-.container{
+/* Other */
+.container {
     padding-left:  calc(50% - var(--container-width) / 2) !important;
     padding-right: calc(50% - var(--container-width) / 2) !important;
 }
 
-.visuallyHidden{
+.visuallyHidden {
     position: absolute;
     clip: rect(0 0 0 0);
     width: 1px;
     height: 1px;
     margin: -1px;
 }
+
+/* Slider */
+.slider__button {
+    padding: 4px 16px;
+    background: none;
+}
+
+.slider__button:nth-of-type(1) {
+    transform: rotate(180deg);
+}
+
+.slider__button:nth-of-type(2) {
+    border-left: 2px solid var(--color-gray);
+}
+
+.slider__button.swiper-button-disabled .slider__icon {
+    opacity: 0.2;
+}
+
+.slider__icon {
+    width: 10px;
+    height: 10px;
+    fill: var(--color-black);
+}
+

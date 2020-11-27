@@ -1,0 +1,33 @@
+.vacancy {
+    padding: 72px 0;
+}
+
+.vacancy__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vacancySlider__slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-width: 350px;
+    height: 480px;
+    padding-top: 90px;
+    border-radius: 8px;
+    background-color: var(--color-gray);
+}
+
+.vacancySlider__slide:nth-of-type(1) {
+    margin-left: calc(50% - var(--container-width) / 2);
+}
+
+.vacancySlider__name {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    padding: 12px 16px;
+    border-radius: 26px;
+    font-size: 24px;
+    background-color: var(--color-white);
+}

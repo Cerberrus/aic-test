@@ -10,7 +10,6 @@ module.exports = {
             test: /\.css$/,
             use: [
                 ...(isDev ? ['style-loader'] : [
-                    `${path.config}/webpack/loaders/nullLoader`,
                     MiniCssExtractPlugin.loader,
                 ]),
                 {
@@ -18,13 +17,7 @@ module.exports = {
                     options: {
                         sourceMap: isDev,
                         modules: {
-                            ...(isDev ? {
-                                localIdentName: '[name]--[local]',
-                            } : {
-                                getLocalIdent: (context, localIdentName, localName) => (
-                                    getScopedName(localName, context.resourcePath)
-                                ),
-                            }),
+                            localIdentName: '[local]'
                         }
                     },
                 },

@@ -25,10 +25,6 @@ legacyJS = {
                     plugins: [
                         '@babel/plugin-proposal-class-properties',
                         '@loadable/babel-plugin',
-                        ['react-css-modules', {
-                            generateScopedName: isDev ? '[name]--[local]' : getScopedName,
-                            autoResolveMultipleImports: true
-                        }],
                         ["module:fast-async", { "spec": true }],
                     ]
                 }
