@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 SwiperCore.use([Navigation, EffectFade, Controller]);
 
 // Import styles
-import "../../static/styles/swiper.css"
+import "swiper/swiper-bundle.min.css"
 import './slider.css'
 
 // Import icons

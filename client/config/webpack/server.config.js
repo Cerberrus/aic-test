@@ -7,7 +7,9 @@ module.exports = {
     name: 'server',
     mode: process.env.NODE_ENV,
     target: 'node',
-    externals: [nodeExternals()],
+    externals: [nodeExternals({
+        allowlist: [/^swiper/]
+    })],
     entry: {
         server: ['@babel/polyfill', `${path.config}/server.js`]
     },
@@ -23,7 +25,7 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: [
-                        '@babel/preset-env',
+                        "@babel/preset-env",
                         '@babel/preset-react'
                     ],
                     plugins: [

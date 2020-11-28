@@ -26,7 +26,7 @@ export default class Gallery extends Component {
                         <img src="" alt=""/>
                     </li>
                 </ul>
-                <button className="gallery__button button">показать ещё</button>
+                <button className="gallery__button button_gray">показать ещё</button>
             </section>
         )
     }

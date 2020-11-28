@@ -1,0 +1,14 @@
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo__image {
+    align-self: flex-end;
+    height: 30px;
+}
+
+.logo__name {
+    margin-left: 16px;
+    font-size: 32px;
+}

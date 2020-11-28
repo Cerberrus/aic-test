@@ -1,11 +1,12 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
 // Import Swiper React components
-import SwiperCore, { Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, {Navigation} from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+SwiperCore.use([Navigation])
 
 // Import styles
-import "../../static/styles/swiper.css"
 import './vacancy.css'
 
 // Import icons
@@ -27,10 +28,10 @@ export default class Vacancy extends Component {
                 <div className="vacancy__header container">
                     <h2>вакансии в гросс маркете</h2>
                     <div className="slider__buttonGroup">
-                        <button className="slider__button sliderVacancy__button_prev button">
+                        <button  className="slider__button sliderVacancy__button_prev button">
                             <svg className="slider__icon"><use xlinkHref={iconArrow}/></svg>
                         </button>
-                        <button className="slider__button sliderVacancy__button_next button">
+                        <button  className="slider__button sliderVacancy__button_next button">
                             <svg className="slider__icon"><use xlinkHref={iconArrow}/></svg>
                         </button>
                     </div>
@@ -43,7 +44,7 @@ export default class Vacancy extends Component {
                         prevEl: '.sliderVacancy__button_prev',
                         nextEl: '.sliderVacancy__button_next'
                     }}
-                    className="vacancy__slider vacancySlider"
+                    className="vacancy__slider vacancySlider container"
                 >
                     <SwiperSlide className="vacancySlider__slide">
                         <h3 className="vacancySlider__name">товаровед</h3>
