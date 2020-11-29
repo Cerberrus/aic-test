@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 
 // Import styles
-import './logo.css'
+import './Logo.css'
 
 //Temporary
 import logo from '~user/static/images/temporary/logo.jpg'

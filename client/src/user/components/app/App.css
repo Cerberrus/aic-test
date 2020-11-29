@@ -75,7 +75,7 @@ button,
     font-size: 18px;
     color: var(--color-black);
     cursor: pointer;
-    transition: background-color .2s;
+    transition: .2s;
 }
 
 .button_gray {

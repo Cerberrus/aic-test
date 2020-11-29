@@ -3,13 +3,12 @@ import React, { Component } from 'react'
 // Import Swiper React components
 import SwiperCore, {Navigation} from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation])
 
-// Import styles
-import './vacancy.css'
-
-// Import icons
+// Import static files
+import './Vacancy.css'
 import iconArrow from '~user/static/icons/arrow.svg'
 
 // Temporary

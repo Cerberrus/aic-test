@@ -4,10 +4,10 @@ import Helmet from "react-helmet"
 import Header    from '~user/components/header/Header'
 import Footer    from '~user/components/footer/Footer'
 
-import Slider    from  '~user/components/slider/Slider'
-import Vacancy   from '~user/components/vacancy/Vacancy'
-import Gallery   from '~user/components/gallery/Gallery'
-import Geography from  '~user/components/geography/Geography'
+import Slider    from  './components/slider/Slider'
+import Vacancy   from  './components/vacancy/Vacancy'
+import Gallery   from  './components/gallery/Gallery'
+import Geography from  './components/geography/Geography'
 
 export default class Home extends Component {
     render() {
@@ -22,7 +22,7 @@ export default class Home extends Component {
                     <Slider />
                     <Vacancy />
                     <Gallery />
-                    <Geography />
+                    <Geography/>
                 </main>
                 <Footer />
             </div>

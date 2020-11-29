@@ -3,14 +3,12 @@ import React, { Component, useState } from "react"
 // Import Swiper React components
 import SwiperCore, { Navigation, EffectFade, Controller } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation, EffectFade, Controller]);
 
-// Import styles
-import "swiper/swiper-bundle.min.css"
-import './slider.css'
-
-// Import icons
+// Import static files
+import './Slider.css'
 import iconArrow from '~user/static/icons/arrow.svg'
 
 // Temporary

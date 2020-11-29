@@ -9,7 +9,7 @@ const HomePage = loadable(() => import('~user/pages/home/home'))
 
 //Import static files
 import fontRaleway from '~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2'
-import "./app.css"
+import "./App.css"
 
 export default class App extends Component {
     render() {

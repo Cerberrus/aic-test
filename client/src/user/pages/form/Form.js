@@ -5,7 +5,7 @@ import Header from "~user/components/header/Header"
 import Footer from "~user/components/footer/Footer"
 
 // Import static files
-import './form.css'
+import './Form.css'
 
 export default class Form extends Component {
     render() {

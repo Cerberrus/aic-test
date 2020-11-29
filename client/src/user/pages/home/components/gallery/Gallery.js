@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 // Import styles
-import './gallery.css'
+import './Gallery.css'
 
 export default class Gallery extends Component {
     render() {

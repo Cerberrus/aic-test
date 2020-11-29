@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import Logo from "~user/components/logo/Logo"
 
 // Import styles
-import './header.css'
+import './Header.css'
 
 const Header = () => {
     return (
