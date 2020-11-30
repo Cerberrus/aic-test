@@ -7,3 +7,4 @@ class CheckFields{
         return true
     }
 }
+module.exports = CheckFields
