@@ -36,15 +36,6 @@ const toPostSetting=async (req, res)=>{
         res.status(404).send
     }
 }
-const toUpdateSetting=async (req, res)=>{
-    try{
-        const data = await manageSettings.updateSetting(req.params, req.query)
-        res.status(200).json(data)
-    }
-    catch (e) {
-        res.status(404).send
-    }
-}
 const toDeleteSetting=async (req, res)=>{
     try{
         const data = await manageSettings.deleteSetting(req.params)
@@ -60,6 +51,5 @@ module.exports = {
     toGetSettingList,
     toGetSetting,
     toPostSetting,
-    toUpdateSetting,
     toDeleteSetting
 }
