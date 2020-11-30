@@ -1,6 +1,6 @@
 const express = require('express')
 const controller = require('./controller')
-const authCheck = require('../auth/AuthCheck')
+const authCheck = require('../../lib/AuthCheck')
 
 const router = express.Router()
 
@@ -17,11 +17,6 @@ router.post(
     '/api/setting',
     authCheck.toCheck,
     controller.toPostSetting
-)
-router.put(
-    '/api/setting/:key',
-    authCheck.toCheck,
-    controller.toUpdateSetting
 )
 router.delete(
     '/api/setting/:key',

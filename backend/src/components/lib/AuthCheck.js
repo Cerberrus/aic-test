@@ -15,8 +15,9 @@ const toCheck = async (req,res,next)=>{
         if('auth' in req.cookies){
             const response = await check(req.cookies.auth)
             if(response === true) next()
+            else res.status(403).send('Error in check')
         }
-        res.status(403).send()
+        else res.status(403).send('Error in check')
     }
     catch (e) {
         res.status(406).send()

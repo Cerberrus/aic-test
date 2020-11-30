@@ -18,15 +18,6 @@ const toPostCoordinateType=async (req, res)=>{
         res.status(404).send
     }
 }
-const toUpdateCoordinateType=async (req, res)=>{
-    try{
-        const data = await manageCoordinate.updateCoordinateType(req.params, req.query)
-        res.status(200).json(data)
-    }
-    catch (e) {
-        res.status(404).send
-    }
-}
 const toDeleteCoordinateType=async (req, res)=>{
     try{
         const data = await manageCoordinate.deleteCoordinateType(req.params)
@@ -40,6 +31,5 @@ const toDeleteCoordinateType=async (req, res)=>{
 module.exports = {
     toGetCoordinateTypeList,
     toPostCoordinateType,
-    toUpdateCoordinateType,
     toDeleteCoordinateType
 }

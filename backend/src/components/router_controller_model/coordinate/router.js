@@ -1,6 +1,7 @@
 const express = require('express')
 const controller = require('./controller')
-const authCheck = require('../auth/AuthCheck')
+const authCheck = require('../../lib/AuthCheck')
+const typeRouter = require('./type/router')
 
 const router = express.Router()
 
@@ -13,15 +14,10 @@ router.post(
     authCheck.toCheck,
     controller.toPostCoordinate
 )
-router.put(
-    '/api/coordinate/:id',
-    authCheck.toCheck,
-    controller.toUpdateCoordinate
-)
 router.delete(
     '/api/coordinate/:id',
     authCheck.toCheck,
     controller.toDeleteCoordinate
 )
-
+router.use(typeRouter)
 module.exports = router

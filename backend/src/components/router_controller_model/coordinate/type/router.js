@@ -11,10 +11,6 @@ router.post(
     '/api/coordinate-type',
     controller.toPostCoordinateType
 )
-router.put(
-    '/api/coordinate-type/:id',
-    controller.toUpdateCoordinateType
-)
 router.delete(
     '/api/coordinate-type/:id',
     controller.toDeleteCoordinateType

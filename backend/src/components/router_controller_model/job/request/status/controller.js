@@ -1,4 +1,4 @@
-const manage = require('./model/ManageRequest')
+const manage = require('./ManageStatus')
 
 const toGetJobRequestStatusList=async (req, res)=>{
     try{
@@ -39,7 +39,6 @@ const toDeleteJobRequestStatus=async (req, res)=>{
 
 module.exports = {
     toGetJobRequestStatusList,
-    toGetJobRequestStatus,
     toPostJobRequestStatus,
     toUpdateJobRequestStatus,
     toDeleteJobRequestStatus

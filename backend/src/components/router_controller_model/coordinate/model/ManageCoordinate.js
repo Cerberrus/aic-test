@@ -5,15 +5,19 @@ const getCoordinateList=async ()=>{
     return {coordinateList:result}
 }
 const postCoordinate=async ({coordinate,name, description, typeId})=>{
+    typeId = Number(typeId)
     await connection.execute('insert into coordinate(coordinate,name, description, type_id) values(?,?,?,?)', [coordinate, name, description, typeId])
     return getCoordinateList()
 }
-const updateCoordinate=async ({id}, {coordinate,name, description, typeId})=>{
-    await connection.execute('update coordinate set coordinate=?,name=?, description=?, typeId=? where id =?', [coordinate,name, description, typeId, id])
-    return getCoordinateList()
-}
+// const updateCoordinate=async ({id}, {coordinate,name, description, typeId})=>{
+//     id      = Number(id)
+//     typeId  = Number(typeId)
+//     await connection.execute('update coordinate set coordinate=?,name=?, description=?, typeId=? where id =?', [coordinate,name, description, typeId, id])
+//     return getCoordinateList()
+// }
 const deleteCoordinate=async ({id})=>{
+    id = Number(id)
     await connection.execute('delete from coordinate where id=?)', [id])
     return getCoordinateList()
 }
-module.exports = {getCoordinateList, postCoordinate, updateCoordinate, deleteCoordinate}
+module.exports = {getCoordinateList, postCoordinate, deleteCoordinate}

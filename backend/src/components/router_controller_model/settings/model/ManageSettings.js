@@ -9,19 +9,19 @@ const getSettingList=async ()=>{
     return {settingList:result}
 }
 const getSetting=async ({key})=>{
-    const [result] = await connection.execute('select value from setting where key=?', [key])
-    return {key:result.value}
+    const [result] = await connection.execute('select _value from setting where _key=?', [key])
+    return result[0]._value
 }
 const postSetting=async ({key, value})=>{
-    await connection.execute('insert into setting(key, value)', [key, value])
-    return getSettingList()
-}
-const updateSetting=async ({key}, {value})=>{
-    await connection.execute('update setting set value=? where key =?', [value, key])
-    return getSettingList()
+    try{
+        await connection.execute('insert into setting(_key, _value) values(?,?) on duplicate key update _value =?', [key, value, value])
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
 const deleteSetting=async ({key})=>{
     await connection.execute('delete from setting where key=?)', [key])
     return getSettingList()
 }
-module.exports = {getPublicInformationList,getSettingList, getSetting, postSetting, updateSetting, deleteSetting}
+module.exports = {getPublicInformationList,getSettingList, getSetting, postSetting, deleteSetting}

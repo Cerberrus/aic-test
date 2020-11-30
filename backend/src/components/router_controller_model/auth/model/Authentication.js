@@ -1,10 +1,10 @@
-const connection = require('../../database/DataBase')
+const connection = require('../../../database/DataBase')
 const argon = require('argon2')
 const jwt = require('jsonwebtoken')
 
-const signIn=async ({login, password})=>{
+const signIn=async ({username, password})=>{
     try {
-        const [user] = await connection.execute('select * from admin where login = ?', [login])
+        const [user] = await connection.execute('select * from admin where login = ?', [username])
         if(await argon.verify(user[0].password, password)){
             return jwt.sign(
                 {id: user[0].id, name:user[0].name, type: 'admin'},
