@@ -1,4 +1,4 @@
-const authentication = require('./Authentication')
+const authentication = require('./model/Authentication')
 
 const toSignIn = async (req,res)=>{
     try {
