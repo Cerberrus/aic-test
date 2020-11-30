@@ -1,8 +1,10 @@
-checkExist =(object, fields)=>{
-    for(let field of fields){
-        if(field in object){}
-        else return false
+class CheckFields{
+    __checkExist(object, fields){
+        for(let field of fields){
+            if(field in object){}
+            else return false
+        }
+        return true
     }
-    return true
 }
-module.exports = {checkExist}
+module.exports = CheckFields
