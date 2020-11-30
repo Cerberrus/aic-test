@@ -1,6 +1,8 @@
 const express = require('express')
 const controller = require('./controller')
-const authCheck = require('../../auth/AuthCheck')
+const authCheck = require('../../../lib/AuthCheck')
+const checkField = require('../request/model/RequestCheckFieldsExist')
+const statusRouter = require('./status/router')
 
 const Recaptcha = require('express-recaptcha').RecaptchaV2;
 const options = {'theme':'dark'};
@@ -21,11 +23,13 @@ router.get(
 router.post(
     '/api/job-request',
     recaptcha.middleware.verify,
+    checkField.checkFieldsPost,
     controller.toPostJobRequest
 )
 router.put(
     '/api/job-request/:id',
     authCheck.toCheck,
+    checkField.checkFieldsPost,
     controller.toUpdateJobRequest
 )
 router.delete(
@@ -33,5 +37,5 @@ router.delete(
     authCheck.toCheck,
     controller.toDeleteJobRequest
 )
-
+router.use(statusRouter)
 module.exports = router
