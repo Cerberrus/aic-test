@@ -18,7 +18,21 @@
     opacity: 0.3;
 }
 
+.form__input_error {
+    background-color: rgba(255, 102, 102, 0.3);
+}
+
+.form__input_select {
+    appearance: none;
+    background-image: url('../../static/icons/arrow.jpg');
+    background-repeat: no-repeat;
+    background-position: right 16px top 50%, 0 0;
+    background-size: 10px;
+}
+
+
 /* /Input */
+
 .requestPage {
     padding: 72px 0;
 }
@@ -41,6 +55,20 @@
 
 .form__button {
     width: 100%;
+}
+
+.form__iconCheck {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: var(--color-lightGreen);
+}
+
+.requestPage__formGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    
 }
 
 /* Goal */

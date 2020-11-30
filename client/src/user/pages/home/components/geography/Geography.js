@@ -106,7 +106,7 @@ export default class Geography extends Component {
 
                             filter={object => object.properties.type === filter || filter === 'показать всё'}
 
-                            defaultFeatures={features}
+                            features={features}
                         />
 
 

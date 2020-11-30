@@ -46,32 +46,77 @@ export default class Vacancy extends Component {
                     className="vacancy__slider vacancySlider container"
                 >
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">товаровед</h3>
-                        <img src={slide1} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">товаровед</h3>
+                            <img src={slide1} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <p className="slideBack__content">Доставка товара по магазинам и гипермаркетам компании в обслуживаемом регионе</p>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">водитель</h3>
-                        <img src={slide2} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">водитель</h3>
+                            <img src={slide2} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <p className="slideBack__content">Доставка товара по магазинам и гипермаркетам компании в обслуживаемом регионе</p>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">пекарь</h3>
-                        <img src={slide3} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">пекарь</h3>
+                            <img src={slide3} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <div className="slideBack__content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, repellendus?</p>
+                            </div>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">кассир</h3>
-                        <img src={slide4} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">кассир</h3>
+                            <img src={slide4} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <div className="slideBack__content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, dignissimos.</p>
+                            </div>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">продавец</h3>
-                        <img src={slide5} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">продавец</h3>
+                            <img src={slide5} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <div className="slideBack__content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam, sed!</p>
+                            </div>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">товаровед</h3>
-                        <img src={slide6} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">товаровед</h3>
+                            <img src={slide6} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <div className="slideBack__content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, dicta.</p>
+                            </div>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide className="vacancySlider__slide">
-                        <h3 className="vacancySlider__name">товаровед</h3>
-                        <img src={slide7} alt=""/>
+                        <div className="vacancySlider__slideFront">
+                            <h3 className="vacancySlider__name">товаровед</h3>
+                            <img src={slide7} alt=""/>
+                        </div>
+                        <div className="vacancySlider__slideBack">
+                            <div className="slideBack__content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, soluta.</p>
+                            </div>
+                        </div>
                     </SwiperSlide>
                 </Swiper>
             </section>

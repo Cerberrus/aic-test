@@ -10,9 +10,15 @@
 }
 
 .gallery__item {
+    display: flex;
     min-height: 255px;
     border-radius: 8px;
     background-color: var(--color-gray);
+    overflow: hidden;
+}
+
+.gallery__image {
+    width: 100%;
 }
 
 .gallery__button {
