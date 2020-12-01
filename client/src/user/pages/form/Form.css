@@ -1,4 +1,4 @@
-/* Input */
+/* Inputs */
 .form__input {
     display: block;
     margin-top: 14px;
@@ -22,7 +22,7 @@
     background-color: rgba(255, 102, 102, 0.3);
 }
 
-.form__input_select {
+.form__select {
     appearance: none;
     background-image: url('../../static/icons/arrow.jpg');
     background-repeat: no-repeat;
@@ -30,8 +30,49 @@
     background-size: 10px;
 }
 
+.form__radio {
+    position: relative;
+    cursor: pointer;
+}
 
-/* /Input */
+.form__radio:before {
+    content: '';
+    box-sizing: border-box;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    vertical-align: middle;
+    border-radius: 50%;
+    border: 12px solid var(--color-gray);
+    z-index: 2;
+    transition: .2s ease-in-out;
+}
+
+input[type=radio]:checked + .form__radio:before {
+    background-color: var(--color-black);
+    border: 7px solid var(--color-gray);
+}
+
+.form__checkbox {
+    cursor: pointer;
+}
+
+.form__checkbox:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background-color: var(--color-gray);
+    transition: .2s;
+}
+
+input[type=checkbox]:checked + .form__checkbox:before {
+    background-image: url('../../static/icons/check.png');
+    background-size: cover;
+}
+/* /Inputs */
 
 .requestPage {
     padding: 72px 0;
@@ -50,6 +91,7 @@
 /* Form */
 .requestPage__form {
     display: grid;
+    grid-template-columns: 540px;
     grid-gap: 30px;
 }
 
@@ -68,7 +110,46 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px;
-    
+}
+
+.form__radioGroup {
+    display: flex;
+    margin-top: 26px;
+}
+
+.radioGroup__item + .radioGroup__item {
+    margin-left: 28px;
+}
+
+.requestPage__resume {
+    height: 94px;
+}
+
+.reCaptcha {
+    display: flex;
+}
+
+.reCaptcha__block {
+    margin-top: 14px;
+    max-width: 300px;
+}
+
+.reCaptcha__info {
+    padding-top: 14px;
+    text-align: right;
+    font-size: 15px;
+    opacity: 0.3;
+}
+
+.requestPage__agreement {
+    display: flex;
+    align-items: center;
+    margin-top: -6px;
+    font-size: 14px;
+}
+
+.requestPage__agreement:before {
+    margin-right: 12px;
 }
 
 /* Goal */

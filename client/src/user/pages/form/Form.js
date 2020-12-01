@@ -1,87 +1,137 @@
 import React, { Component } from "react"
 import Helmet  from "react-helmet"
 import NumberFormat from 'react-number-format'
+import axios from "axios"
 
 import Header from "~user/components/header/Header"
 import Footer from "~user/components/footer/Footer"
+import ReCAPTCHA from "react-google-recaptcha"
 
 // Import static files
 import './Form.css'
 import iconCheck from '~user/static/icons/check.svg'
-import axios from "axios"
+
 
 export default class Form extends Component {
     state = {
-        checkName:    '',
-        checkDate:    '',
-        checkPhone:   '',
-        checkMail:    '',
-        checkResume:  '',
-        error:        false
+        vacancyList: [],
+        formData: {
+            vacancy:  '',
+            fullName: '',
+            date:     '',
+            sex:      'm',
+            phone:    '',
+            mail:     '',
+            resume:   '',
+            file:     '',
+        },
+        error:        false,
+        verify:        ''
+    }
+
+    componentDidMount() {
+        this.getVacancy()
+    }
+
+    getVacancy = async () => {
+        const response = await axios({
+            method: 'get',
+            url: `http://192.168.0.200:3000/api/job-vacancy`
+        })
+
+        this.setState({
+            vacancyList: response.data
+        })
     }
 
     validation = async (e) => {
-        const key =   e.target.name
-        const value = e.target.value
+        const key  = e.target.name
+        let value  = e.target.value
         let result = true
 
-
-        const data = new FormData()
-        const imagedata = e.target.files[0];
-        data.append('vacancyImage', imagedata);
-        console.log(data)
-
-         const response = await axios({
-            method: 'post',
-             headers: {
-                 'Content-Type': 'multipart/form-data',
-             },
-            url: 'http://192.168.0.200:3000/api/job-vacancy?title=GenochkaX132&imageDescription=Jopa',
-            data: data
-        })
-        console.log(response);
-
-        const checkNameReg   = /./
-        const checkResumeReg = /./
-        const checkDateReg   = /^(\d{4})[\s\.\/-](\d{2})[\s\.\/-](\d{2})$/
-        const checkPhoneReg  = /^(\+7[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/
-        const checkMailReg   = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+        const checkName   = /./
+        const checkResume = /./
+        const checkDate   = /^(\d{4})[\s\.\/-](\d{2})[\s\.\/-](\d{2})$/
+        const checkPhone  = /^(\+7[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/
+        const checkMail   = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
         switch (key) {
-            case 'checkName':
-                result = checkNameReg.test(value)
+            case 'fullName':
+                result = checkName.test(value)
                 break
-            case 'checkDate':
-                result = checkDateReg.test(value)
+            case 'date':
+                result = checkDate.test(value)
                 break
-            case 'checkPhone':
-                result = checkPhoneReg.test(value)
+            case 'phone':
+                result = checkPhone.test(value)
                 break
-            case 'checkMail':
-                result = checkMailReg.test(value)
+            case 'mail':
+                result = checkMail.test(value)
                 break
-            case 'checkResume':
-                result = checkResumeReg.test(value)
+            case 'resume':
+                result = checkResume.test(value)
+                break
+            case 'file':
+                value = new FormData()
+                value.append('summary', e.target.files[0])
                 break
             default:
                 break
         }
 
+        let formData  = this.state.formData
+        formData[key] = result ? value : null
+
         if (result) {
             this.setState({
-                [key]: value
+                formData: {
+                    ...formData
+                }
             })
         }
     }
 
-    submit = (e) => {
+    submit = async (e) => {
         e.preventDefault()
+        const { vacancy, fullName, date, sex, phone, mail, resume, file } = this.state.formData
+        const { verify } = this.state
 
-        console.log(e);
+        axios({
+            method: 'post',
+            headers: {
+                'Content-Type': file ? 'multipart/form-data' : 'application/json'
+            },
+            url: `http://192.168.0.200:3000/api/job-request?`+
+                 `g-recaptcha-response=${verify}&`+
+                 `jobVacancyId=${vacancy}&`+
+                 `name=${fullName}&`+
+                 `happyDate=${date}&`+
+                 `phoneNumber=${phone}&`+
+                 `${sex && 'sex='+sex+'&'}`+
+                 `${mail && 'email='+mail+'&'}`+
+                 `${resume && 'resumeText='+resume+'&'}`
+            ,
+            data: file
+        }).then((response)=>{
+            console.log(response)
+            alert('Успех!')
+            // Redirect to successful page
+        }).catch((error)=>{
+            console.log(error.response.data)
+            alert('Ошибка!')
+        })
     }
 
+    verifyCallback = async (response)=> {
+        this.setState({
+            verify: response
+        })
+    };
+
     render() {
-        const { checkName, checkDate, checkPhone, checkMail, checkResume } = this.state
+        const { vacancyList } = this.state
+        const { vacancy, fullName, date, phone, mail, resume } = this.state.formData
+        console.log(this.state.formData.file);
 
         return (
             <>
@@ -99,55 +149,76 @@ export default class Form extends Component {
                         <div className="requestPage__content">
                             <form className="requestPage__form form" onSubmit={this.submit}>
                                 <label>
-                                    <span>Вакансия * <svg className="form__iconCheck"><use xlinkHref={iconCheck}/></svg></span>
-                                    <select name="" id="" className="form__input_select form__input">
-                                        <option value="">Товаровед</option>
-                                        <option value="">Водитель</option>
+                                    <span>Вакансия * {vacancy && <svg className="form__iconCheck"><use xlinkHref={iconCheck}/></svg>}</span>
+                                    <select name="vacancy" className="form__select form__input" onChange={this.validation} >
+                                        <option defaultValue>Выберите вакансию</option>
+                                        {vacancyList.map((vacancy, index) => (
+                                            <option key={index} value={vacancy.id}>{vacancy.name}</option>
+                                        ))}
                                     </select>
                                 </label>
                                 <label>
-                                    <span>ФИО * {checkName && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
-                                    <input type="text" name="checkName" placeholder="Ваши данные" className="form__input" onChange={this.validation}/>
+                                    <span>ФИО * {fullName && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
+                                    <input type="text" name="fullName" placeholder="Ваши данные" className="form__input" onChange={this.validation}/>
                                 </label>
 
                                 <div className="requestPage__formGroup">
                                     <label>
-                                        <span>Дата рождения * {checkDate && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
-                                        <input type="date" name="checkDate" placeholder="28.07.2002" className="form__input" onChange={this.validation}/>
+                                        <span>Дата рождения * {date && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
+                                        <input type="date" name="date" placeholder="28.07.2002" className="form__input" onChange={this.validation}/>
                                     </label>
                                     <div>
                                         <p>Пол <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg></p>
-                                        <label>
-                                            <input type="radio" name="sex" value="мужской" defaultChecked/>
-                                            <span>мужской</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="sex" value="женский" defaultChecked/>
-                                            <span>женский</span>
-                                        </label>
+                                        <ul className="form__radioGroup">
+                                            <li className="radioGroup__item">
+                                                <input type="radio" id="sex_m" name="sex" value="m" hidden onChange={this.validation} defaultChecked/>
+                                                <label className="radioGroup__radio form__radio" htmlFor="sex_m">
+                                                    <span>мужской</span>
+                                                </label>
+                                            </li>
+                                            <li className="radioGroup__item">
+                                                <input type="radio" id="sex_f" name="sex" value="f" hidden onChange={this.validation}/>
+                                                <label className="radioGroup__radio form__radio" htmlFor="sex_f">
+                                                    <span>женский</span>
+                                                </label>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <label>
-                                        <span>Контактный телефон * {checkPhone && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
-                                        <NumberFormat name="checkPhone" format="+7 (###) ### - ####" mask="_" allowEmptyFormatting className="form__input" onChange={this.validation}/>
+                                        <span>Контактный телефон * {phone && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
+                                        <NumberFormat name="phone" format="+7 (###) ### - ####" mask="_" allowEmptyFormatting className="form__input" onChange={this.validation}/>
                                     </label>
                                     <label>
-                                        <span>Электронная почта {checkMail && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
-                                        <input type="email" name="checkMail" placeholder="E-mail" className="form__input" onChange={this.validation}/>
+                                        <span>Электронная почта {mail && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
+                                        <input type="email" name="mail" placeholder="E-mail" className="form__input" onChange={this.validation}/>
                                     </label>
                                 </div>
 
                                 <div>
                                     <label>
-                                        <span>Резюме {checkResume && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
-                                        <textarea name="checkResume" className="form__input" onChange={this.validation}/>
+                                        <span>Резюме {resume && <svg className="form__iconCheck"><use xlinkHref={iconCheck} /></svg>}</span>
+                                        <textarea name="resume" className="requestPage__resume form__input" onChange={this.validation}/>
                                     </label>
-                                    <input type="file" className="form__input_file form__input" onChange={this.validation}/>
+                                    <input type="file" name="file" className="requestPage__file form__input" onChange={this.validation}/>
                                 </div>
 
-                                <label>
-                                    <input type="checkbox"/>
+                                <div>
+                                    <p>Капча</p>
+                                    <div className="reCaptcha">
+                                        <ReCAPTCHA
+                                            sitekey="6LfOQ-4ZAAAAACOFvjKDgtEwPjLqX3CdCPgTbTpL"
+                                            onChange={this.verifyCallback}
+                                            className="reCaptcha__block"
+                                        />
+                                        <span className="reCaptcha__info">* поля для обязательного заполнения</span>
+                                    </div>
+                                </div>
+
+                                <input type="checkbox" id="agreement2" hidden defaultChecked/>
+                                <label className="requestPage__agreement form__checkbox" htmlFor="agreement2">
                                     <span>я подтверждаю согласие на обработку персональных<br/>данных и принимаю условия рассмотрения обращений *</span>
                                 </label>
+
 
                                 <button className="form__button button_gray">Отправить</button>
                             </form>
@@ -170,5 +241,3 @@ export default class Form extends Component {
         )
     }
 }
-
-
