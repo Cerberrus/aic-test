@@ -1,13 +1,13 @@
 import React, { Component } from "react"
 import axios from 'axios'
+
 // Import styles
 import './Gallery.css'
 
 export default class Gallery extends Component {
     state = {
-        images: []
+        images: Array.from({length: 5})
     }
-
 
     componentDidMount() {
         this.getImages()
@@ -28,25 +28,19 @@ export default class Gallery extends Component {
     render() {
         const {images} = this.state
 
-        if (images.length) {
-            return (
-                <section className="gallery container">
-                    <h2>мы в инстаграме</h2>
+        return (
+            <section className="gallery container">
+                <h2>мы в инстаграме</h2>
 
-                    <ul className="gallery__list">
-
-                        {images.map((image, index) => (
-                            <li key={index} className="gallery__item">
-                                <img src={image} alt="" className="gallery__image"/>
-                            </li>
-                        ))}
-                    </ul>
-                    <button className="gallery__button button_gray">показать ещё</button>
-                </section>
+                <ul className="gallery__list">
+                    {images.map((image, index) => (
+                        <li key={index} className={!image ? 'gallery__item block_load' : 'gallery__item'}>
+                            {image && <img src={image} alt="" className="gallery__image"/>}
+                        </li>
+                    ))}
+                </ul>
+                <button className="gallery__button button_gray">показать ещё</button>
+            </section>
             )
-        }
-
-        return <h1>Ждать</h1>
-
     }
 }

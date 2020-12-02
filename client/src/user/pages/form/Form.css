@@ -72,6 +72,11 @@ input[type=checkbox]:checked + .form__checkbox:before {
     background-image: url('../../static/icons/check.png');
     background-size: cover;
 }
+
+.form__file {
+
+    cursor: pointer;
+}
 /* /Inputs */
 
 .requestPage {
@@ -124,6 +129,21 @@ input[type=checkbox]:checked + .form__checkbox:before {
 .requestPage__resume {
     height: 94px;
 }
+
+.resumeFile {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.resumeFile__icon {
+    margin-right: 12px;
+    width: 14px;
+    height: 24px;
+    fill: var(--color-black);
+    opacity: 0.3;
+}
+
 
 .reCaptcha {
     display: flex;

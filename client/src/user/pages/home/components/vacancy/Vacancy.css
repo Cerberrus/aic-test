@@ -13,21 +13,20 @@
 
 .vacancySlider__slide {
     position: relative;
-    perspective: 1000px;
+    display: flex;
+    align-items: flex-end;
+    padding-top: 90px;
     max-width: 350px;
     height: 480px;
-    padding-top: 90px;
+    perspective: 1000px;
     border-radius: 8px;
-    background-color: var(--color-gray);
     overflow: hidden;
     cursor: default;
+    background-color: var(--color-gray);
 }
 
 .vacancySlider__slideFront {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    transition: .2s ease-in-out;
 }
 
 .vacancySlider__name {

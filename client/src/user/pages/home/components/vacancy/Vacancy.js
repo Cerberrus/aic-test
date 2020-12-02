@@ -39,6 +39,7 @@ export default class Vacancy extends Component {
                 <Swiper
                     spaceBetween={30}
                     slidesPerView={3}
+                    simulateTouch={false}
                     navigation={{
                         prevEl: '.sliderVacancy__button_prev',
                         nextEl: '.sliderVacancy__button_next'

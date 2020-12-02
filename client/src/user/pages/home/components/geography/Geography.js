@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import { YMaps, Map, Placemark,Button, ZoomControl, FullscreenControl, ObjectManager, GeoObject, ListBox, ListBoxItem } from "react-yandex-maps"
+import { YMaps, Map, Placemark,Button, ZoomControl, ObjectManager, GeoObject, ListBox, ListBoxItem } from "react-yandex-maps"
 
 // Import static files
 import './Geography.css'
@@ -123,7 +123,6 @@ export default class Geography extends Component {
                         </div>
 
                         <ZoomControl options={zoomOptions} />
-                        <FullscreenControl />
                     </Map>
                 </YMaps>
             </section>
