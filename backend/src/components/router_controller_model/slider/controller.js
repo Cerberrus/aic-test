@@ -6,7 +6,7 @@ const jobSliderDataCheckFields = require('./model/SliderDataCheckFieldsExist')
 const toGetSliderDataList=async (req, res)=>{
     try{
         const data = await manageSliderData.getSliderDataList()
-        const result = await SliderImagePath(data.sliderDataList)
+        const result = await SliderImagePath(data)
         res.status(200).json(result)
     }
     catch (e) {

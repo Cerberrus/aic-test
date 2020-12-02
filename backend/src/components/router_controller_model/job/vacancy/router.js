@@ -17,7 +17,7 @@ router.get(
 router.post(
     '/api/job-vacancy',
     authCheck.toCheck,
-    checkExist.checkFieldsPost,
+    checkExist.checkPost,
     uploader,
     controller.toPostJobVacancy
 )

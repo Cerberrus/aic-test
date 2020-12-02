@@ -2,11 +2,14 @@ const CheckExist = require('../../../../lib/CheckFields')
 
 class VacancyCheckFieldsExist extends CheckExist{
 
-    checkFieldsPost =async(req, res, next)=> {
-        const fields = ['title', 'imageDescription']
-        const response = this.__checkExist(req.query,fields)
-        if(response)    next()
-        else            res.status(403).send()
+    checkPost =async(req, res, next)=> {
+        console.log('Get check')
+        const result = await this.checkFieldsPost(req.query, {
+            fieldsRequired : ['title', 'imageDescription'],
+            fieldsNotRequired : ['imagePath']
+        })
+        if(result.checkExist.error === false && result.checkNull.error === false)    next()
+        else res.status(400).json(result)
     }
 }
 module.exports = new VacancyCheckFieldsExist()

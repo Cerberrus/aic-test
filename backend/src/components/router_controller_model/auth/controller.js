@@ -2,7 +2,7 @@ const authentication = require('./model/Authentication')
 
 const toSignIn = async (req,res)=>{
     try {
-        const jwt = await authentication.signIn(req.body)
+        const jwt = await authentication.signIn(req)
         if(jwt !== false)  res.status(201).cookie('auth', jwt).json({message: "jwt token создан"})
         else  res.status(403).send()
     }

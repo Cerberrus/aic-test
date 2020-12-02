@@ -6,7 +6,7 @@ const toGetJobVacancyList=async (req, res)=>{
     try{
         const data = await manage.getJobVacancyList()
         const result = await vacancyImagePath(data.vacancyList)
-        res.status(200).json({vacancyList: result})
+        res.status(200).json(result)
     }
     catch (e) {
         res.status(409).send()
@@ -38,6 +38,7 @@ const toPostJobVacancy=async (req, res)=>{
     }
     catch (e) {
         res.status(404).send()
+        console.log(e)
     }
 }
 const toDeleteJobVacancy=async (req, res)=>{

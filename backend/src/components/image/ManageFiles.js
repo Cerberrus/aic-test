@@ -23,15 +23,20 @@ const deleteFileList = async (paths) => {
     }
 }
 const getFilesPaths = async (filename, path, outputPath = false) => {
-    const filePathList = await fs.readdir(path)
-    const name = String(filename).toLowerCase()
-    let responsePaths = []
-    for (let filePath of filePathList) {
-        if(filePath.indexOf(name) !== -1){
-            if (outputPath) responsePaths.push(outputPath+filePath)
-            else responsePaths.push(path+'/'+filePath)
+    try{
+        const filePathList = await fs.readdir(path)
+        const name = String(filename).toLowerCase()
+        let responsePaths = []
+        for (let filePath of filePathList) {
+            if (filePath.indexOf(name) !== -1) {
+                if (outputPath) responsePaths.push(outputPath + filePath)
+                else responsePaths.push(path + '/' + filePath)
+            }
         }
+        return responsePaths
     }
-    return responsePaths
+    catch (e) {
+        
+    }
 }
 module.exports = {deleteFile,deleteFileList,getFilesPaths}

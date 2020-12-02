@@ -1,11 +1,12 @@
 const CheckExist = require('../../../lib/CheckFields')
 
 class InstagramCheckFieldsExist extends CheckExist{
-    checkFieldsPost =async (req, res, next)=> {
-        const fields = ['username', 'password']
-        const response = this.__checkExist(req.body,fields)
-        if(response)    next()
-        else res.status(403).send()
+    checkPost =async (req, res, next)=> {
+        const result = await this.checkPost(req.query, {
+            fieldsRequired : ['username', 'password']
+        })
+        if(result.checkExist.error === false && result.checkNull.error === false)    next()
+        else res.status(400).json(result)
     }
 }
 module.exports = new InstagramCheckFieldsExist()

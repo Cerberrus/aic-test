@@ -2,8 +2,8 @@ const connection = require('../../../database/DataBase')
 
 const getSliderDataList=async ()=>{
     try{
-        const [result] = await connection.execute('select * from slider')
-        return {sliderDataList: result}
+        const [result] = await connection.execute('select title, image_description as imageDescription, image_path as imagePath from slider')
+        return result
     }
     catch (e) {
         console.log(e)

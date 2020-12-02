@@ -20,6 +20,7 @@ class InstagramSingleton{
             this.password = await setting.getSetting({key: 'instagramPassword'})
             const cookieStore = await new FileCookieStore('./cookies.json')
             this.client = await new Instagram({username: this.username, password: this.password, cookieStore})
+            await this.client.login({username: this.username , password: this.password})
             await this.recyclePhoto()
         }
         catch (e) {
@@ -37,7 +38,7 @@ class InstagramSingleton{
         }
     }
     getPhotosFromInstagram = async ()=>{
-        const {user} = await this.client.getPhotosByUsername({username: this.username, first:999999})
+        const {user} = await this.client.getPhotosByUsername({username: 'la_loqiemean'/*this.username*/, first:999999})
         const result= []
         for (let edge of user.edge_owner_to_timeline_media.edges){
             result.push(edge.node.display_url)

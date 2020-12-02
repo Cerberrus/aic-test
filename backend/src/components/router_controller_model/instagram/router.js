@@ -12,7 +12,7 @@ router.get(
 router.post(
     '/api/instagram/signin',
     checkAuth.toCheck,
-    checkExist.checkFieldsPost,
+    checkExist.checkPost,
     controller.toUpdateUserInformation
 )
 

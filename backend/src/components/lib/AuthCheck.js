@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken')
-const check =async(userJWT)=>{
+const checkType =async(userJWT)=>{
     try{
-        const data = await jwt.decode(userJWT, {complete: true}).payload
-        if(data.type === 'admin')   return true
+        if(userJWT.type === 'admin')   return true
         else                        return false
     }
     catch (e){
@@ -10,14 +9,30 @@ const check =async(userJWT)=>{
         return false
     }
 }
-const toCheck = async (req,res,next)=>{
+const checkIP =async(userJWT, ip)=>{
+    try{
+        if(userJWT.ip === ip)   return true
+        else                    return false
+    }
+    catch (e){
+        console.error(e)
+        return false
+    }
+}
+const toCheck = async (req, res, next)=>{
     try{
         if('auth' in req.cookies){
-            const response = await check(req.cookies.auth)
-            if(response === true) next()
-            else res.status(403).send('Error in check')
+            const forwarded = req.headers['x-forwarded-for']
+            const ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress
+            const jwtPayload = await jwt.verify(req.cookies.auth, process.env.JWT_SECURY_KEY)
+            const isType = await checkType(jwtPayload)
+            const isIP = await checkIP(jwtPayload, ip)
+            if(isType && isIP) next()
+            else res.status(303).send('JWT error')
         }
-        else res.status(403).send('Error in check')
+        else{
+            res.status(303).send('JWT not exist in cookie')
+        }
     }
     catch (e) {
         res.status(406).send()

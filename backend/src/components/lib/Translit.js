@@ -71,8 +71,8 @@ const wordList = {
 translit = (words) =>{
     try {
         return words.split('').map(function (char) {
-            return wordList[char] || char;
-        }).join("").toLowerCase();
+            return wordList[char] || char
+        }).join("").toLowerCase()
     }
     catch (e) {
 

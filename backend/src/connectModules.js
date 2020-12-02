@@ -12,6 +12,7 @@ const sliderRouter = require('./components/router_controller_model/slider/router
 const instagramRouter = require('./components/router_controller_model/instagram/router')
 
 const instagram = require('./components/router_controller_model/instagram/model/Instagram')
+const authCheck = require("./components/lib/AuthCheck");
 instagram.init()
 dotenv.config()                 // connect .env file and use them variables
 
@@ -22,6 +23,11 @@ app.use(cors())
 app.use(bodyParser.json())        // use for get information from body
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser(process.env.COOKIE_SECURE_KEY))         // use for get and set information from cookie
+
+app.use('/static', express.static('C:/GitHub/aic-test/backend/uploads/static'))
+app.use('/private',authCheck.toCheck,
+    express.static('C:/GitHub/aic-test/backend/uploads/private'))
+
 app.use(authRouter)             //
 app.use(coordinateRouter)       //
 app.use(jobRequestRouter)       // include all routes

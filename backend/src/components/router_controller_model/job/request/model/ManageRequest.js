@@ -11,7 +11,7 @@ const getJobRequest=async ({id})=>{
 }
 const postJobRequest=async ({jobVacancyId, name, happyDate, phoneNumber, sex, email, resumeText, resumeFilePath})=>{
     jobVacancyId = Number(jobVacancyId)
-    await connection.execute('insert into job_request(job_vacancy_id, name, happy_date, phone_number, sex, email, resume_text, resume_file_path) values(?,?,?,?,?,?,?,?)',
+    await connection.execute('insert into job_request(job_vacancy_id, `name`, happy_date, phone_number, sex, email, resume_text, resume_file_path) values(?,?,?,?,?,?,?,?)',
         [jobVacancyId, name, happyDate, phoneNumber, sex, email, resumeText, resumeFilePath])
     return getJobRequestList()
 }

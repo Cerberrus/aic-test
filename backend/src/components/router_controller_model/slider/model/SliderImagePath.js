@@ -1,7 +1,8 @@
 const manageFiles = require('../../../image/ManageFiles')
 module.exports = implementPathList=async (data)=>{
     for(let key of data){
-        key.image_path = await manageFiles.getFilesPaths(key.title+'.', key.image_path, '/static/images/slider/')
+        const imageList  = await manageFiles.getFilesPaths(key.title+'.', key.imagePath, '/static/images/slider/')
+        key.imagePath = imageList[0]
     }
     return data
 }

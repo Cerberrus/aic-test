@@ -13,7 +13,7 @@ router.get(
 router.post(
     '/api/slider',
     authCheck.toCheck,
-    checkFields.checkFieldsPost,
+    checkFields.checkPost,
     uploader,
     controller.toPostSliderData
 )

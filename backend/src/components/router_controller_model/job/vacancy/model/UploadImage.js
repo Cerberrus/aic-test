@@ -3,6 +3,7 @@ const path = require('path')
 const translit = require('../../../../lib/Translit')
 
 const fileFilter = (req, file, cb) => {
+    console.log('File filter')
         if (file.mimetype === "image/png" ||
             file.mimetype === "image/jpg" ||
             file.mimetype === "image/jpeg") {

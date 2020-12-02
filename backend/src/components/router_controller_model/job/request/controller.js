@@ -8,7 +8,7 @@ const toGetJobRequestList=async (req, res)=>{
         res.status(200).json(data)
     }
     catch (e) {
-        res.status(404).send
+        res.status(404).send()
     }
 }
 const toGetJobRequest=async (req, res)=>{
@@ -17,13 +17,12 @@ const toGetJobRequest=async (req, res)=>{
         res.status(200).json(data)
     }
     catch (e) {
-        res.status(404).send
+        res.status(404).send()
     }
 }
 const toPostJobRequest=async (req, res)=>{
     try{
-        checkFiled.__checkExist(req.query, jobRequestFileds)
-        if (!req.recaptcha.error) {
+        if (/*!req.recaptcha.error*/true) {
             const data = await manage.postJobRequest(req.query)
             res.status(200).json(data)
         } else {
@@ -31,7 +30,7 @@ const toPostJobRequest=async (req, res)=>{
         }
     }
     catch (e) {
-        res.status(404).send
+        res.status(404).send()
     }
 }
 const toUpdateJobRequest=async (req, res)=>{
@@ -41,7 +40,7 @@ const toUpdateJobRequest=async (req, res)=>{
         res.status(200).json(data)
     }
     catch (e) {
-        res.status(404).send
+        res.status(404).send()
     }
 }
 const toDeleteJobRequest=async (req, res)=>{
@@ -50,7 +49,7 @@ const toDeleteJobRequest=async (req, res)=>{
         res.status(200).json(data)
     }
     catch (e) {
-        res.status(404).send
+        res.status(404).send()
     }
 }
 const toCheckFieldsPost = (req, res, next)=>{
