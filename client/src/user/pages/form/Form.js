@@ -370,7 +370,7 @@ export default class Form extends Component {
                 </Helmet>
 
                 <div className="page__body">
-                    <Header />
+                    <Header theme={'gray'}/>
                     <main className="requestPage container">
                         {success ? <Success /> : Form}
                     </main>

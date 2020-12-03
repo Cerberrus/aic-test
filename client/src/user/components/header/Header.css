@@ -6,9 +6,24 @@
     padding-bottom: 34px;
 }
 
+.header_theme_gray {
+    background-color: var(--color-gray);
+}
+
 .header__link {
     margin-left: 29px;
     padding: 10px 14px;
     border: 2px solid var(--color-yellow);
     transition: .2s;
+}
+
+.header__iconCross {
+    width: 24px;
+    height: 24px;
+    stroke: var(--color-black);
+    transition: .2s;
+}
+
+.header__iconCross:hover {
+    opacity: 0.6;
 }
