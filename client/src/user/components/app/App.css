@@ -5,14 +5,14 @@
     font-style: normal;
     font-weight: 500;
     src: local(''),
-    url('../fonts/raleway-v18-latin_cyrillic-500.woff2') format('woff2'),
-    url('../fonts/raleway-v18-latin_cyrillic-500.woff') format('woff');
+    url('~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2') format('woff2'),
+    url('~user/static/fonts/raleway-v18-latin_cyrillic-500.woff') format('woff');
 }
 
 /* Properties */
 :root {
     /* Colors */
-    --color-black:      #000000;
+    --color-black: #000000;
     --color-white:      #ffffff;
     --color-red:        #FF6666;
     --color-yellow:     #FFDF31;
@@ -64,18 +64,34 @@ a {
     text-decoration: none;
 }
 
+button,
 .button {
-    padding: 12px 16px;
+    background: none;
     border: none;
+    outline: none;
+    padding: 12px 16px;
     border-radius: 8px;
+    text-align: center;
     font-size: 18px;
     color: var(--color-black);
     cursor: pointer;
-    outline: none;
+    transition: .2s;
+}
+
+.button_gray {
+    background-color: var(--color-gray);
+}
+
+.button_gray:hover {
+    background-color: var(--color-darkGray);
 }
 
 .button_yellow {
     background-color: var(--color-yellow);
+}
+
+.button_yellow:hover {
+    background-color: transparent;
 }
 
 ul {
@@ -131,3 +147,23 @@ svg {
     fill: var(--color-black);
 }
 
+/* Block loader */
+.block_load {
+    position: relative;
+    background-color: var(--color-darkGray);
+    opacity: 0.6;
+}
+
+.block_load:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    width: 500%;
+    margin-left: -250%;
+    animation: phAnimation 0.8s linear infinite;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 54%) 50% 50%;
+}

@@ -11,7 +11,7 @@ module.exports = (target) => ({
         filename: `client/${target}/[name].[hash:8].js`,
         publicPath: '/'
     },
-    ...(isDev ? {devtool: 'cheap-module-source-map'} : {}),
+    ...(isDev ? {devtool: 'cheap-module-source-geography'} : {}),
     optimization: {
         runtimeChunk: 'single',
         splitChunks: {
@@ -46,7 +46,6 @@ module.exports = (target) => ({
     },
     devServer: {
         port: 4200,
-        host: '192.168.0.201',
         historyApiFallback: true,
         hot: isDev,
         inline: isDev,

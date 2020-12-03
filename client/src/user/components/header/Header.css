@@ -6,28 +6,9 @@
     padding-bottom: 34px;
 }
 
-.header__logoWrapper {
-    display: flex;
-    align-items: center;
-}
-
-.header__logo {
-    align-self: flex-end;
-    height: 30px;
-}
-
-.header__name {
-    margin-left: 16px;
-    font-size: 32px;
-}
-
 .header__link {
     margin-left: 29px;
     padding: 10px 14px;
     border: 2px solid var(--color-yellow);
     transition: .2s;
-}
-
-.header__link:hover {
-    background-color: var(--color-white);
 }

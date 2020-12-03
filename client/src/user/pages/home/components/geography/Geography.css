@@ -1,0 +1,39 @@
+.geography {
+    padding-top: 69px;
+    padding-bottom: 72px;
+}
+
+.geography__map {
+    position: relative;
+    width: 100%;
+    height: 540px;
+}
+
+[class*="ymaps-2"][class*="-ground-pane"] {
+    -webkit-filter: grayscale(100%);
+}
+
+.geography__buttonGroup {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    bottom: 24px;
+    left: 24px;
+    z-index: 10000;
+}
+
+.geography__button {
+    margin: 5px 0;
+    padding: 9px 14px;
+    border: 2px solid transparent;
+    background-color: var(--color-white);
+}
+
+.geography__button:hover {
+    border-color: var(--color-yellow);
+}
+
+.geography__button_active {
+    background-color: var(--color-yellow);
+}

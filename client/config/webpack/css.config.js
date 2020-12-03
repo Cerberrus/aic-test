@@ -16,6 +16,7 @@ module.exports = {
                     loader: 'css-loader',
                     options: {
                         sourceMap: isDev,
+                        importLoaders: 1,
                         modules: {
                             localIdentName: '[local]'
                         }

@@ -1,6 +1,7 @@
 .gallery__list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 250px;
     grid-gap: 30px;
 }
 
@@ -10,14 +11,26 @@
 }
 
 .gallery__item {
+    display: flex;
     min-height: 255px;
     border-radius: 8px;
-    background-color: var(--color-gray);
+    overflow: hidden;
+}
+
+.gallery__image {
+    width: 100%;
 }
 
 .gallery__button {
     width: 100%;
     margin-top: 30px;
-    text-align: center;
-    background-color: var(--color-gray);
+}
+
+@keyframes phAnimation {
+    0% {
+        transform: translate3d(-30%, 0, 0);
+    }
+    100% {
+        transform: translate3d(30%, 0, 0);
+    }
 }
