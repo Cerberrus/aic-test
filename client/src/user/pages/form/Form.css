@@ -1,4 +1,8 @@
 /* Inputs */
+label {
+    position: relative;
+}
+
 .form__input {
     display: block;
     margin-top: 14px;
@@ -22,9 +26,13 @@
     background-color: rgba(255, 102, 102, 0.3);
 }
 
+.form__input_error::placeholder {
+    opacity: 1;
+}
+
 .form__select {
     appearance: none;
-    background-image: url('../../static/icons/arrow.jpg');
+    background-image: url('../../static/icons/arrow.png');
     background-repeat: no-repeat;
     background-position: right 16px top 50%, 0 0;
     background-size: 10px;
@@ -109,6 +117,13 @@ input[type=checkbox]:checked + .form__checkbox:before {
     height: 12px;
     fill: none;
     stroke: var(--color-lightGreen);
+}
+
+.form__errorText {
+    position: absolute;
+    bottom: -18px;
+    font-size: 14px;
+    color: var(--color-red);
 }
 
 .requestPage__formGroup {

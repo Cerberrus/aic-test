@@ -5,6 +5,7 @@ import axios from "axios"
 
 import Header from "~user/components/header/Header"
 import Footer from "~user/components/footer/Footer"
+import Success from "./components/success/Success"
 import ReCAPTCHA from "react-google-recaptcha"
 
 // Import static files
@@ -17,17 +18,19 @@ export default class Form extends Component {
     state = {
         vacancyList: [],
         formData: {
-            vacancy:  '',
-            fullName: '',
-            date:     '',
-            sex:      'm',
-            phone:    '',
-            mail:     '',
-            resume:   '',
-            file:     '',
-            captcha:  ''
+            vacancy:   '',
+            fullName:  '',
+            date:      '',
+            sex:       'm',
+            phone:     '',
+            mail:      '',
+            resume:    '',
+            file:      '',
+            agreement: true,
+            captcha:   ''
         },
-        error:        false,
+        error:         false,
+        success:       false
     }
 
     componentDidMount() {
@@ -48,7 +51,7 @@ export default class Form extends Component {
     validation = (e) => {
         const key  = e.target.name
         let value  = e.target.value
-        let result = true
+        let result = false
 
         const checkName   = /./
         const checkResume = /./
@@ -57,6 +60,9 @@ export default class Form extends Component {
         const checkMail   = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
         switch (key) {
+            case 'vacancy':
+                result = value !== '-1'
+                break
             case 'fullName':
                 result = checkName.test(value)
                 break
@@ -75,47 +81,83 @@ export default class Form extends Component {
             case 'file':
                 value = new FormData()
                 value.append('summary', e.target.files[0])
+                result = true
+                break
+            case 'agreement':
+                value = e.target.checked
+                result = true
                 break
             default:
                 break
         }
 
         let formData  = this.state.formData
-        formData[key] = result ? value : ''
+        formData[key] = result ? value : false
 
-        if (result) {
-            this.setState({formData})
-        }
+        this.setState({formData})
     }
 
     onSubmit = async (e) => {
         e.preventDefault()
-        const { vacancy, fullName, date, sex, phone, mail, resume, file, captcha } = this.state.formData
+        const { vacancy, fullName, date, sex, phone, mail, resume, file, captcha, agreement } = this.state.formData
 
-        axios({
-            method: 'post',
-            headers: {
-                'Content-Type': file ? 'multipart/form-data' : 'application/json'
-            },
-            url: `http://192.168.0.200:3000/api/job-request?`+
-                 `g-recaptcha-response=${captcha}&`+
-                 `jobVacancyId=${vacancy}&`+
-                 `name=${fullName}&`+
-                 `happyDate=${date}&`+
-                 `phoneNumber=${phone}&`+
-                 `${sex && 'sex='+sex+'&'}`+
-                 `${mail && 'email='+mail+'&'}`+
-                 `${resume && 'resumeText='+resume+'&'}`
-            ,
-            data: file
-        }).then((response)=>{
-            console.log(response)
-            alert('Успех!')
-            // Redirect to successful page
-        }).catch((error)=>{
-            console.log(error.response.data)
-            alert('Ошибка!')
+        const requiredFields = ['vacancy', 'fullName', 'date', 'phone']
+        let   error, result
+
+        requiredFields.map((field) => {
+           const input = document.querySelector(`[name=${field}]`)
+
+            switch (field) {
+               case 'phone':
+                   const checkPhone = /^(\+7[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/
+                   result = checkPhone.test(input.value)
+                   break
+               default:
+                   result = input.value.length > 0 && input.value !== '-1'
+                   break
+            }
+
+            if (result === false) {
+                error = true
+
+                input.classList.add('form__input_error')
+                input.insertAdjacentHTML('afterend', '<span class="form__errorText">поле заполнено не корректно</span>');
+
+                input.addEventListener('focus', () => {
+                    input.classList.remove('form__input_error')
+                    input.nextElementSibling.remove()
+                })
+            }
         })
+
+        if (!error && agreement) {
+            console.log(file)
+            axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': file ? 'multipart/form-data' : 'application/json'
+                },
+                url: `http://192.168.0.200:3000/api/job-request?`+
+                     `g-recaptcha-response=${captcha}&`+
+                     `jobVacancyId=${vacancy}&`+
+                     `name=${fullName}&`+
+                     `happyDate=${date}&`+
+                     `phoneNumber=${phone}&`+
+                     `${sex && 'sex='+sex+'&'}`+
+                     `${mail && 'email='+mail+'&'}`+
+                     `${resume && 'resumeText='+resume+'&'}`
+                ,
+                data: file
+            }).then((response)=>{
+                console.log(response)
+                this.setState({
+                    success: true
+                })
+            }).catch((error)=>{
+                console.log(error.response)
+                alert('Ошибка!')
+            })
+        }
     }
 
     verifyCaptcha = async (response) => {
@@ -134,9 +176,191 @@ export default class Form extends Component {
 
     render() {
         const { vacancyList } = this.state
+        const { success } = this.state
         const { vacancy, fullName, date, phone, mail, resume } = this.state.formData
 
-        const IconChecked = <svg className="form__iconCheck" aria-hidden={true}><use xlinkHref={iconCheck} /></svg>
+        const IconChecked = <svg className="form__iconCheck" aria-hidden={true}><use xlinkHref={iconCheck}/></svg>
+
+        const Form = (
+            <>
+                <h1 className="visuallyHidden">Форма заявки</h1>
+                <p className="requestPage__title">Работа твоей мечты</p>
+
+                <div className="requestPage__content">
+                    {/* Form */}
+                    <form className="requestPage__form form" onSubmit={this.onSubmit} noValidate>
+                        {/* Vacancy */}
+                        <label>
+                            <span>Вакансия * {vacancy && IconChecked}</span>
+                            <select
+                                name="vacancy"
+                                className="form__select form__input"
+                                onChange={this.validation}
+                            >
+                                <option value={-1} defaultValue>Выберите вакансию</option>
+                                {vacancyList.map((vacancy, index) => (
+                                    <option key={index} value={vacancy.id}>
+                                        {vacancy.name}</option>
+                                ))}
+                            </select>
+                        </label>
+
+                        {/* Full name */}
+                        <label>
+                            <span>ФИО * {fullName && IconChecked}</span>
+                            <input
+                                type="text"
+                                name="fullName"
+                                placeholder="Ваши данные"
+                                className="form__input"
+                                onChange={this.validation}
+                            />
+                        </label>
+
+                        {/* Date, sex, phone, mail */}
+                        <div className="requestPage__formGroup">
+                            {/* Date */}
+                            <label>
+                                <span>Дата рождения * {date && IconChecked}</span>
+                                <input
+                                    type="date"
+                                    name="date"
+                                    placeholder="28.07.2002"
+                                    className="form__input"
+                                    onChange={this.validation}
+                                />
+                            </label>
+
+                            {/* Sex */}
+                            <div>
+                                <p>Пол {IconChecked}</p>
+                                <ul className="form__radioGroup">
+                                    <li className="radioGroup__item">
+                                        <input
+                                            type="radio"
+                                            id="sex_m"
+                                            name="sex"
+                                            value="m"
+                                            onChange={this.validation}
+                                            defaultChecked
+                                            hidden
+                                        />
+                                        <label className="radioGroup__radio form__radio" htmlFor="sex_m">
+                                            <span>мужской</span>
+                                        </label>
+                                    </li>
+                                    <li className="radioGroup__item">
+                                        <input
+                                            type="radio"
+                                            id="sex_f"
+                                            name="sex"
+                                            value="f"
+                                            hidden onChange={this.validation}
+                                        />
+                                        <label className="radioGroup__radio form__radio" htmlFor="sex_f">
+                                            <span>женский</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            {/* Phone */}
+                            <label>
+                                <span>Контактный телефон * {phone && IconChecked}</span>
+                                <NumberFormat
+                                    name="phone"
+                                    format="+7 (###) ### - ####"
+                                    mask="_" allowEmptyFormatting
+                                    className="form__input"
+                                    onChange={this.validation}
+                                />
+                            </label>
+
+                            {/* Mail */}
+                            <label>
+                                <span>Электронная почта {mail && IconChecked}</span>
+                                <input
+                                    type="email"
+                                    name="mail"
+                                    placeholder="E-mail"
+                                    className="form__input"
+                                    onChange={this.validation}
+                                />
+                            </label>
+                        </div>
+
+                        {/* Resume, resume file */}
+                        <div>
+                            {/* Resume */}
+                            <label>
+                                <span>Резюме {resume && IconChecked}</span>
+                                <textarea
+                                    name="resume"
+                                    className="requestPage__resume form__input"
+                                    onChange={this.validation}
+                                />
+                            </label>
+
+                            {/* Resume file */}
+                            <div>
+                                <input
+                                    type="file"
+                                    id="resume_file"
+                                    name="file"
+                                    onChange={this.onLoadFile}
+                                    hidden
+                                />
+                                <label htmlFor="resume_file" className="resumeFile form__file form__input">
+                                    <svg className="resumeFile__icon"><use xlinkHref={iconFile}/></svg>
+                                    <p className="resumeFile__text">выберете или перетащите файл</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Captcha */}
+                        <div>
+                            <p>Капча</p>
+                            <div className="reCaptcha">
+                                <ReCAPTCHA
+                                    sitekey="6LfOQ-4ZAAAAACOFvjKDgtEwPjLqX3CdCPgTbTpL"
+                                    onChange={this.verifyCaptcha}
+                                    className="reCaptcha__block"
+                                />
+                                <span className="reCaptcha__info">* поля для обязательного заполнения</span>
+                            </div>
+                        </div>
+
+                        {/* Agreement */}
+                        <div>
+                            <input
+                                type="checkbox"
+                                name="agreement"
+                                id="agreement2"
+                                onChange={this.validation}
+                                hidden
+                                defaultChecked/>
+                            <label className="requestPage__agreement form__checkbox" htmlFor="agreement2">
+                                <span>я подтверждаю согласие на обработку персональных<br/>данных и принимаю условия рассмотрения обращений *</span>
+                            </label>
+                        </div>
+
+                        <button className="form__button button_gray">Отправить</button>
+                    </form>
+
+                    {/* Goal section */}
+                    <section className="requestPage__goal goal">
+                        <h2 className="goal__tile">Наша суперцель</h2>
+                        <p>
+                            — стать любимым магазином для каждой российской семьи.<br/><br/>
+                            Сотни тысяч наших сотрудников ежедневно работают над её достижением.<br/><br/>
+                            Мы уверены, что в ближайшие годы достигнем этого и будет здорово,<br/>
+                            если вместе с тобой.
+                        </p>
+                        <a href="tel:79264331416" className="goal__link button button_gray">+7 (926) 433-14-16</a>
+                    </section>
+                </div>
+            </>
+        )
 
         return (
             <>
@@ -148,176 +372,7 @@ export default class Form extends Component {
                 <div className="page__body">
                     <Header />
                     <main className="requestPage container">
-                        <h1 className="visuallyHidden">Форма заявки</h1>
-                        <p className="requestPage__title">Работа твоей мечты</p>
-
-                        <div className="requestPage__content">
-                            {/* Form */}
-                            <form className="requestPage__form form" onSubmit={this.onSubmit}>
-                                {/* Vacancy */}
-                                <label>
-                                    <span>Вакансия * {vacancy && IconChecked}</span>
-                                    <select
-                                        name="vacancy"
-                                        className="form__select form__input"
-                                        onChange={this.validation}
-                                    >
-                                        <option defaultValue>Выберите вакансию</option>
-                                        {vacancyList.map((vacancy, index) => (
-                                            <option key={index} value={vacancy.id}>
-                                                {vacancy.name}</option>
-                                        ))}
-                                    </select>
-                                </label>
-
-                                {/* Full name */}
-                                <label>
-                                    <span>ФИО * {fullName && IconChecked}</span>
-                                    <input
-                                        type="text"
-                                        name="fullName"
-                                        placeholder="Ваши данные"
-                                        className="form__input"
-                                        onChange={this.validation}
-                                    />
-                                </label>
-
-                                {/* Date, sex, phone, mail */}
-                                <div className="requestPage__formGroup">
-                                    {/* Date */}
-                                    <label>
-                                        <span>Дата рождения * {date && IconChecked}</span>
-                                        <input
-                                            type="date"
-                                            name="date"
-                                            placeholder="28.07.2002"
-                                            className="form__input"
-                                            onChange={this.validation}
-                                        />
-                                    </label>
-
-                                    {/* Sex */}
-                                    <div>
-                                        <p>Пол {IconChecked}</p>
-                                        <ul className="form__radioGroup">
-                                            <li className="radioGroup__item">
-                                                <input
-                                                    type="radio"
-                                                    id="sex_m"
-                                                    name="sex"
-                                                    value="m"
-                                                    onChange={this.validation}
-                                                    defaultChecked
-                                                    hidden
-                                                />
-                                                <label className="radioGroup__radio form__radio" htmlFor="sex_m">
-                                                    <span>мужской</span>
-                                                </label>
-                                            </li>
-                                            <li className="radioGroup__item">
-                                                <input
-                                                    type="radio"
-                                                    id="sex_f"
-                                                    name="sex"
-                                                    value="f"
-                                                    hidden onChange={this.validation}
-                                                />
-                                                <label className="radioGroup__radio form__radio" htmlFor="sex_f">
-                                                    <span>женский</span>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    {/* Phone */}
-                                    <label>
-                                        <span>Контактный телефон * {phone && IconChecked}</span>
-                                        <NumberFormat
-                                            name="phone"
-                                            format="+7 (###) ### - ####"
-                                            mask="_" allowEmptyFormatting
-                                            className="form__input"
-                                            onChange={this.validation}
-                                        />
-                                    </label>
-
-                                    {/* Mail */}
-                                    <label>
-                                        <span>Электронная почта {mail && IconChecked}</span>
-                                        <input
-                                            type="email"
-                                            name="mail"
-                                            placeholder="E-mail"
-                                            className="form__input"
-                                            onChange={this.validation}
-                                        />
-                                    </label>
-                                </div>
-
-                                {/* Resume, resume file */}
-                                <div>
-                                    {/* Resume */}
-                                    <label>
-                                        <span>Резюме {resume && IconChecked}</span>
-                                        <textarea
-                                            name="resume"
-                                            className="requestPage__resume form__input"
-                                            onChange={this.validation}
-                                        />
-                                    </label>
-
-                                    {/* Resume file */}
-                                    <div>
-                                        <input
-                                            type="file"
-                                            id="resume_file"
-                                            name="file"
-                                            onChange={this.onLoadFile}
-                                            hidden
-                                        />
-                                        <label htmlFor="resume_file" className="resumeFile form__file form__input">
-                                            <svg className="resumeFile__icon"><use xlinkHref={iconFile}/></svg>
-                                            <p className="resumeFile__text">выберете или перетащите файл</p>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                {/* Captcha */}
-                                <div>
-                                    <p>Капча</p>
-                                    <div className="reCaptcha">
-                                        <ReCAPTCHA
-                                            sitekey="6LfOQ-4ZAAAAACOFvjKDgtEwPjLqX3CdCPgTbTpL"
-                                            onChange={this.verifyCaptcha}
-                                            className="reCaptcha__block"
-                                        />
-                                        <span className="reCaptcha__info">* поля для обязательного заполнения</span>
-                                    </div>
-                                </div>
-
-                                {/* Agreement */}
-                                <div>
-                                    <input type="checkbox" id="agreement2" hidden defaultChecked/>
-                                    <label className="requestPage__agreement form__checkbox" htmlFor="agreement2">
-                                        <span>я подтверждаю согласие на обработку персональных<br/>данных и принимаю условия рассмотрения обращений *</span>
-                                    </label>
-                                </div>
-
-                                <button className="form__button button_gray">Отправить</button>
-                            </form>
-
-                            {/* Goal section */}
-                            <section className="requestPage__goal goal">
-                                <h2 className="goal__tile">Наша суперцель</h2>
-                                <p>
-                                    — стать любимым магазином для каждой российской семьи.<br/><br/>
-                                    Сотни тысяч наших сотрудников ежедневно работают над её достижением.<br/><br/>
-                                    Мы уверены, что в ближайшие годы достигнем этого и будет здорово,<br/>
-                                    если вместе с тобой.
-                                </p>
-                                <a href="tel:79264331416" className="goal__link button button_gray">+7 (926) 433-14-16</a>
-                            </section>
-                        </div>
+                        {success ? <Success /> : Form}
                     </main>
                     <Footer />
                 </div>
