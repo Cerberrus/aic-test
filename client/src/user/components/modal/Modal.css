@@ -1,0 +1,100 @@
+/* MODAL */
+.overlay{
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    background: rgba(6%, 6%, 6%, 0.8);
+    transition: opacity 0.2s ease;
+}
+
+.modal{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    max-height: 100%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    box-sizing: border-box;
+    max-width: 1180px;
+    padding: 48px 32px;
+    z-index: 300;
+    background-color: #fff;
+    border: 2px solid var(--color-black);
+    border-radius: 3px;
+    overflow-y: auto;
+}
+
+.modal__close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.modal__close:before{
+    content: '';
+    position: absolute;
+    top: 10px;
+    transform: rotate(-45deg);
+    width: 20px;
+    height: 2px;
+    background-color: var(--color-black);
+}
+
+.modal__close:after{
+    content: '';
+    position: absolute;
+    top: 10px;
+    transform: rotate(45deg);
+    width: 20px;
+    height: 2px;
+    background-color: var(--color-black);
+}
+
+.modal__close:hover:before,
+.modal__close:hover:after{
+    background-color: var(--color-black);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        opacity:1;
+        visibility: visible;
+    }
+}
+
+.fadeIn {
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-name: fadeIn;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        opacity:0;
+        visibility: hidden;
+    }
+}
+
+.fadeOut {
+    animation-duration: 0.1s;
+    animation-timing-function: ease-out;
+    animation-name: fadeOut;
+    opacity: 0;
+    visibility: hidden;
+}

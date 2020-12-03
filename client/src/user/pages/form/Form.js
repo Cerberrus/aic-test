@@ -131,7 +131,6 @@ export default class Form extends Component {
         })
 
         if (!error && agreement) {
-            console.log(file)
             axios({
                 method: 'post',
                 headers: {
@@ -365,7 +364,7 @@ export default class Form extends Component {
         return (
             <>
                 <Helmet>
-                    <title>Анкета</title>
+                    <title>анкета</title>
                     <meta name="description" content="Form page" />
                 </Helmet>
 

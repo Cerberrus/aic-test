@@ -19,7 +19,6 @@ export default class Gallery extends Component {
             method: 'get',
             url: 'http://192.168.0.200:3000/api/instagram/image',
         })
-        console.log(response);
 
         this.setState({
             images: response.data

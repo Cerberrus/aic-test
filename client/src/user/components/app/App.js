@@ -9,6 +9,7 @@ const HomePage = loadable(() => import('~user/pages/home/home'))
 
 //Import static files
 import fontRaleway from '~user/static/fonts/raleway-v18-latin_cyrillic-500.woff2'
+import shortIcon from '~user/static/images/temporary/logo.png'
 import "./App.css"
 
 export default class App extends Component {
@@ -20,6 +21,7 @@ export default class App extends Component {
                     titleTemplate="гросс маркет - %s"
                 >
                     <link rel="preload" href={fontRaleway} as="font" />
+                    <link rel="shortcut icon" href={shortIcon} />
                 </Helmet>
 
                 <Switch>
