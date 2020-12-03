@@ -22,7 +22,6 @@ class CheckFields {
     let passed = false;
     const fieldStack = [];
     for (let field of fields) {
-      console.log(field);
       if (field in object) {
       } else {
         fieldStack.push(field);

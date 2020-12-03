@@ -4,7 +4,7 @@ const getJobRequestStatusList = async () => {
   const [result] = await connection.execute(
    "select * from job_request_status"
   );
-  return { requestList: result };
+  return result;
 };
 const postJobRequestStatus = async ({ name }) => {
   await connection.execute(

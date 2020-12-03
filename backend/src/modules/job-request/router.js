@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const controller = require("./controller");
 const authCheck = require("../../lib/AuthCheck");
-const checkField = require(".//model/RequestCheckFieldsExist");
+const checkField = require("./model/RequestCheckFieldsExist");
 const statusRouter = require("./status/router");
 const ReCaptcha = require("../../lib/ReCaptcha");
 const uploader = require("./model/UploadSummary");
@@ -19,8 +19,8 @@ router.get(
 router.post(
   "/api/job-request",
   ReCaptcha.verify,
-  uploader,
   checkField.checkPost,
+  uploader,
   controller.toPostJobRequest
 );
 router.put(

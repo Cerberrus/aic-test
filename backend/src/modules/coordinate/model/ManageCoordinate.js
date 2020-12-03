@@ -1,10 +1,12 @@
 const connection = require("../../../lib/database/DataBase");
+const ManageCoordinateType = require("../type/ManageCoordinateType");
 
 const getCoordinateList = async () => {
-  const [result] = await connection.execute(
-    "select C.id, C.name, C.description, C.coordinate, CT.name from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
+  const [coordinateList] = await connection.execute(
+    "select C.id, C.longitude, C.latitude, CT.name as type, CT.id as typeId from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
   );
-  return result;
+  const typeList = await ManageCoordinateType.getCoordinateTypeList()
+  return {typeList, coordinateList};
 };
 const postCoordinate = async ({ coordinate, name, description, typeId }) => {
   typeId = Number(typeId);

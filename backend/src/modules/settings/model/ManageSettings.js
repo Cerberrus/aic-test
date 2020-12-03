@@ -2,22 +2,22 @@ const connection = require("../../../lib/database/DataBase");
 
 const getPublicInformationList = async () => {
   const [result] = await connection.execute(
-   "select * from setting where private = 0"
+   "select id, `_key` as `key`, `_value` as `value` from setting where private = 0"
   );
-  return { informationList: result };
+  return result;
 };
 const getSettingList = async () => {
   const [result] = await connection.execute(
    "select * from setting"
   );
-  return { settingList: result };
+  return result;
 };
 const getSetting = async ({ key }) => {
   const [result,] = await connection.execute(
-   "select _value from setting where _key=?",
+   "select `_value` as `value` from setting where _key=?",
    [key,]
   );
-  return result[0]._value;
+  return result[0].value;
 };
 const postSetting = async ({ key, value }) => {
   try {
