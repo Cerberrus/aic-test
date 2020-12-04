@@ -1,0 +1,31 @@
+@import "../global.css";
+
+.authorization {
+    position: absolute;
+    padding: 16px 32px;
+    width: 382px;
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.authorization__title {
+    text-align: center;
+}
+
+.authorization__group {
+    margin-bottom: 32px;
+}
+
+.button_yellow {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    margin-top: 72px;
+    border: none;
+    background-color: var(--color-yellow);
+}
+
+.authorization__button:hover {
+    cursor: pointer;
+}
+
