@@ -20,9 +20,11 @@ export default class Gallery extends Component {
             url: 'http://192.168.0.200:3000/api/instagram/image',
         })
 
-        this.setState({
-            images: response.data
-        })
+        if (response.data) {
+            this.setState({
+                images: response.data
+            })
+        }
     }
 
 
@@ -36,6 +38,8 @@ export default class Gallery extends Component {
         let {images, length} = this.state
 
         const showList = images.slice(0, length)
+
+        console.log(showList);
 
         return (
             <section className="gallery container">

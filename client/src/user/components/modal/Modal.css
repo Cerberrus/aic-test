@@ -1,64 +1,32 @@
 /* MODAL */
 .overlay{
     position: fixed;
-    left: 0; right: 0; top: 0; bottom: 0;
-    z-index: 200;
-    opacity: 0;
-    visibility: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity .2s ease-in-out;
     background: rgba(6%, 6%, 6%, 0.8);
-    transition: opacity 0.2s ease;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 200;
 }
 
-.modal{
+.modal {
     position: fixed;
+    display: flex;
+    flex-direction: column;
     left: 50%;
     top: 50%;
-    max-height: 100%;
+    width: var(--container-width);
+    max-height: 90%;
     transform: translate(-50%, -50%);
-    opacity: 0;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    overflow: hidden;
     visibility: hidden;
-    box-sizing: border-box;
-    max-width: 1180px;
-    padding: 48px 32px;
+    opacity: 0;
     z-index: 300;
-    background-color: #fff;
-    border: 2px solid var(--color-black);
-    border-radius: 3px;
-    overflow-y: auto;
-}
-
-.modal__close{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.modal__close:before{
-    content: '';
-    position: absolute;
-    top: 10px;
-    transform: rotate(-45deg);
-    width: 20px;
-    height: 2px;
-    background-color: var(--color-black);
-}
-
-.modal__close:after{
-    content: '';
-    position: absolute;
-    top: 10px;
-    transform: rotate(45deg);
-    width: 20px;
-    height: 2px;
-    background-color: var(--color-black);
-}
-
-.modal__close:hover:before,
-.modal__close:hover:after{
-    background-color: var(--color-black);
 }
 
 @keyframes fadeIn {
@@ -97,4 +65,58 @@
     animation-name: fadeOut;
     opacity: 0;
     visibility: hidden;
+}
+
+.modal__close {
+    transition: .2s;
+    padding: 0;
+}
+
+.modal__close:hover {
+    opacity: 0.4;
+}
+
+.modal__closeIcon{
+    width: 24px;
+    height: 24px;
+    stroke: var(--color-black)
+}
+
+.modal__header {
+    position: sticky;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    top: 0;
+    margin-bottom: 48px;
+    padding: 32px 32px 0 95px;
+    background-color: var(--color-white);
+    transition: .3s;
+}
+
+.modal__title {
+    font-size: 72px;
+    transition: .3s;
+}
+
+.modal__header_fixed {
+    margin-bottom: 0;
+    padding-bottom: 32px;
+}
+
+.modal__header_fixed .modal__title {
+    font-size: 24px;
+}
+
+.modal__content {
+    padding: 0 95px 120px;
+    overflow-y: auto;
+}
+
+.modal__content::-webkit-scrollbar {
+    width: 0;
+}
+
+.modal__content * {
+    line-height: 1.8;
 }
