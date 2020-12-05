@@ -24,7 +24,7 @@ export default class Modal extends Component {
     }
 
     render() {
-        const { toggleModal, showModal, title, content } = this.props
+        const { toggleModal, showModal=false, title, content } = this.props
         const { headerSticky } = this.state
 
         return (

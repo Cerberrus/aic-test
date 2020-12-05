@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Helmet from "react-helmet"
+import { motion } from 'framer-motion'
 
 import Header    from '~user/components/header/Header'
 import Footer    from '~user/components/footer/Footer'
@@ -12,20 +13,24 @@ import Geography from  './components/geography/Geography'
 export default class Home extends Component {
     render() {
         return (
-            <div className="page__body">
+            <>
                 <Helmet>
                     <title>главная</title>
                     <meta name="description" content="Home page" />
                 </Helmet>
-                <Header />
-                <main>
+
+                <motion.main
+                    initial={{ opacity: 0, x: '-10vw'}}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{opacity: 0, x: '-10vw' }}
+                    transition={{delay: 0.5}}
+                >
                     <Slider />
                     <Vacancy />
                     <Gallery />
                     <Geography/>
-                </main>
-                <Footer />
-            </div>
+                </motion.main>
+            </>
         )
     }
 }

@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import Helmet from "react-helmet"
 import NumberFormat from 'react-number-format'
 import axios from "axios"
+import { motion } from "framer-motion"
 
 import Header from "~user/components/header/Header"
 import Footer from "~user/components/footer/Footer"
@@ -368,13 +369,15 @@ export default class Form extends Component {
                     <meta name="description" content="Form page" />
                 </Helmet>
 
-                <div className="page__body">
-                    <Header theme={'gray'}/>
-                    <main className="requestPage container">
-                        {success ? <Success /> : Form}
-                    </main>
-                    <Footer />
-                </div>
+                <motion.main
+                    initial={{ opacity: 0, x: '10vw' }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{  opacity: 0, x: '10vw' }}
+                    transition={{delay: 0.5}}
+                    className="requestPage container"
+                >
+                    {success ? <Success /> : Form}
+                </motion.main>
             </>
         )
     }
