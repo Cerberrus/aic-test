@@ -168,3 +168,26 @@ svg {
     animation: phAnimation 0.8s linear infinite;
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 54%) 50% 50%;
 }
+
+@media (max-width: 1200px) {
+    :root {
+        --container-width: 100%;
+        --header-height:   104px;
+    }
+
+    .container {
+        padding-left:  40px !important;
+        padding-right: 40px !important;
+    }
+}
+
+@media (max-width:  768px) {
+    :root {
+        --header-height:   96px;
+    }
+
+    .container {
+        padding-left:  16px !important;
+        padding-right: 16px !important;
+    }
+}

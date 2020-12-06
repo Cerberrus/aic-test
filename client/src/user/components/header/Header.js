@@ -1,34 +1,52 @@
-import React from "react"
+import React, { Component } from "react"
 import { Link } from "react-router-dom"
 
-import Logo from "~user/components/logo/Logo"
-
-// Import styles
+// Import static files
 import './Header.css'
 import iconCross from '~user/static/icons/cross.svg'
+import iconPhone from '~user/static/icons/phone.svg'
+import Logo      from '~user/components/logo/Logo'
 
-const Header = ({ theme='white' }) => {
+export default class Header extends Component {
+    state = {
+        linkSticky: false
+    }
 
-    const whiteTheme = (
-        <div>
-            <a href="tel:79264331416" title="Позвонить">+7 (926) 433-14-16</a>
-            <Link to="/form" className="header__link button button_yellow">заполнить анкету</Link>
-        </div>
-    )
+    componentDidMount() {
+        window.scrollTo(0, 0)
+        window.addEventListener('scroll', this.onScroll)
+    }
 
-    const grayTheme  = (
-        <Link to='/'>
-            <svg className="header__iconCross"><use xlinkHref={iconCross}/></svg>
-        </Link>
-    )
+    onScroll = () => {
+        const linkSticky = window.scrollY > 100
+        this.setState({linkSticky})
+    }
 
-    return (
-        <header className={theme === 'gray' ? 'header header_theme_gray container' : 'header container'} >
-            <Logo />
-            {theme === 'gray' ? grayTheme : whiteTheme}
-        </header>
-    )
+    render() {
+        const { theme='white' } = this.props
+        const { linkSticky } = this.state
+
+        const whiteTheme = (
+            <div>
+                <a href="tel:79264331416" title="Позвонить">
+                    <span className="header__phone">+7 (926) 433-14-16</span>
+                    <svg  className="header__iconPhone"><use xlinkHref={iconPhone}/></svg>
+                </a>
+                <Link to="/form" className={linkSticky ? "header__link header__link_fixed button button_yellow" : "header__link button button_yellow"}>заполнить анкету</Link>
+            </div>
+        )
+
+        const grayTheme  = (
+            <Link to='/'>
+                <svg className="header__iconCross"><use xlinkHref={iconCross}/></svg>
+            </Link>
+        )
+
+        return (
+            <header className={theme === 'gray' ? 'header header_theme_gray container' : 'header container'} >
+                <Logo />
+                {theme === 'gray' ? grayTheme : whiteTheme}
+            </header>
+        )
+    }
 }
-
-export default Header
-

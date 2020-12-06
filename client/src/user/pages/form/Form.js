@@ -4,8 +4,6 @@ import NumberFormat from 'react-number-format'
 import axios from "axios"
 import { motion } from "framer-motion"
 
-import Header from "~user/components/header/Header"
-import Footer from "~user/components/footer/Footer"
 import Success from "./components/success/Success"
 import ReCAPTCHA from "react-google-recaptcha"
 
@@ -13,7 +11,6 @@ import ReCAPTCHA from "react-google-recaptcha"
 import './Form.css'
 import iconCheck from '~user/static/icons/check.svg'
 import iconFile from '~user/static/icons/clip.svg'
-
 
 export default class Form extends Component {
     state = {
@@ -35,6 +32,7 @@ export default class Form extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0)
         this.getVacancy()
     }
 
@@ -370,10 +368,10 @@ export default class Form extends Component {
                 </Helmet>
 
                 <motion.main
-                    initial={{ opacity: 0, x: '10vw' }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{  opacity: 0, x: '10vw' }}
-                    transition={{delay: 0.5}}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{  opacity: 0 }}
+                    transition={{delay: 0.2}}
                     className="requestPage container"
                 >
                     {success ? <Success /> : Form}

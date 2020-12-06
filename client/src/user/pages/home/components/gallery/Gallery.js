@@ -27,19 +27,14 @@ export default class Gallery extends Component {
         }
     }
 
-
     continueLoad = () => {
         const length = this.state.length + 4
-
         this.setState({length})
     }
 
     render() {
         let {images, length} = this.state
-
         const showList = images.slice(0, length)
-
-        console.log(showList);
 
         return (
             <section className="gallery container">
@@ -54,6 +49,6 @@ export default class Gallery extends Component {
                 </ul>
                 <button className="gallery__button button_gray" onClick={this.continueLoad}>показать ещё</button>
             </section>
-            )
+        )
     }
 }

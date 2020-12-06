@@ -10,17 +10,8 @@ export default class Modal extends Component {
     }
 
     onScroll = (e) => {
-        const scrollTop = e.target.scrollTop
-
-        if (scrollTop > 90) {
-            this.setState({
-                headerSticky: true
-            })
-        } else if (scrollTop < 35) {
-            this.setState({
-                headerSticky: false
-            })
-        }
+        const headerSticky = e.target.scrollTop > 10
+        this.setState({headerSticky})
     }
 
     render() {
@@ -44,6 +35,6 @@ export default class Modal extends Component {
                     onClick={toggleModal}
                 />
             </>
-        );
+        )
     }
 }

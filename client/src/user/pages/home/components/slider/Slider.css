@@ -1,4 +1,5 @@
 .hero {
+    position: relative;
     display: flex;
     justify-content: space-between;
     background-color: var(--color-gray);
@@ -12,7 +13,7 @@
 }
 
 .sliderText {
-    width: 40%;
+    width: 45%;
     padding-top: 48px;
 }
 
@@ -70,4 +71,100 @@
     height: 71%;
     display: flex;
     margin-top: 17%;
+}
+
+@media (max-width: 1048px) {
+    .sliderText {
+        width: 40%;
+        padding-top: 100px;
+    }
+
+    .sliderText__slide {
+        font-size: 58px;
+    }
+
+    .sliderPhoto {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 55%;
+        max-width: 540px;
+    }
+
+    .sliderPhoto__slide {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        flex-direction: column;
+        height: calc(100vh - var(--header-height));
+    }
+
+    .hero__slider {
+        min-height: 0;
+    }
+
+    .sliderText {
+        padding-top: 28px;
+        width: 100%;
+        height: 30%;
+        min-height: 0;
+    }
+
+    .sliderText__slide {
+        font-size: 48px;
+    }
+
+    .sliderText__buttonGroup {
+        display: none;
+    }
+
+    .sliderPhoto {
+        position: relative;
+        right: 0;
+        left: 0;
+        height: 70%;
+        margin-left: calc((22% + 16px) * -1);
+        width: calc(144% + 32px);
+        max-width: none;
+    }
+
+    .sliderPhoto__wrapper {
+        margin-top: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .sliderPhoto__slide {
+        display: flex;
+        margin-top: 0;
+        height: 100%;
+        border-radius: 50% 50% 0 0;
+        overflow: hidden;
+        background-color: var(--color-yellow);
+    }
+}
+
+@media screen and (min-width: 355px) and (max-width: 374px) {
+    .sliderText__slide {
+        font-size: 48px;
+    }
+
+    .sliderText {
+        height: 30%;
+    }
+
+    .sliderPhoto {
+        height: 68%;
+    }
+}
+
+@media (max-width: 355px) {
+    .sliderText__slide {
+        font-size: 38px;
+    }
 }
