@@ -7,7 +7,7 @@ router.get(
 	controller.toGetPublicInformationList);
 router.get(
 	"/api/setting",
-	/*authCheck.toCheck,*/
+	authCheck.toCheck,
 	controller.toGetSettingList);
 router.post(
 	"/api/setting",
