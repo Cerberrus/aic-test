@@ -1,5 +1,6 @@
 import React, {Component} from "react"
 import { Redirect } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import axios from "axios"
 
 import SignForm from "./components/SignForm/SignForm.js"
@@ -10,19 +11,19 @@ export default class Sign extends Component{
     }
 
     toSignIn =(username, password)=> {
+        const cookies = new Cookies();
         axios({
             method: 'post',
-            url: 'http://192.168.0.200:3000/api/signin',
+            url: 'http://localhost:3000/api/signin',
+            withCredentials: true,
             data:{username, password}
         })
             .then((response)=>{
-                console.log(response)
                 this.setState({
                     redirect: '/admin'
                 })
             })
             .catch((error)=>{
-                console.log(error.response)
             })
     }
 

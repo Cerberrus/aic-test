@@ -1,0 +1,41 @@
+.setting {
+    margin-left: 35px;
+    width: 540px;
+}
+
+.setting__group + .setting__group {
+    margin-top: 32px;
+}
+
+.input__name::placeholder {
+    color: var(--color-black);
+}
+
+.input_phone {
+    width: 255px;
+}
+
+.setting__button {
+    margin-top: 48px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.input__label {
+    display: block;
+    padding: 12px 0 11px 21px;
+    width: 540px;
+    border-radius: 8px;
+    background-color: var(--color-darkGray);
+    color: var(--color-gray);
+}
+
+.input__label:hover {
+    cursor: pointer;
+}
+
+.form__img {
+    margin-right: 17px;
+}

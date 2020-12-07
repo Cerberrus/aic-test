@@ -1,0 +1,38 @@
+.navigation__item {
+    list-style: none;
+}
+
+.navigation__link {
+    display: block;
+
+    width: 250px;
+
+    border-bottom: 1px solid var(--color-gray);
+
+    font-family: var(--font-raleway);
+    font-weight: 500;
+    font-size: 18px;
+
+    text-decoration: none;
+
+    padding: 12px 0 12px 16px;
+
+    margin-bottom: 16px;
+
+    color: var(--color-gray);
+
+    transition: border .2s linear,
+    color .2s linear;
+}
+
+.navigation__link:hover {
+    color: var(--color-black);
+
+    border-color: var(--color-yellow);
+}
+
+.active {
+    color: var(--color-black);
+
+    border-color: var(--color-yellow);
+}
