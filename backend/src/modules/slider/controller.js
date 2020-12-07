@@ -1,60 +1,48 @@
-const manageSliderData = require("./model/ManageSliderData");
-const workers = require("../../lib/workers/Workers");
-const SliderImagePath = require("./model/SliderImagePath");
-const jobSliderDataCheckFields = require("./model/SliderDataCheckFieldsExist");
+const sliderDataBase = require("./model/SliderDataBase");
+const sliderCheck = require("./model/SliderCheck");
+const workers = require("../../lib/Workers");
 
-const toGetSliderDataList = async (req, res) => {
+const toGetSliderDataList =(req, res) => {
   try {
-    const data = await manageSliderData.getSliderDataList();
-    const result = await SliderImagePath(data);
-    res
-     .status(200)
-     .json(result);
+    sliderDataBase.getSliderDataList()
+        .then(async sliderList => {
+          res.status(200).send(await sliderCheck.checkFileExist(sliderList))
+        })
   } catch (e) {
-    res
-     .status(404)
-     .send();
+    res.status(404).send();
   }
 };
-const toPostSliderData = async (req, res) => {
+const toPostSliderData = (req, res) => {
   try {
     const imagePath = process.env.FILES_STATIC_IMAGES_SLIDER_FOLDER;
-    const data = await manageSliderData.postSliderData({
-      title: req.query.title,
-      imageDescription: req.query.imageDescription,
-      imagePath: imagePath,
-    });
-    const result = await SliderImagePath(data.sliderDataList);
-    workers.postWorkerMessage("ImageConverterWorker", {
-      method: "convert",
-      data: { pathImage: req.files.sliderImage[0].path, toFolder: imagePath },
-    });
-    res
-     .status(200)
-     .json(result);
+    sliderDataBase.postSliderData(req.query).then((id) => {
+      workers.postWorkerMessage("ImageConverterWorker", {
+        method: "convert",
+        data: {
+          pathImage: req.files.slider[0].path,
+          toFolder: imagePath,
+          id,
+          table: 'slider_file'},
+      });
+      res.status(200).send('Успешная отправка');
+    })
   } catch (e) {
-    res
-     .status(404)
-     .send();
+    console.log(e)
+    res.status(404).send();
   }
 };
-const toDeleteSliderData = async (req, res) => {
+const toDeleteSliderData = (req, res) => {
   try {
-    const title = await manageSliderData.deleteSliderData(req.params);
-    await workers.postWorkerMessage("ImageConverterWorker", {
-      method: "delete",
-      data: {
-        imagePath: process.env.FILES_STATIC_IMAGES_SLIDER_FOLDER,
-        imageName: title,
-      },
-    });
-    res
-     .status(200)
-     .json();
+    sliderDataBase.deleteSliderData(req.params)
+        .then(slider => {
+          workers.postWorkerMessage("ImageConverterWorker", {
+            method: "delete",
+            data: {imagePath: slider.path},
+          })
+          res.status(200).json();
+        })
   } catch (e) {
-    res
-     .status(404)
-     .send();
+    res.status(404).send();
   }
 };
 

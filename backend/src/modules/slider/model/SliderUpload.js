@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+
 const translit = require("../../../lib/Translit");
 
 const fileFilter = (req, file, cb) => {
@@ -25,7 +26,15 @@ const storage = multer.diskStorage({
 });
 
 const uploader = multer({ storage, fileFilter }).fields([
-  { name: "sliderImage", maxCount: 1 },
+  { name: "slider", maxCount: 1 },
 ]);
 
-module.exports = uploader;
+module.exports = async (req, res, next) => {
+  await uploader(req, res, (err) => {
+    if (err) {
+      res.status(501).send("Ошибка загрузки файла")
+    } else {
+      next()
+    }
+  })
+};
