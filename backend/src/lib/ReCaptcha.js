@@ -2,7 +2,6 @@ const axios = require("axios");
 
 const verify = async (req, res, next) => {
   try {
-    console.log(req.query)
     if (
       "g-recaptcha-response" in req.query ||
       "g-recaptcha-response" in req.body

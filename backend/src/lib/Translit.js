@@ -72,12 +72,12 @@ translit = (words) => {
   try {
     return words
       .split("")
-      .map(function (char) {
-        return wordList[char] || char;
-      })
+      .map(char => wordList[char] || char)
       .join("")
       .toLowerCase();
-  } catch (e) {}
+  } catch (e) {
+    return 'error'
+  }
 };
 
 module.exports = translit;
