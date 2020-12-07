@@ -1,46 +1,36 @@
-const connectionDataBase = require("../../../lib/database/DataBase");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
+const userDataBase = require('./UserDataBase')
 
-const signIn = async ({ body, headers, connection }) => {
-  try {
-    const { username, password } = body;
-    const forwarded = headers["x-forwarded-for"];
-    const ip = forwarded ? forwarded.split(/, /)[0] : connection.remoteAddress;
-    const [user] = await connectionDataBase.execute(
-      "select * from admin where login = ?",
-      [username]
-    );
-
-    if (await argon.verify(user[0].password, password)) {
-      return createJWT({
-        id: user[0].id,
-        name: user[0].name,
-        ip,
-        type: "admin",
-      });
-    } else return false;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
+const signIn = async ({body, headers, connection}) => {
+    try {
+        const {username, password} = body;
+        const forwarded = headers["x-forwarded-for"];
+        const ip = forwarded ? forwarded.split(/, /)[0] : connection.remoteAddress;
+        const user = await userDataBase.get(username)
+        if (!!user) {
+            return  await argon.verify(user.password, password)
+                ?   await createJWT({id: user.id, name: user.name, ip, type: "admin",})
+                :   false
+        }
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
 };
 
-const createJWT = ({ id, name, ip, type }) => {
-  return jwt.sign({ id, name, ip, type }, process.env.JWT_SECURY_KEY, {
-    expiresIn: process.env.JWT_TIMEOUT,
-  });
+const createJWT = ({id, name, ip, type}) => {
+    return jwt.sign({id, name, ip, type}, process.env.JWT_SECURY_KEY, {
+        expiresIn: process.env.JWT_TIMEOUT,
+    });
 };
 
-const postAdmin = async (name, login, password) => {
-  const passwordHash = await argon.hash(password);
-  await connection.execute(
-    "insert into Admin(name, login, password) values(?,?,?)",
-    [name, login, passwordHash]
-  );
+const postAdmin = async (name, username, password) => {
+    const passwordHash = await argon.hash(password);
+    await userDataBase.post(name,username, passwordHash)
 };
 
 module.exports = {
-  postAdmin,
-  signIn,
+    postAdmin,
+    signIn,
 };
