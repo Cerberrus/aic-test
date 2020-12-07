@@ -4,12 +4,10 @@ const workers = require("./lib/Workers");
 app.listen(process.env.SERVER_PORT, async () => {
   await workers.initWorkers([
     {
-      path:
-        "C:/GitHub/aic-test/backend/src/modules/image/ImageConverterWorker.js",
+      path:process.cwd() + process.env.WORKER_MANAGE_FILE,
       count: 1,
     },
   ]);
-  console.log(process.env.FILES_STATIC_FOLDER)
   const date = new Date();
   console.log(
     `Server start | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  ${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`

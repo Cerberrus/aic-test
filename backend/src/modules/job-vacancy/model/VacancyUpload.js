@@ -15,7 +15,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, process.env.FILES_TEMP_FOLDER);
+    cb(null, process.cwd()+process.env.FILES_TEMP_FOLDER);
   },
   filename: async (req, file, cb) => {
     const date = new Date();

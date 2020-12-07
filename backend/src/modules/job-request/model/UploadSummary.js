@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, process.env.FILES_PRIVATE_FOLDER + "/summary");
+        cb(null, process.cwd()+process.env.FILES_PRIVATE_FOLDER + "/summary");
     },
     filename: async (req, file, cb) => {
         const name = await translit(req.query.name);

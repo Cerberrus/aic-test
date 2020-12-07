@@ -14,7 +14,7 @@ const toGetSliderDataList =(req, res) => {
 };
 const toPostSliderData = (req, res) => {
   try {
-    const imagePath = process.env.FILES_STATIC_IMAGES_SLIDER_FOLDER;
+    const imagePath = (process.cwd()+process.env.FILES_STATIC_IMAGES_SLIDER_FOLDER);
     sliderDataBase.postSliderData(req.query).then((id) => {
       workers.postWorkerMessage("ImageConverterWorker", {
         method: "convert",

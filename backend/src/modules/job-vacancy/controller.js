@@ -23,7 +23,7 @@ const toGetJobVacancy = async (req, res) => {
 };
 const toPostJobVacancy = (req, res) => {
     try {
-        const imagePath = process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
+        const imagePath = process.cwd()+process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
         vacancyDataBase.postJobVacancy(req.query).then(id => {
             workers.postWorkerMessage("ImageConverterWorker", {
                 method: "convert",
