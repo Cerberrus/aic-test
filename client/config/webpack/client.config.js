@@ -46,6 +46,7 @@ module.exports = (target) => ({
     },
     devServer: {
         port: 4200,
+        host: '192.168.0.201',
         historyApiFallback: true,
         hot: isDev,
         inline: isDev,

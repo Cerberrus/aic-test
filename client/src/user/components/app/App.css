@@ -170,9 +170,19 @@ svg {
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 54%) 50% 50%;
 }
 
+@keyframes phAnimation {
+    0% {
+        transform: translate3d(-30%, 0, 0);
+    }
+    100% {
+        transform: translate3d(30%, 0, 0);
+    }
+}
+
+/* Media queries */
 @media (max-width: 1200px) {
     :root {
-        --container-width: 100%;
+        --container-width: calc(100% - 40px * 2);
         --header-height:   104px;
     }
 
@@ -182,9 +192,13 @@ svg {
     }
 }
 
-@media (max-width:  768px) {
+@media (max-width:  767px) {
     :root {
         --header-height:   95px;
+    }
+
+    h2 {
+        font-size: 24px;
     }
 
     .container {
