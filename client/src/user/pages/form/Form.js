@@ -2,9 +2,8 @@ import React, {Component} from "react"
 import Helmet from "react-helmet"
 import NumberFormat from 'react-number-format'
 import axios from "axios"
+import { motion } from "framer-motion"
 
-import Header from "~user/components/header/Header"
-import Footer from "~user/components/footer/Footer"
 import Success from "./components/success/Success"
 import ReCAPTCHA from "react-google-recaptcha"
 
@@ -12,7 +11,6 @@ import ReCAPTCHA from "react-google-recaptcha"
 import './Form.css'
 import iconCheck from '~user/static/icons/check.svg'
 import iconFile from '~user/static/icons/clip.svg'
-
 
 export default class Form extends Component {
     state = {
@@ -34,13 +32,14 @@ export default class Form extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0)
         this.getVacancy()
     }
 
     getVacancy = async () => {
         const response = await axios({
             method: 'get',
-            url: `http://192.168.0.200:3000/api/job-vacancy`
+            url: `http://192.168.0.200:3000/api/vacancy`
         })
 
         this.setState({
@@ -131,13 +130,12 @@ export default class Form extends Component {
         })
 
         if (!error && agreement) {
-            console.log(file)
             axios({
                 method: 'post',
                 headers: {
                     'Content-Type': file ? 'multipart/form-data' : 'application/json'
                 },
-                url: `http://192.168.0.200:3000/api/job-request?`+
+                url: `http://192.168.0.200:3000/api/request?`+
                      `g-recaptcha-response=${captcha}&`+
                      `jobVacancyId=${vacancy}&`+
                      `name=${fullName}&`+
@@ -200,7 +198,8 @@ export default class Form extends Component {
                                 <option value={-1} defaultValue>Выберите вакансию</option>
                                 {vacancyList.map((vacancy, index) => (
                                     <option key={index} value={vacancy.id}>
-                                        {vacancy.name}</option>
+                                        {vacancy.title}
+                                    </option>
                                 ))}
                             </select>
                         </label>
@@ -365,17 +364,19 @@ export default class Form extends Component {
         return (
             <>
                 <Helmet>
-                    <title>Анкета</title>
+                    <title>анкета</title>
                     <meta name="description" content="Form page" />
                 </Helmet>
 
-                <div className="page__body">
-                    <Header />
-                    <main className="requestPage container">
-                        {success ? <Success /> : Form}
-                    </main>
-                    <Footer />
-                </div>
+                <motion.main
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{  opacity: 0 }}
+                    transition={{delay: 0.2}}
+                    className="requestPage container"
+                >
+                    {success ? <Success /> : Form}
+                </motion.main>
             </>
         )
     }

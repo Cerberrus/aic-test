@@ -19,23 +19,21 @@ export default class Gallery extends Component {
             method: 'get',
             url: 'http://192.168.0.200:3000/api/instagram/image',
         })
-        console.log(response);
 
-        this.setState({
-            images: response.data
-        })
+        if (response.data) {
+            this.setState({
+                images: response.data
+            })
+        }
     }
-
 
     continueLoad = () => {
         const length = this.state.length + 4
-
         this.setState({length})
     }
 
     render() {
         let {images, length} = this.state
-
         const showList = images.slice(0, length)
 
         return (
@@ -51,6 +49,6 @@ export default class Gallery extends Component {
                 </ul>
                 <button className="gallery__button button_gray" onClick={this.continueLoad}>показать ещё</button>
             </section>
-            )
+        )
     }
 }

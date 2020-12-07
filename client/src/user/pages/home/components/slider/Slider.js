@@ -17,21 +17,23 @@ import slideTwo from '~user/static/images/temporary/slider-2.jpg'
 
 export default class Slider extends Component {
     state = {
-        firstSwiper: null,
-        secondSwiper: null
+        firstSwiper:  null,
+        secondSwiper: null,
+        swiperText: [],
+        swiperPhoto: []
     }
 
-     render() {
-         const setFirstSwiper = (settings) => {
-             this.setState({
-                 firstSwiper: settings
-             });
-         }
-         const setSecondSwiper = (settings) => {
-             this.setState({
-                 secondSwiper: settings
-             });
-         }
+    setFirstSwiper = (firstSwiper) => {
+        this.setState({firstSwiper})
+    }
+
+    setSecondSwiper = (secondSwiper) => {
+        this.setState({secondSwiper})
+    }
+
+    render() {
+
+
 
         return (
             <div className="hero container">
@@ -40,7 +42,8 @@ export default class Slider extends Component {
                         prevEl: '.sliderText__button_prev',
                         nextEl: '.sliderText__button_next'
                     }}
-                    onSwiper={setFirstSwiper} controller={{ control: this.state.secondSwiper }}
+                    onSwiper={this.setFirstSwiper}
+                    controller={{ control: this.state.secondSwiper }}
                     className="hero__slider sliderText"
                 >
                     <SwiperSlide className="sliderText__slide">У тебя к этому<br/>талант</SwiperSlide>
@@ -61,7 +64,8 @@ export default class Slider extends Component {
                         prevEl: '.sliderText__button_prev',
                         nextEl: '.sliderText__button_next'
                     }}
-                    onSwiper={setSecondSwiper} controller={{ control: this.state.firstSwiper }}
+                    onSwiper={this.setSecondSwiper}
+                    controller={{ control: this.state.firstSwiper }}
                     effect="fade"
                     className="hero__slider sliderPhoto"
                 >

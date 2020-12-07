@@ -126,6 +126,6 @@ export default class Geography extends Component {
                     </Map>
                 </YMaps>
             </section>
-        );
+        )
     }
 }

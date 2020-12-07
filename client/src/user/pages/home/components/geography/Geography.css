@@ -20,7 +20,7 @@
     align-items: flex-start;
     bottom: 24px;
     left: 24px;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .geography__button {

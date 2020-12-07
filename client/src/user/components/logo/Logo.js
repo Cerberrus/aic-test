@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import './Logo.css'
 
 //Temporary
-import logo from '~user/static/images/temporary/logo.jpg'
+import logo from '~user/static/images/temporary/logo.png'
 
 const Logo = () => {
     return (
