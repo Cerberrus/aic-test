@@ -49,6 +49,7 @@ body {
     justify-content: space-between;
     min-height: 130vh;
     color: var(--color-black);
+    overflow-x: hidden;
 }
 
 main {
@@ -183,7 +184,7 @@ svg {
 
 @media (max-width:  768px) {
     :root {
-        --header-height:   96px;
+        --header-height:   95px;
     }
 
     .container {

@@ -75,12 +75,11 @@
 
 @media (max-width: 1048px) {
     .sliderText {
-        width: 40%;
         padding-top: 100px;
     }
 
     .sliderText__slide {
-        font-size: 58px;
+        font-size: 54px;
     }
 
     .sliderPhoto {
@@ -101,7 +100,7 @@
 @media (max-width: 767px) {
     .hero {
         flex-direction: column;
-        height: calc(100vh - var(--header-height));
+        min-height: calc(100vh - var(--header-height));
     }
 
     .hero__slider {
@@ -110,13 +109,13 @@
 
     .sliderText {
         padding-top: 28px;
+        padding-bottom: 24px;
         width: 100%;
-        height: 30%;
         min-height: 0;
     }
 
     .sliderText__slide {
-        font-size: 48px;
+        font-size: 46px;
     }
 
     .sliderText__buttonGroup {
@@ -127,7 +126,6 @@
         position: relative;
         right: 0;
         left: 0;
-        height: 70%;
         margin-left: calc((22% + 16px) * -1);
         width: calc(144% + 32px);
         max-width: none;
@@ -149,22 +147,28 @@
     }
 }
 
-@media screen and (min-width: 355px) and (max-width: 374px) {
-    .sliderText__slide {
-        font-size: 48px;
-    }
-
-    .sliderText {
-        height: 30%;
-    }
-
+@media (min-width: 560px) and (max-width: 767px) {
     .sliderPhoto {
-        height: 68%;
+        min-height: 480px;
+    }
+
+    .sliderText__slide {
+        font-size: 72px;
+    }
+}
+
+@media (min-width: 355px)  and (max-width: 767px) {
+    .sliderPhoto {
+        height: 60vh;
     }
 }
 
 @media (max-width: 355px) {
     .sliderText__slide {
         font-size: 38px;
+    }
+
+    .sliderPhoto {
+        height: 55vh;
     }
 }
