@@ -1,40 +1,50 @@
 const router = require("express").Router();
 const controller = require("./controller");
 const authCheck = require("../../lib/AuthCheck");
-const checkField = require("./model/RequestCheckFieldsExist");
-const statusRouter = require("./status/router");
+const checkField = require("./model/RequestCheck");
 const ReCaptcha = require("../../lib/ReCaptcha");
 const uploader = require("./model/UploadSummary");
 
 router.get(
-  "/api/job-request",
+  "/api/request",
   authCheck.toCheck,
   controller.toGetJobRequestList
 );
-router.get(
-  "/api/job-request/:id",
-  authCheck.toCheck,
-  controller.toGetJobRequest
-);
 router.post(
-  "/api/job-request",
-  ReCaptcha.verify,
-  checkField.checkPost,
+  "/api/request",
+  /*ReCaptcha.verify,*/
+  checkField.checkFieldsPost,
   uploader,
   controller.toPostJobRequest
 );
 router.put(
-  "/api/job-request/:id",
+  "/api/request/:id",
   authCheck.toCheck,
   checkField.checkFieldsPost,
   controller.toUpdateJobRequest
 );
 router.delete(
-  "/api/job-request/:id",
+  "/api/request/:id",
   authCheck.toCheck,
   controller.toDeleteJobRequest
 );
 
-router.use(statusRouter);
+router.get(
+    "/api/job-request-status",
+    controller.toGetJobRequestStatusList
+);
+router.post(
+    "/api/job-request-status",
+    controller.toPostJobRequestStatus
+);
+router.put(
+    "/api/job-request-status/:id",
+    controller.toUpdateJobRequestStatus
+);
+router.delete(
+    "/api/job-request-status/:id",
+    controller.toDeleteJobRequestStatus
+);
+
 
 module.exports = router;
