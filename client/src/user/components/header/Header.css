@@ -4,6 +4,15 @@
     align-items: center;
     padding-top: 32px;
     padding-bottom: 34px;
+    transition: .3s;
+}
+
+.header_theme_gray {
+    background-color: var(--color-gray);
+}
+
+.header__iconPhone {
+    display: none;
 }
 
 .header__link {
@@ -11,4 +20,43 @@
     padding: 10px 14px;
     border: 2px solid var(--color-yellow);
     transition: .2s;
+}
+
+.header__iconCross {
+    width: 24px;
+    height: 24px;
+    stroke: var(--color-black);
+    transition: .2s;
+}
+
+.header__iconCross:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .header__phone {
+        display: none;
+    }
+
+    .header__iconPhone {
+        display: block;
+        width: 16px;
+        height: 24px;
+    }
+
+    .header__link {
+        position: fixed;
+        top: -150px;
+        left: 0;
+        right: 0;
+        margin: 0 16px;
+        z-index: 200;
+        opacity: 0;
+        transition: 0.5s ease-in-out;
+    }
+
+    .header__link_fixed {
+        top: 18px;
+        opacity: 1;
+    }
 }

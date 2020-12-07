@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import { Redirect } from "react-router-dom";
-import Cookies from 'universal-cookie';
 import axios from "axios"
 
 import SignForm from "./components/SignForm/SignForm.js"
@@ -11,7 +10,6 @@ export default class Sign extends Component{
     }
 
     toSignIn =(username, password)=> {
-        const cookies = new Cookies();
         axios({
             method: 'post',
             url: 'http://localhost:3000/api/signin',

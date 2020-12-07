@@ -109,7 +109,6 @@ export default class Geography extends Component {
                             features={features}
                         />
 
-
                         <div className="geography__buttonGroup">
                             {filterValues.map((item, index)  => (
                                 <button
@@ -126,6 +125,6 @@ export default class Geography extends Component {
                     </Map>
                 </YMaps>
             </section>
-        );
+        )
     }
 }

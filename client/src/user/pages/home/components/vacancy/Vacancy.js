@@ -22,11 +22,35 @@ import slide7 from '~user/static/images/temporary/vacancy-7.png'
 
 export default class Vacancy extends Component {
     render() {
+        const swiperBreakpoints = {
+            // when window width is >= 280px
+            280: {
+                slidesPerView: 1,
+                centeredSlides: true,
+                slideToClickedSlide: true,
+                initialSlide: 1,
+                spaceBetween: 20
+            },
+            // when window width is >= 768px
+            768: {
+                slidesPerView: 'auto',
+                centeredSlides: false,
+                slideToClickedSlide: false,
+                initialSlide: 0,
+                spaceBetween: 30
+            },
+        }
+
+        const swiperNavigation = {
+            prevEl: '.sliderVacancy__button_prev',
+            nextEl: '.sliderVacancy__button_next'
+        }
+
         return (
             <section className="vacancy">
                 <div className="vacancy__header container">
                     <h2>вакансии в гросс маркете</h2>
-                    <div className="slider__buttonGroup">
+                    <div className="vacancy__buttonGroup slider__buttonGroup">
                         <button  className="slider__button sliderVacancy__button_prev button">
                             <svg className="slider__icon"><use xlinkHref={iconArrow}/></svg>
                         </button>
@@ -37,14 +61,9 @@ export default class Vacancy extends Component {
                 </div>
 
                 <Swiper
-                    spaceBetween={30}
-                    slidesPerView={3}
-                    simulateTouch={false}
-                    navigation={{
-                        prevEl: '.sliderVacancy__button_prev',
-                        nextEl: '.sliderVacancy__button_next'
-                    }}
-                    className="vacancy__slider vacancySlider container"
+                    breakpoints={swiperBreakpoints}
+                    navigation={swiperNavigation}
+                    className="vacancy__slider vacancySlider"
                 >
                     <SwiperSlide className="vacancySlider__slide">
                         <div className="vacancySlider__slideFront">
