@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const controller = require("./controller");
 const authCheck = require("../../lib/AuthCheck");
-const typeRouter = require("./type/router");
 
 router.get(
 	"/api/coordinate",
@@ -18,6 +17,17 @@ router.delete(
   controller.toDeleteCoordinate
 );
 
-router.use(typeRouter);
+router.get(
+	"/api/coordinate-type",
+	controller.toPostCoordinateType
+);
+router.post(
+	"/api/coordinate-type",
+	controller.toPostCoordinateType
+);
+router.delete(
+	"/api/coordinate-type/:id",
+	controller.toDeleteCoordinateType
+);
 
 module.exports = router;
