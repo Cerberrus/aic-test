@@ -1,37 +1,37 @@
-const Instagram = require("instagram-web-api");
+const instagram = require("instagram-web-api");
 const FileCookieStore = require("tough-cookie-filestore2");
-const setting = require("../../settings/model/ManageSettings");
+const settingDatabase = require("../../settings/model/SettingDataBase");
 
-let instance = null;
-
-class InstagramSingleton {
+class Instagram {
+  
+  static #username
+  static #password
+  static #client
+  
   constructor() {
-    if (instance) {
-      return instance;
-    }
-    setInterval(async () => await this.client.login(), 7200000);
+    setInterval(async () => await Instagram.#client.login(), 7200000);
     setInterval(async () => await this.recyclePhoto(), 3600000);
-    instance = this;
-    return instance;
   }
 
   init = async () => {
     try {
-      this.username = await setting.getSetting({ key: "instagramLogin" });
-      this.password = await setting.getSetting({ key: "instagramPassword" });
+      Instagram.#username = await settingDatabase.getSetting({ key: "instagramLogin" });
+      Instagram.#password = await settingDatabase.getSetting({ key: "instagramPassword" });
+      console.log(Instagram.#username, Instagram.#password)
       const cookieStore = await new FileCookieStore("./cookies.json");
-      this.client = await new Instagram({
-        username: this.username,
-        password: this.password,
+      Instagram.#client = await new instagram({
+        username: Instagram.#username,
+        password: Instagram.#password,
         cookieStore,
       });
-      await this.client.login({
-        username: this.username,
-        password: this.password,
+      await Instagram.#client.login({
+        username: Instagram.#username,
+        password: Instagram.#password,
       });
       await this.recyclePhoto();
     } catch (e) {
-      console.log(e);
+      console.log('Error in init instagram')
+      await this.init()
     }
   };
   recyclePhoto = async () => {
@@ -43,12 +43,12 @@ class InstagramSingleton {
         this.instagramPhotos.length
       );
     } catch (e) {
-      console.log(e);
+      console.log('Error in recycle instagram photo')
     }
   };
   getPhotosFromInstagram = async () => {
-    const { user } = await this.client.getPhotosByUsername({
-      username: "la_loqiemean" /*this.username*/,
+    const { user } = await Instagram.#client.getPhotosByUsername({
+      username: "la_loqiemean" /*Instagram.#username*/,
       first: 999999,
     });
     const result = [];
@@ -62,33 +62,33 @@ class InstagramSingleton {
   };
   updateUserInformation = async ({ username, password }) => {
     try {
-      const { authenticated } = await this.client.login({ username, password });
+      const { authenticated } = await Instagram.#client.login({ username, password });
       if (authenticated) {
-        this.username = username;
-        this.password = password;
-        await setting.postSetting({
+        Instagram.#username = username;
+        Instagram.#password = password;
+        await settingDatabase.postSetting({
           key: "instagramLogin",
-          value: this.username,
+          value: Instagram.#username,
         });
-        await setting.postSetting({
+        await settingDatabase.postSetting({
           key: "instagramPassword",
-          value: this.password,
+          value: Instagram.#password,
         });
         await this.getPhotosFromInstagram();
         console.log("Успешная авторизация");
         return "Успешно";
       } else {
-        await this.client.login({
-          username: this.username,
-          password: this.password,
+        await Instagram.#client.login({
+          username: Instagram.#username,
+          password: Instagram.#password,
         });
         console.log("Ошибка авторизации");
         return "Ошибка";
       }
     } catch (e) {
-      console.log(e);
+      console.log('Error in update user information')
     }
   };
 }
 
-module.exports = new InstagramSingleton();
+module.exports = new Instagram();
