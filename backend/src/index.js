@@ -1,11 +1,11 @@
 const app = require("./connectModules");
-const workers = require("./lib/workers/Workers");
+const workers = require("./lib/Workers");
 
 app.listen(process.env.SERVER_PORT, async () => {
   await workers.initWorkers([
     {
       path:
-        "C:/GitHub/aic-test/backend/src/lib/image/ImageConverterWorker.js",
+        "C:/GitHub/aic-test/backend/src/modules/image/ImageConverterWorker.js",
       count: 1,
     },
   ]);

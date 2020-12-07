@@ -12,13 +12,18 @@ const sliderRouter = require("./modules/slider/router");
 const instagramRouter = require("./modules/instagram/router");
 
 const instagram = require("./modules/instagram/model/Instagram");
-const authCheck = require("./lib/AuthCheck");
 instagram.init();
+const authCheck = require("./lib/AuthCheck");
 dotenv.config(); // connect .env file and use them variables
 
 const app = express();
-
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:4200',    // reqexp will match all prefixes
+    methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS",
+    credentials: true,                // required to pass
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With",
+}
+app.use(cors(corsOptions));
 app.use(bodyParser.json()); // use for get information from body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECURE_KEY)); // use for get and set information from cookie
