@@ -7,7 +7,7 @@ class SliderDataBase extends DataBase {
     async getSliderDataList() {
         try {
             const [result] = await this.connection.execute(
-                "select id, title, image_description as imageDesciption from slider"
+                "select id, title, image_description as imageDescription from slider"
             );
             await super.implementPaths(result, 'slider_file')
             return result
@@ -19,7 +19,7 @@ class SliderDataBase extends DataBase {
     async getSliderData(id) {
         try {
             const [result] = await this.connection.execute(
-                "select S.id, S.title, S.image_description  as imageDesciption, S.hash from slider as S  where S.id = ?",
+                "select S.id, S.title, S.image_description  as imageDescription, S.hash from slider as S  where S.id = ?",
                 [id]
             );
             return result

@@ -3,7 +3,7 @@ const DataBase = require('../../../lib/DataBase')
 class VacancyDataBase extends DataBase {
     async getJobVacancyList() {
         const [result] = await this.connection.execute(
-            "select id, title, image_description as imageDesciption, description from vacancy"
+            "select id, title, image_description as imageDescription, description from vacancy"
         );
         await super.implementPaths(result, 'vacancy_file')
         return result;
@@ -12,7 +12,7 @@ class VacancyDataBase extends DataBase {
     async getJobVacancy(id) {
         id = Number(id);
         const [result] = await this.connection.execute(
-            "select id, title, image_description as imageDesciption, description from vacancy  where id =?",
+            "select id, title, image_description as imageDescription, description from vacancy  where id =?",
             [id]
         );
         return result;
