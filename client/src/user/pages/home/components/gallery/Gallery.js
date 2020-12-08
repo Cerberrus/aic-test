@@ -17,7 +17,7 @@ export default class Gallery extends Component {
     async getImages() {
         const response = await axios({
             method: 'get',
-            url: 'http://192.168.0.200:3000/api/instagram/image',
+            url: 'http://xutd.tk/api/instagram/image',
         })
 
         if (response.data) {

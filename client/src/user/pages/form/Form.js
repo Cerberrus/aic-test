@@ -40,7 +40,7 @@ export default class Form extends Component {
     getVacancy = async () => {
         const response = await axios({
             method: 'get',
-            url: `http://192.168.0.200:3000/api/vacancy`
+            url: `http://xutd.tk/api/vacancy`
         })
 
         this.setState({
@@ -136,7 +136,7 @@ export default class Form extends Component {
                 headers: {
                     'Content-Type': file ? 'multipart/form-data' : 'application/json'
                 },
-                url: `http://192.168.0.200:3000/api/request?`+
+                url: `http://xutd.tk/api/request?`+
                      `g-recaptcha-response=${captcha}&`+
                      `jobVacancyId=${vacancy}&`+
                      `name=${fullName}&`+
