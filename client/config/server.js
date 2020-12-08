@@ -104,4 +104,4 @@ app.get('*', async (req, res) => {
     `))
 })
 
-app.listen(80, () => console.log('Listening on http://localhost'))
+app.listen(3001, () => console.log('Listening on http://localhost'))

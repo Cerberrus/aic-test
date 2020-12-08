@@ -4,9 +4,9 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "del /f /s /q dist && webpack --config ./config/webpack/webpack.config.js --mode production && node ./dist/server.js",
-    "start": "node ./dist/server.js",
-    "dev": "webpack-dev-server --config ./config/webpack/webpack.config.js --mode development"
+    "build": "rm -rf dist && webpack --config config/webpack/webpack.config.js --mode production && node dist/server.js",
+    "start": "node dist/server.js",
+    "dev": "webpack-dev-server --config config/webpack/webpack.config.js --mode development"
   },
   "dependencies": {
     "axios": "^0.21.0",

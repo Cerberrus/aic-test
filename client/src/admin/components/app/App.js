@@ -4,8 +4,8 @@ import Helmet   from "react-helmet"
 import loadable from "@loadable/component"
 
 //For tree shaking
-const MainPage = loadable(() => import('~admin/pages/main/main'))
-const SignPage = loadable(() => import('~admin/pages/sign/sign'))
+const MainPage = loadable(() => import('~admin/pages/main/Main'))
+const SignPage = loadable(() => import('~admin/pages/sign/Sign'))
 
 // Import static files
 import './App.css'
