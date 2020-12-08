@@ -28,7 +28,9 @@ export default class Gallery extends Component {
     }
 
     continueLoad = () => {
-        const length = this.state.length + 4
+        const count = (document.documentElement.clientWidth >= 1200) ? 4 : 3
+
+        const length = this.state.length + count
         this.setState({length})
     }
 
