@@ -39,6 +39,15 @@
     background-color: var(--color-yellow);
 }
 
+[class*="-controls__control"] > ymaps > [class*="-zoom"]:nth-child(1) {
+    right: 24px;
+    bottom: 24px;
+}
+
+[class*="ymaps-2"][class*="-copyright"] {
+    display: none;
+}
+
 /* Media queries */
 @media (max-width: 1200px) {
     .geography {
@@ -52,19 +61,19 @@
     }
 
     .geography__buttonGroup {
-        bottom: 48px;
+        bottom: 45px;
         left: 40px;
     }
 
     [class*="-controls__control"] > ymaps > [class*="-zoom"]:nth-child(1) {
         right: 40px;
-        bottom: 28px;
+        bottom: 50px;
     }
 }
 
 @media (max-width: 767px) {
     .geography__buttonGroup {
-        bottom: 31px;
+        bottom: 27px;
         left: 16px;
     }
 
@@ -81,7 +90,7 @@
 
     [class*="-controls__control"] > ymaps > [class*="-zoom"]:nth-child(1) {
         right: 16px;
-        bottom: 12px;
+        bottom: 32px;
     }
 }
 

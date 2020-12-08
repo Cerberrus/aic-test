@@ -20,8 +20,8 @@ const zoomOptions = {
     size: 'small',
     position: {
         top: 'auto',
-        right: 24,
-        bottom: 24,
+        right: 0,
+        bottom: 0,
         left: 'auto',
     }
 }
