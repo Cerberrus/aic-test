@@ -25,7 +25,7 @@ class RequestCheck extends Check {
         for (let request of requestList) {
             await super.checkFileExist(request.path)
                 .then(async paths => {
-                    if (paths.length > 0) request.path = await this.cutPath(paths, /C:\/GitHub\/aic-test\/backend\/uploads/i)
+                    if (paths.length > 0) request.path = await this.cutPath(paths, process.cwd()+ process.env.FILES_UPLOADS)
                     else delete request.path
                 })
         }

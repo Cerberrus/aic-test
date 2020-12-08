@@ -28,11 +28,11 @@ app.use(bodyParser.json()); // use for get information from body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECURE_KEY)); // use for get and set information from cookie
 
-app.use("/static", express.static("C:/GitHub/aic-test/backend/uploads/static"));
+app.use("/static", express.static(process.cwd()+process.env.FILES_STATIC_FOLDER));
 app.use(
   "/private",
   authCheck.toCheck,
-  express.static("C:/GitHub/aic-test/backend/uploads/private")
+  express.static(process.cwd() + process.env.FILES_PRIVATE_FOLDER)
 );
 
 app.use(authRouter); //

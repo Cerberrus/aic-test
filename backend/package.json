@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "init": "node src/backendInitial.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "nodemonConfig": {

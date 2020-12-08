@@ -15,7 +15,7 @@ class VacancyCheck extends CheckExist {
     for(let vacancy of vacancyList){
       if(!!vacancy.path){
         vacancy.path = await super.checkFileExist(vacancy.path)
-        vacancy.path = await this.cutPath(vacancy.path, 'C:/GitHub/aic-test/backend/uploads')
+        vacancy.path = await this.cutPath(vacancy.path, process.cwd()+ process.env.FILES_UPLOADS)
       }
      }
     return vacancyList

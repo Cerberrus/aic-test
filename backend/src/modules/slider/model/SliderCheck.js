@@ -15,7 +15,7 @@ class SliderCheck extends Check {
     for(let slider of sliderList){
       if(!!slider.path){
         slider.path = await super.checkFileExist(slider.path)
-        slider.path = await this.cutPath(slider.path,  'C:/GitHub/aic-test/backend/uploads')
+        slider.path = await this.cutPath(slider.path,  process.cwd()+ process.env.FILES_UPLOADS)
       }
       }
     return sliderList
