@@ -71,6 +71,7 @@ input[type=radio]:checked + .form__radio:before {
     display: block;
     width: 24px;
     height: 24px;
+    margin-right: 8px;
     border-radius: 8px;
     background-color: var(--color-gray);
     transition: .2s;
@@ -82,7 +83,6 @@ input[type=checkbox]:checked + .form__checkbox:before {
 }
 
 .form__file {
-
     cursor: pointer;
 }
 /* /Inputs */
@@ -93,6 +93,7 @@ input[type=checkbox]:checked + .form__checkbox:before {
 
 .requestPage__title {
     font-size: 72px;
+    line-height: 0.9;
 }
 
 .requestPage__content {
@@ -142,7 +143,7 @@ input[type=checkbox]:checked + .form__checkbox:before {
 }
 
 .requestPage__resume {
-    height: 94px;
+    height: 140px;
 }
 
 .resumeFile {
@@ -159,8 +160,11 @@ input[type=checkbox]:checked + .form__checkbox:before {
     opacity: 0.3;
 }
 
-
 .reCaptcha {
+    overflow: hidden;
+}
+
+.reCaptcha__group {
     display: flex;
 }
 
@@ -187,19 +191,73 @@ input[type=checkbox]:checked + .form__checkbox:before {
     margin-right: 12px;
 }
 
-/* Goal */
-.requestPage__goal {
-    max-width: 412px;
+.requestPage__agreementText {
+    width: 84%;
 }
 
-.goal__tile {
-    font-size: 32px;
-    margin-bottom: 27px;
+/* Media queries */
+@media (max-width: 1200px) {
+    .form__input {
+        max-width: none;
+    }
+
+    .requestPage__form {
+        grid-template-columns: 1fr;
+    }
+
+    .requestPage__content {
+        flex-direction: column;
+        margin-top: 72px;
+    }
+
+    .reCaptcha__info {
+        margin-left: 30px;
+    }
+
+    .requestPage__agreement {
+        align-items: flex-start;
+    }
+
+    .requestPage__agreementText {
+        max-width: 400px;
+    }
 }
 
-.goal__link {
-    display: block;
-    margin-top: 42px;
-    padding: 22px;
-    font-size: 24px;
+@media (max-width: 767px) {
+    .requestPage {
+        padding: 48px 0;
+    }
+
+    .requestPage__title {
+        font-size: 48px;
+    }
+
+    .requestPage__content {
+        margin-top: 48px;
+    }
+
+    .requestPage__formGroup {
+        grid-template-columns: 1fr;
+    }
+
+    .radioGroup__item + .radioGroup__item {
+        margin-left: 54px;
+    }
+
+    .reCaptcha__group {
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .reCaptcha__block {
+        transform:scale(0.95);
+        transform-origin:0 0;
+    }
+
+    .reCaptcha__info {
+        margin-top: 24px;
+        margin-left: 0;
+        padding-top: 0;
+        text-align: left;
+    }
 }

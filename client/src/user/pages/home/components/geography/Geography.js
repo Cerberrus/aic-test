@@ -20,8 +20,8 @@ const zoomOptions = {
     size: 'small',
     position: {
         top: 'auto',
-        right: 24,
-        bottom: 24,
+        right: 0,
+        bottom: 0,
         left: 'auto',
     }
 }
@@ -83,8 +83,8 @@ export default class Geography extends Component {
         const { filter, filterValues } = this.state
 
         return (
-            <section className="geography container">
-                <h2>география</h2>
+            <section className="geography">
+                <h2 className="container">география</h2>
                 <YMaps>
                     <Map defaultState={mapState} options={mapOptions} className="geography__map">
                         <ObjectManager
@@ -121,7 +121,7 @@ export default class Geography extends Component {
                             ))}
                         </div>
 
-                        <ZoomControl options={zoomOptions} />
+                        <ZoomControl options={zoomOptions} style={{zIndex: 10}}/>
                     </Map>
                 </YMaps>
             </section>

@@ -5,6 +5,7 @@ import axios from "axios"
 import { motion } from "framer-motion"
 
 import Success from "./components/success/Success"
+import Goal    from "./components/goal/Goal"
 import ReCAPTCHA from "react-google-recaptcha"
 
 // Import static files
@@ -39,7 +40,7 @@ export default class Form extends Component {
     getVacancy = async () => {
         const response = await axios({
             method: 'get',
-            url: `http://192.168.0.200:3000/api/vacancy`
+            url: `http://xutd.tk/api/vacancy`
         })
 
         this.setState({
@@ -135,7 +136,7 @@ export default class Form extends Component {
                 headers: {
                     'Content-Type': file ? 'multipart/form-data' : 'application/json'
                 },
-                url: `http://192.168.0.200:3000/api/request?`+
+                url: `http://xutd.tk/api/request?`+
                      `g-recaptcha-response=${captcha}&`+
                      `jobVacancyId=${vacancy}&`+
                      `name=${fullName}&`+
@@ -281,7 +282,7 @@ export default class Form extends Component {
                                 <input
                                     type="email"
                                     name="mail"
-                                    placeholder="E-mail"
+                                    placeholder="example@mail.com"
                                     className="form__input"
                                     onChange={this.validation}
                                 />
@@ -317,9 +318,9 @@ export default class Form extends Component {
                         </div>
 
                         {/* Captcha */}
-                        <div>
+                        <div className="reCaptcha">
                             <p>Капча</p>
-                            <div className="reCaptcha">
+                            <div className="reCaptcha__group">
                                 <ReCAPTCHA
                                     sitekey="6LfOQ-4ZAAAAACOFvjKDgtEwPjLqX3CdCPgTbTpL"
                                     onChange={this.verifyCaptcha}
@@ -339,7 +340,7 @@ export default class Form extends Component {
                                 hidden
                                 defaultChecked/>
                             <label className="requestPage__agreement form__checkbox" htmlFor="agreement2">
-                                <span>я подтверждаю согласие на обработку персональных<br/>данных и принимаю условия рассмотрения обращений *</span>
+                                <p className="requestPage__agreementText">я подтверждаю согласие на обработку персональных данных и принимаю условия рассмотрения обращений *</p>
                             </label>
                         </div>
 
@@ -347,16 +348,7 @@ export default class Form extends Component {
                     </form>
 
                     {/* Goal section */}
-                    <section className="requestPage__goal goal">
-                        <h2 className="goal__tile">Наша суперцель</h2>
-                        <p>
-                            — стать любимым магазином для каждой российской семьи.<br/><br/>
-                            Сотни тысяч наших сотрудников ежедневно работают над её достижением.<br/><br/>
-                            Мы уверены, что в ближайшие годы достигнем этого и будет здорово,<br/>
-                            если вместе с тобой.
-                        </p>
-                        <a href="tel:79264331416" className="goal__link button button_gray">+7 (926) 433-14-16</a>
-                    </section>
+                    <Goal />
                 </div>
             </>
         )
@@ -375,7 +367,7 @@ export default class Form extends Component {
                     transition={{delay: 0.2}}
                     className="requestPage container"
                 >
-                    {success ? <Success /> : Form}
+                   {success ? <Success /> : Form}
                 </motion.main>
             </>
         )

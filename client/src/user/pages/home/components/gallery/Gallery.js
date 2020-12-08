@@ -17,7 +17,7 @@ export default class Gallery extends Component {
     async getImages() {
         const response = await axios({
             method: 'get',
-            url: 'http://192.168.0.200:3000/api/instagram/image',
+            url: 'http://xutd.tk/api/instagram/image',
         })
 
         if (response.data) {
@@ -28,7 +28,9 @@ export default class Gallery extends Component {
     }
 
     continueLoad = () => {
-        const length = this.state.length + 4
+        const count = (document.documentElement.clientWidth >= 1200) ? 4 : 3
+
+        const length = this.state.length + count
         this.setState({length})
     }
 

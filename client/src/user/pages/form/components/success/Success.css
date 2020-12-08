@@ -32,3 +32,24 @@
     font-size: 24px;
 }
 
+/* Media queries */
+@media (max-width: 1200px) {
+    .success__epilogue {
+        grid-template-columns: 1fr;
+        grid-gap: 74px;
+    }
+}
+
+@media (max-width: 767px) {
+    .success__epilogue {
+        grid-gap: 52px;
+    }
+
+    .success__title {
+        font-size: 48px;
+    }
+
+    .success__text_size_medium {
+        font-size: 24px;
+    }
+}
