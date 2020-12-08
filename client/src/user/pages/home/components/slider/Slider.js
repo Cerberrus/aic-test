@@ -7,20 +7,24 @@ import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation, EffectFade, Controller]);
 
+import getData from "~user/services/getData"
+
 // Import static files
 import './Slider.css'
 import iconArrow from '~user/static/icons/arrow.svg'
 
-// Temporary
-import slideOne from '~user/static/images/temporary/slider-1.jpg'
-import slideTwo from '~user/static/images/temporary/slider-2.jpg'
-
 export default class Slider extends Component {
+    getData = new getData()
+
     state = {
         firstSwiper:  null,
         secondSwiper: null,
-        swiperText: [],
-        swiperPhoto: []
+        slides:       [],
+    }
+
+    componentDidMount() {
+        this.getData.getSlides()
+            .then(slides => this.setState({slides}))
     }
 
     setFirstSwiper = (firstSwiper) => {
@@ -32,8 +36,7 @@ export default class Slider extends Component {
     }
 
     render() {
-
-
+        const { slides } = this.state
 
         return (
             <div className="hero container">
@@ -46,8 +49,9 @@ export default class Slider extends Component {
                     controller={{ control: this.state.secondSwiper }}
                     className="hero__slider sliderText"
                 >
-                    <SwiperSlide className="sliderText__slide">У тебя к этому<br/>талант</SwiperSlide>
-                    <SwiperSlide className="sliderText__slide">У тебя<br/>всё под контролем</SwiperSlide>
+                    {slides.map((slide, index) => (
+                        <SwiperSlide key={index} className="sliderText__slide">{slide.title}</SwiperSlide>
+                    ))}
 
                     <div className="sliderText__buttonGroup">
                         <button className="slider__button sliderText__button_prev button">
@@ -69,16 +73,13 @@ export default class Slider extends Component {
                     effect="fade"
                     className="hero__slider sliderPhoto"
                 >
-                    <SwiperSlide className="sliderPhoto__slide">
-                        <div className="sliderPhoto__wrapper">
-                            <img src={slideOne} alt=""/>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="sliderPhoto__slide">
-                        <div className="sliderPhoto__wrapper">
-                            <img src={slideTwo} alt=""/>
-                        </div>
-                    </SwiperSlide>
+                    {slides.map((slide, index) => (
+                        <SwiperSlide key={index} className="sliderPhoto__slide">
+                            <div className="sliderPhoto__wrapper">
+                                <img src={slide.images[0]} alt={slide.alt}/>
+                            </div>
+                        </SwiperSlide>
+                    ))}
                 </Swiper>
             </div>
         )

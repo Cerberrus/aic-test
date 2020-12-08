@@ -7,6 +7,8 @@ import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation])
 
+import getData from "~user/services/getData"
+
 // Import static files
 import './Vacancy.css'
 import iconArrow from '~user/static/icons/arrow.svg'
@@ -21,6 +23,17 @@ import slide6 from '~user/static/images/temporary/vacancy-6.png'
 import slide7 from '~user/static/images/temporary/vacancy-7.png'
 
 export default class Vacancy extends Component {
+    getData = new getData()
+
+    state = {
+        vacancyList: []
+    }
+
+    componentDidMount() {
+        this.getData.getVacancies()
+            .then(vacancyList => this.setState({vacancyList}))
+    }
+
     render() {
         const swiperBreakpoints = {
             // when window width is >= 280px
@@ -46,6 +59,8 @@ export default class Vacancy extends Component {
             nextEl: '.sliderVacancy__button_next'
         }
 
+        const { vacancyList } = this.state
+
         return (
             <section className="vacancy">
                 <div className="vacancy__header container">
@@ -65,79 +80,17 @@ export default class Vacancy extends Component {
                     navigation={swiperNavigation}
                     className="vacancy__slider vacancySlider"
                 >
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">товаровед</h3>
-                            <img src={slide1} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <p className="slideBack__content">Доставка товара по магазинам и гипермаркетам компании в обслуживаемом регионе</p>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">водитель</h3>
-                            <img src={slide2} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <p className="slideBack__content">Доставка товара по магазинам и гипермаркетам компании в обслуживаемом регионе</p>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">пекарь</h3>
-                            <img src={slide3} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <div className="slideBack__content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, repellendus?</p>
+                    {vacancyList.map((vacancy, index) => (
+                        <SwiperSlide key={index} className="vacancySlider__slide">
+                            <div className="vacancySlider__slideFront">
+                                <h3 className="vacancySlider__name">{vacancy.title}</h3>
+                                <img src={vacancy.images[0]} alt={vacancy.alt} />
                             </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">кассир</h3>
-                            <img src={slide4} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <div className="slideBack__content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, dignissimos.</p>
+                            <div className="vacancySlider__slideBack">
+                                <p className="slideBack__content">{vacancy.description}</p>
                             </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">продавец</h3>
-                            <img src={slide5} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <div className="slideBack__content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam, sed!</p>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">товаровед</h3>
-                            <img src={slide6} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <div className="slideBack__content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, dicta.</p>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="vacancySlider__slide">
-                        <div className="vacancySlider__slideFront">
-                            <h3 className="vacancySlider__name">товаровед</h3>
-                            <img src={slide7} alt=""/>
-                        </div>
-                        <div className="vacancySlider__slideBack">
-                            <div className="slideBack__content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, soluta.</p>
-                            </div>
-                        </div>
-                    </SwiperSlide>
+                        </SwiperSlide>
+                    ))}
                 </Swiper>
             </section>
         )
