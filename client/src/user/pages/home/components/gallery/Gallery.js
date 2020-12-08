@@ -1,30 +1,21 @@
 import React, { Component } from "react"
-import axios from 'axios'
+
+import getData from "~user/services/getData"
 
 // Import styles
 import './Gallery.css'
 
 export default class Gallery extends Component {
+    getData = new getData()
+
     state = {
         images: Array.from({length: 5}),
         length: 5,
     }
 
     componentDidMount() {
-        this.getImages()
-    }
-
-    async getImages() {
-        const response = await axios({
-            method: 'get',
-            url: 'http://xutd.tk/api/instagram/image',
-        })
-
-        if (response.data) {
-            this.setState({
-                images: response.data
-            })
-        }
+        this.getData.getInstagramImages()
+            .then(images => this.setState({images}))
     }
 
     continueLoad = () => {

@@ -152,8 +152,8 @@ svg {
 /* Block loader */
 .block_load {
     position: relative;
-    background-color: var(--color-darkGray);
-    opacity: 0.6;
+    background-color: var(--color-darkGray) !important;
+    opacity: 0.6 !important;
 }
 
 .block_load:before {

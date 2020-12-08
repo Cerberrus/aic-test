@@ -8,12 +8,16 @@ import Success from "./components/success/Success"
 import Goal    from "./components/goal/Goal"
 import ReCAPTCHA from "react-google-recaptcha"
 
+import getData from "~user/services/getData"
+
 // Import static files
 import './Form.css'
 import iconCheck from '~user/static/icons/check.svg'
 import iconFile from '~user/static/icons/clip.svg'
 
 export default class Form extends Component {
+    getData = new getData()
+
     state = {
         vacancyList: [],
         formData: {
@@ -34,18 +38,8 @@ export default class Form extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
-        this.getVacancy()
-    }
-
-    getVacancy = async () => {
-        const response = await axios({
-            method: 'get',
-            url: `http://xutd.tk/api/vacancy`
-        })
-
-        this.setState({
-            vacancyList: response.data
-        })
+        this.getData.getVacancies()
+            .then(vacancyList => this.setState({vacancyList}))
     }
 
     validation = (e) => {
@@ -107,6 +101,7 @@ export default class Form extends Component {
         requiredFields.map((field) => {
            const input = document.querySelector(`[name=${field}]`)
 
+            // Validation
             switch (field) {
                case 'phone':
                    const checkPhone = /^(\+7[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/
@@ -117,6 +112,7 @@ export default class Form extends Component {
                    break
             }
 
+            // Show errors
             if (result === false) {
                 error = true
 
