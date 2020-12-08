@@ -26,8 +26,8 @@ export default class Footer extends Component {
     render() {
         const { showModal } = this.state
 
-
         const modalTitle = 'Обработка данных'
+
         const modalContent = (
             <>
                 <p style={{marginBottom: '26px', fontSize: '18px'}}>1. Что регулирует настоящая политика конфиденциальности</p>
