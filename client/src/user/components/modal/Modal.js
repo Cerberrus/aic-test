@@ -20,7 +20,7 @@ export default class Modal extends Component {
 
         return (
             <>
-                <div className={showModal ? 'modal fadeIn' : 'modal fadeOut'}>
+                <div className={showModal ? 'modal fadeIn' : 'modal'}> {/* fadeOut */}
                     <div className={headerSticky ?  'modal__header modal__header_fixed' : 'modal__header'}>
                         <p className="modal__title">{title}</p>
                         <button className="modal__close" onClick={toggleModal}><svg className="modal__closeIcon"><use xlinkHref={iconCross}/></svg></button>
@@ -31,7 +31,7 @@ export default class Modal extends Component {
                 </div>
 
                 <div
-                    className={showModal ? 'overlay fadeIn' : 'overlay fadeOut'}
+                    className={showModal ? 'overlay fadeIn' : 'overlay'} {/* fadeOut */}
                     onClick={toggleModal}
                 />
             </>
