@@ -34,7 +34,6 @@ export default class GetData {
 
     getCoordinates = async () => {
         const  coordinates = await this.getResource('/coordinate')
-        console.log(coordinates);
         return coordinates
     }
 
@@ -46,7 +45,7 @@ export default class GetData {
             title:       vacancy.title                     || '',
             description: vacancy.description               || '',
             alt:         vacancy.imageDescription          || '',
-            images:      vacancy.path                      || []
+            images:      vacancy.path                      || [],
         }
     }
 
@@ -55,37 +54,8 @@ export default class GetData {
             id:          slide.id,
             title:       slide.title            || '',
             alt:         slide.imageDescription || '',
-            images:      slide.path             || []
+            images:      slide.path             || [],
+            active:      false,
         }
     }
-
-    _transformCoordinates = (item) => {
-        console.log(item);
-
-        // return {
-        //     id:          slide.id,
-        //     title:       slide.title            || '',
-        //     alt:         slide.imageDescription || '',
-        //     images:      slide.path             || []
-        // }
-    }
 }
-
-
-
-
-// getAllCharacters = async () => {
-//     const characters = await this.getResource('/characters?page=5&pageSize=10');
-//     return characters.map(this._transformCharacter);
-// }
-//
-// _transformCharacter = (character) => {
-//     return {
-//         id:      this._extractId(character),
-//         name:    character.name    || 'Нет данных',
-//         gender:  character.gender  || 'Нет данных',
-//         born:    character.born    || 'Нет данных',
-//         died:    character.died    || 'Нет данных',
-//         culture: character.culture || 'Нет данных'
-//     }
-// }
