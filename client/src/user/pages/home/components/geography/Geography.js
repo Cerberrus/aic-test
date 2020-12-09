@@ -1,5 +1,7 @@
-import React, {Component} from "react"
-import { YMaps, Map, Placemark,Button, ZoomControl, ObjectManager, GeoObject, ListBox, ListBoxItem } from "react-yandex-maps"
+import React, { Component } from "react"
+import { YMaps, Map, ZoomControl, ObjectManager } from "react-yandex-maps"
+
+import getData from "~user/services/getData"
 
 // Import static files
 import './Geography.css'
@@ -26,61 +28,58 @@ const zoomOptions = {
     }
 }
 
-// Temporary
-const features = {
-    "type": "FeatureCollection",
-    "features": [
-        {"type": "Feature", "id": 1, "geometry": {"type": "Point", "coordinates": [55.779826, 37.531143]}, "properties": {type: 'юрлица'}},
-        {"type": "Feature", "id": 2, "geometry": {"type": "Point", "coordinates": [55.756475, 37.555244]}, "properties": {type: 'физлица'}},
-        {"type": "Feature", "id": 3, "geometry": {"type": "Point", "coordinates": [55.752030, 37.578445]}, "properties": {type: 'юрлица'}},
-        {"type": "Feature", "id": 4, "geometry": {"type": "Point", "coordinates": [55.770023, 37.606756]}, "properties": {type: 'физлица'}},
-        {"type": "Feature", "id": 5, "geometry": {"type": "Point", "coordinates": [55.753831, 37.622530]}, "properties": {type: 'юрлица'}},
-        {"type": "Feature", "id": 6, "geometry": {"type": "Point", "coordinates": [55.759306, 37.643637]}, "properties": {type: 'физлица'}},
-        {"type": "Feature", "id": 7, "geometry": {"type": "Point", "coordinates": [55.764364, 37.655247]}, "properties": {type: 'юрлица'}},
-        {"type": "Feature", "id": 8, "geometry": {"type": "Point", "coordinates": [55.768958, 37.692374]}, "properties": {type: 'физлица'}},
-        {"type": "Feature", "id": 9, "geometry": {"type": "Point", "coordinates": [55.735930, 37.668934]}, "properties": {type: 'юрлица'}},
-        {"type": "Feature", "id": 10, "geometry": {"type": "Point", "coordinates": [55.736578, 37.688039]}, "properties": {type: 'физлица'}},
-    ],
+const managerOptions = {
+    clusterize: true,
+    gridSize: 12,
+}
+
+const managerObjects = {
+    iconLayout: 'default#image',
+    iconImageHref: iconPlacemark,
+    iconImageSize: [44, 44],
+    iconImageOffset: [-5, -38],
+}
+
+const managerClusters = {
+    preset: 'islands#orangeClusterIcons',
 }
 
 export default class Geography extends Component {
+    getData = new getData()
+
     state = {
-        filter: 'показать всё',
-        filterValues: [
-            {
-                id: 0,
-                value: 'юрлица',
-                active: false
-            }, {
-                id: 1,
-                value: 'физлица',
-                active: false
-            }, {
-                id: 2,
-                value: 'показать всё',
-                active: true
-            }
-        ]
+        features:   {},
+        filter:     -1,
+        filterList: [],
+    }
+
+    componentDidMount() {
+        this.getData.getCoordinates()
+            .then(response => {
+                const filterList = [
+                    {
+                        id: -1,
+                        type: 'показать всё'
+                    }
+                ]
+
+                filterList.push(...response.typeList)
+
+                this.setState({
+                    features:   response.coordinateList,
+                    filterList: filterList
+                })
+            })
     }
 
     selectFilter = (filter) => {
         if (filter !== this.state.filter) {
-            this.setState(({filterValues}) => {
-                const result = filterValues.map((item) => {
-                    item.active = item.value === filter
-                    return item
-                })
-
-                return {
-                    filter: filter,
-                    filterValues: result
-                }
-            })
+            this.setState({filter})
         }
     }
 
     render() {
-        const { filter, filterValues } = this.state
+        const { filter, filterList, features } = this.state
 
         return (
             <section className="geography">
@@ -88,35 +87,21 @@ export default class Geography extends Component {
                 <YMaps>
                     <Map defaultState={mapState} options={mapOptions} className="geography__map">
                         <ObjectManager
-                            options={{
-                                clusterize: true,
-                                gridSize: 12,
-                            }}
-
-                            objects={{
-                                iconLayout: 'default#image',
-                                iconImageHref: iconPlacemark,
-                                iconImageSize: [44, 44],
-                                iconImageOffset: [-5, -38],
-                            }}
-
-                            clusters={{
-                                preset: 'islands#orangeClusterIcons',
-                            }}
-
-                            filter={object => object.properties.type === filter || filter === 'показать всё'}
-
+                            options ={managerOptions}
+                            objects ={managerObjects}
+                            clusters={managerClusters}
                             features={features}
+                            filter  ={object => object.properties.type === filter || filter === -1}
                         />
 
                         <div className="geography__buttonGroup">
-                            {filterValues.map((item, index)  => (
+                            {filterList.map((item) => (
                                 <button
-                                    key={index}
-                                    className={item.active ? 'geography__button geography__button_active' : 'geography__button'}
-                                    onClick={() => this.selectFilter(item.value)}
+                                    key={item.id}
+                                    className={`geography__button ${filter === item.id && 'geography__button_active'}`}
+                                    onClick={() => this.selectFilter(item.id)}
                                 >
-                                    {item.value}
+                                    {item.type}
                                 </button>
                             ))}
                         </div>
