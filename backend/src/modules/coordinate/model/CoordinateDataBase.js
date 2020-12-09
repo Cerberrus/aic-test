@@ -1,12 +1,29 @@
 const DataBase = require('../../../lib/DataBase')
 
 class CoordinateDataBase extends DataBase{
-  async get(){
+  async get (){
     const [coordinateList] = await this.connection.execute(
-        "select C.id, C.title ,C.longitude, C.latitude, CT.name as type, CT.id as typeId from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
+        "select C.id ,C.longitude, C.latitude, CT.id as type from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
     );
+    const res = {
+      type: "FeatureCollection",
+      features: await coordinateList.map((value)=> {
+        return {
+          type: "Feature",
+          id: value.id,
+          geometry:{
+            type: "Point",
+            coordinates: [value.longitude, value.latitude]
+          },
+          properties: {
+            type: value.type
+          }
+        }
+        }
+        )
+    }
     const typeList = await this.getType()
-    return {typeList, coordinateList};
+    return {typeList, coordinateList: res};
   };
   async post({ coordinate, name, title, description, typeId }){
     typeId = Number(typeId);
@@ -26,7 +43,7 @@ class CoordinateDataBase extends DataBase{
   };
   async getType(){
     const [result] = await this.connection.execute(
-        "select * from coordinate_type"
+        "select id, name as type from coordinate_type"
     );
     return result;
   };
