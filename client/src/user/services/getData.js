@@ -32,6 +32,12 @@ export default class GetData {
         return slides.map(this._transformSlides);
     }
 
+    getCoordinates = async () => {
+        const  coordinates = await this.getResource('/coordinate')
+        console.log(coordinates);
+        return coordinates
+    }
+
     _extractImages = (images) => {}
 
     _transformVacancies = (vacancy) => {
@@ -51,6 +57,17 @@ export default class GetData {
             alt:         slide.imageDescription || '',
             images:      slide.path             || []
         }
+    }
+
+    _transformCoordinates = (item) => {
+        console.log(item);
+
+        // return {
+        //     id:          slide.id,
+        //     title:       slide.title            || '',
+        //     alt:         slide.imageDescription || '',
+        //     images:      slide.path             || []
+        // }
     }
 }
 
