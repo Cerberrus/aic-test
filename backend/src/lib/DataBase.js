@@ -33,7 +33,7 @@ class DataBase {
     async implementPaths(fieldList, table) {
         for (let field of fieldList) {
             const [result] = await this.connection.execute(
-                `select path from ${table} where id = ?`, [field.id])
+                `select path from ${table} where id = ? order by path`, [field.id])
             const pathsList = !!result ? result.map(value => value.path) : []
             const newPaths = []
             for (let paths of pathsList) {
