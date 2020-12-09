@@ -43,7 +43,6 @@ module.exports =  {
                     loader: 'svg-sprite-loader',
                     options: {
                         extract: true,
-                        publicPath : `${alias.user}/static/icons/`,
                         spriteFilename: './img/sprite.[hash:8].svg'
                     }
                 },
