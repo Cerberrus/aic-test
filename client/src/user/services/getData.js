@@ -2,14 +2,14 @@ import axios from 'axios'
 
 export default class GetData {
     constructor() {
-        this._apiBase = 'http://xutd.tk/api'
+        this._apiBase = 'https://aic.xutd.tk/api'
     }
 
     getResource = async (url) => {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${this._apiBase}${url}`,
+                url: `${process.env.API_BASE}${url}`,
             })
 
             return response.data

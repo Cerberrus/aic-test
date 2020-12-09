@@ -1,5 +1,6 @@
+const DotEnv            = require('dotenv-webpack')
 const LoadablePlugin    = require('@loadable/webpack-plugin')
-const HTMLWebpackPlugin = require('html-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 const {externals: {path, alias, isDev}} = require('./base.config')
 
@@ -28,12 +29,14 @@ module.exports = (target) => ({
         alias: alias
     },
     plugins: [
-
         ...(isDev ? [
             new HTMLWebpackPlugin({
                 template: `${path.config}/template.ejs`
             })
         ] : [
+            new DotEnv({
+                path: path.dotenv
+            }),
             new LoadablePlugin({
                 filename: `${target}-scripts.json`
             }),
@@ -46,7 +49,7 @@ module.exports = (target) => ({
     },
     devServer: {
         port: 4200,
-        host: '192.168.0.201',
+        // host: '192.168.0.201',
         historyApiFallback: true,
         hot: isDev,
         inline: isDev,

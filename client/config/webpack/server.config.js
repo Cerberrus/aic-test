@@ -1,4 +1,5 @@
 const nodeExternals = require('webpack-node-externals')
+const DotEnv        = require('dotenv-webpack')
 
 const getScopedName = require('./helpers/css-scoped-name/getScopedName');
 const {externals: {path, alias, isDev}} = require('./base.config')
@@ -30,6 +31,7 @@ module.exports = {
                     ],
                     plugins: [
                         '@babel/plugin-proposal-class-properties',
+                        '@babel/plugin-proposal-private-methods',
                         '@loadable/babel-plugin',
                     ]
                 }
@@ -39,6 +41,11 @@ module.exports = {
     resolve: {
         alias: alias
     },
+    plugins: [
+        new DotEnv({
+            path: path.dotenv
+        }),
+    ],
     node: {
         console: false,
         global: false,

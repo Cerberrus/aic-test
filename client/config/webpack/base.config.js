@@ -1,6 +1,7 @@
 const path = require('path')
 
 const PATH = {
+    dotenv: path.resolve(__dirname, '../../../.env'),
     src:    path.resolve(__dirname, '../../src'),
     dist:   path.resolve(__dirname, '../../dist'),
     config: path.resolve(__dirname, '../'),
