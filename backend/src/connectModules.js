@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
@@ -10,11 +11,15 @@ const jobVacancyRouter = require("./modules/job-vacancy/router");
 const settingRouter = require("./modules/settings/router");
 const sliderRouter = require("./modules/slider/router");
 const instagramRouter = require("./modules/instagram/router");
+const folder = require('./backendInitial')
 
 const instagram = require("./modules/instagram/model/Instagram");
+folder.folderInit()
 instagram.init();
 const authCheck = require("./lib/AuthCheck");
-dotenv.config(); // connect .env file and use them variables
+dotenv.config({
+    path: path.resolve(__dirname, '../../.env')
+}); // connect .env file and use them variables
 
 const app = express();
 const corsOptions = {
