@@ -1,33 +1,30 @@
-const path = require('path');
 const express = require("express");
-const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const authRouter = require("./modules/auth/router");
-const coordinateRouter = require("./modules/coordinate/router");
-const jobRequestRouter = require("./modules/job-request/router");
-const jobVacancyRouter = require("./modules/job-vacancy/router");
-const settingRouter = require("./modules/settings/router");
-const sliderRouter = require("./modules/slider/router");
-const instagramRouter = require("./modules/instagram/router");
-const folder = require('./backendInitial')
 
-const instagram = require("./modules/instagram/model/Instagram");
-folder.folderInit()
-instagram.init();
-const authCheck = require("./lib/AuthCheck");
+const path = require('path');
+const dotenv = require("dotenv");
 dotenv.config({
     path: path.resolve(__dirname, '../../.env')
 }); // connect .env file and use them variables
 
+const authCheck = require("./lib/AuthCheck");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const folder = require('./backendInitial')
+const instagram = require("./modules/instagram/model/Instagram");
+
+folder.folderInit()
+instagram.init();
+
 const app = express();
+
 const corsOptions = {
     origin: 'http://localhost:4200',    // reqexp will match all prefixes
     methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS",
     credentials: true,                // required to pass
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
 }
+
 app.use(cors(corsOptions));
 app.use(bodyParser.json()); // use for get information from body
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,12 +37,12 @@ app.use(
   express.static(process.cwd() + process.env.FILES_PRIVATE_FOLDER)
 );
 
-app.use(authRouter); //
-app.use(coordinateRouter); //
-app.use(jobRequestRouter); // include all routes
-app.use(jobVacancyRouter); //
-app.use(settingRouter); //
-app.use(sliderRouter); //
-app.use(instagramRouter); //
+app.use(require("./modules/auth/router")); //
+app.use(require("./modules/coordinate/router")); //
+app.use(require("./modules/job-request/router")); // include all routes
+app.use(require("./modules/job-vacancy/router")); //
+app.use(require("./modules/job-vacancy/router")); //
+app.use(require("./modules/slider/router")); //
+app.use(require("./modules/instagram/router")); //
 
 module.exports = app;
