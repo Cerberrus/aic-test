@@ -43,6 +43,16 @@ body {
     overflow-x: hidden;
 }
 
+body::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--color-gray);
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--color-darkGray)
+}
+
 .page__body {
     display: flex;
     flex-direction: column;

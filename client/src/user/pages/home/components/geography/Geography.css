@@ -77,17 +77,6 @@
         left: 16px;
     }
 
-    [class*="-controls__control"]:after {
-        content: '';
-        position: absolute;
-        right: -24px;
-        bottom: -24px;
-        width: 100vw;
-        height: 250px;
-        background: linear-gradient(0deg, #F5F5F5 5.33%, rgba(255, 255, 255, 0) 100%);
-        z-index: -1;
-    }
-
     [class*="-controls__control"] > ymaps > [class*="-zoom"]:nth-child(1) {
         right: 16px;
         bottom: 32px;

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react"
+import React, { Component } from "react"
 
 // Import Swiper React components
 import SwiperCore, { Navigation, EffectFade, Controller } from 'swiper';
@@ -12,6 +12,12 @@ import getData from "~user/services/getData"
 // Import static files
 import './Slider.css'
 import iconArrow from '~user/static/icons/arrow.svg'
+
+// Swiper settings
+const swiperNavigation = {
+    prevEl: '.sliderText__button_prev',
+    nextEl: '.sliderText__button_next'
+}
 
 export default class Slider extends Component {
     getData = new getData()
@@ -41,10 +47,7 @@ export default class Slider extends Component {
         return (
             <div className="hero container">
                 <Swiper
-                    navigation={{
-                        prevEl: '.sliderText__button_prev',
-                        nextEl: '.sliderText__button_next'
-                    }}
+                    navigation={swiperNavigation}
                     onSwiper={this.setFirstSwiper}
                     controller={{ control: this.state.secondSwiper }}
                     className="hero__slider sliderText"
@@ -64,10 +67,7 @@ export default class Slider extends Component {
                 </Swiper>
 
                 <Swiper
-                    navigation={{
-                        prevEl: '.sliderText__button_prev',
-                        nextEl: '.sliderText__button_next'
-                    }}
+                    navigation={swiperNavigation}
                     onSwiper={this.setSecondSwiper}
                     controller={{ control: this.state.firstSwiper }}
                     effect="fade"
