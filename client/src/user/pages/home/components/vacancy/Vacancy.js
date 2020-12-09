@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 // Import Swiper React components
-import SwiperCore, {Navigation} from 'swiper'
+import SwiperCore, { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import "swiper/swiper-bundle.min.css"
 
@@ -13,14 +13,30 @@ import getData from "~user/services/getData"
 import './Vacancy.css'
 import iconArrow from '~user/static/icons/arrow.svg'
 
-// Temporary
-import slide1 from '~user/static/images/temporary/vacancy-1.png'
-import slide2 from '~user/static/images/temporary/vacancy-2.png'
-import slide3 from '~user/static/images/temporary/vacancy-3.png'
-import slide4 from '~user/static/images/temporary/vacancy-4.png'
-import slide5 from '~user/static/images/temporary/vacancy-5.png'
-import slide6 from '~user/static/images/temporary/vacancy-6.png'
-import slide7 from '~user/static/images/temporary/vacancy-7.png'
+// Swiper settings
+const swiperBreakpoints = {
+    // when window width is >= 280px
+    280: {
+        slidesPerView: 1,
+        centeredSlides: true,
+        slideToClickedSlide: true,
+        initialSlide: 1,
+        spaceBetween: 20
+    },
+    // when window width is >= 768px
+    768: {
+        slidesPerView: 'auto',
+        centeredSlides: false,
+        slideToClickedSlide: false,
+        initialSlide: 0,
+        spaceBetween: 30
+    },
+}
+
+const swiperNavigation = {
+    prevEl: '.sliderVacancy__button_prev',
+    nextEl: '.sliderVacancy__button_next'
+}
 
 export default class Vacancy extends Component {
     getData = new getData()
@@ -34,31 +50,16 @@ export default class Vacancy extends Component {
             .then(vacancyList => this.setState({vacancyList}))
     }
 
+    toggleVacancy = (id) => {
+        const {vacancyList} = this.state
+        vacancyList.map((vacancy) => {
+            vacancy.id === id ? vacancy.active = !vacancy.active : vacancy.active=false
+        })
+
+        this.setState({vacancyList})
+    }
+
     render() {
-        const swiperBreakpoints = {
-            // when window width is >= 280px
-            280: {
-                slidesPerView: 1,
-                centeredSlides: true,
-                slideToClickedSlide: true,
-                initialSlide: 1,
-                spaceBetween: 20
-            },
-            // when window width is >= 768px
-            768: {
-                slidesPerView: 'auto',
-                centeredSlides: false,
-                slideToClickedSlide: false,
-                initialSlide: 0,
-                spaceBetween: 30
-            },
-        }
-
-        const swiperNavigation = {
-            prevEl: '.sliderVacancy__button_prev',
-            nextEl: '.sliderVacancy__button_next'
-        }
-
         const { vacancyList } = this.state
 
         return (
@@ -80,13 +81,18 @@ export default class Vacancy extends Component {
                     navigation={swiperNavigation}
                     className="vacancy__slider vacancySlider"
                 >
-                    {vacancyList.map((vacancy, index) => (
-                        <SwiperSlide key={index} className="vacancySlider__slide">
-                            <div className="vacancySlider__slideFront">
+                    {vacancyList.map((vacancy) => (
+                        <SwiperSlide
+                            key={vacancy.id}
+                            className={`vacancySlider__slide ${vacancy.active && 'vacancySlider__slide_active'}`}
+                            onClick={() => this.toggleVacancy(vacancy.id)}
+                        >
+                            <div className="vacancySlider__slideFront" title="Подробнее">
                                 <h3 className="vacancySlider__name">{vacancy.title}</h3>
                                 <img src={vacancy.images[0]} alt={vacancy.alt} />
                             </div>
                             <div className="vacancySlider__slideBack">
+                                <p className="vacancySlider__name">{vacancy.title}</p>
                                 <p className="slideBack__content">{vacancy.description}</p>
                             </div>
                         </SwiperSlide>
