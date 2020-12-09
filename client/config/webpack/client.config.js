@@ -29,14 +29,14 @@ module.exports = (target) => ({
         alias: alias
     },
     plugins: [
+        new DotEnv({
+            path: path.dotenv
+        }),
         ...(isDev ? [
             new HTMLWebpackPlugin({
                 template: `${path.config}/template.ejs`
             })
         ] : [
-            new DotEnv({
-                path: path.dotenv
-            }),
             new LoadablePlugin({
                 filename: `${target}-scripts.json`
             }),
