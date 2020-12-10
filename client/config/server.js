@@ -10,7 +10,7 @@ import reducers from "~user/reducers"
 import { StaticRouter } from "react-router"
 import { ChunkExtractor, ChunkExtractorManager } from "@loadable/server"
 
-const app = require('../../backend/src/connectModules')
+const app = express()/*require('../../backend/src/connectModules')*/
 
 import App from "~user/components/app/App"
 
