@@ -35,6 +35,13 @@ class Workers {
   getWorkersList = () => {
     return this.workersList;
   };
+  getWorker = (name) => {
+    for (let unit of this.workersList) {
+      if (unit.name === name) {
+        return  unit.worker
+      }
+    }
+  };
   postNewWorker = async (file) => {
     for (let i = 0; i < file.count; i++) {
       const worker = await new Worker(file.path, {});
@@ -46,13 +53,18 @@ class Workers {
     }
   };
 
-  postWorkerMessage = (name, message) => {
+  postWorkerMessage = (name, message, callback = null) => {
     for (let unit of this.workersList) {
       if (unit.name === name) {
         unit.worker.postMessage(message);
+        this.CurrentWorker = unit.worker
+        break
       }
     }
-  };
+    this.CurrentWorker.once("message", async (message) => {
+        if(callback !== null) callback(message)
+    });
+  }
 }
 
 module.exports = new Workers();
