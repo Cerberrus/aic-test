@@ -3,7 +3,7 @@ const DataBase = require('../../../lib/DataBase')
 class CoordinateDataBase extends DataBase{
   async get (){
     const [coordinateList] = await this.connection.execute(
-        "select C.id ,C.longitude, C.latitude, CT.id as type from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
+        "select C.id, C.title ,C.longitude, C.latitude, CT.id as type, CT.type as typeTitle from coordinate as C join coordinate_type as CT on C.type_id = CT.id"
     );
     const res = {
       type: "FeatureCollection",
@@ -11,12 +11,14 @@ class CoordinateDataBase extends DataBase{
         return {
           type: "Feature",
           id: value.id,
+          title: value.title,
           geometry:{
             type: "Point",
             coordinates: [value.longitude, value.latitude]
           },
           properties: {
-            type: value.type
+            type: value.type,
+            typeTitle: value.typeTitle
           }
         }
         }
@@ -25,11 +27,11 @@ class CoordinateDataBase extends DataBase{
     const typeList = await this.getType()
     return {typeList, coordinateList: res};
   };
-  async post({ coordinate, name, title, description, typeId }){
+  async post({ title,longitude,latitude, typeId}){
     typeId = Number(typeId);
     await this.connection.execute(
-        "insert into coordinate(title,longitude,latitude, type_id) values(?,?,?,?,?)",
-        [coordinate, name, description, typeId]
+        "insert into coordinate(title,longitude,latitude,type_id) values(?,?,?,?)",
+        [title,longitude,latitude, typeId]
     );
     return this.get();
   };
@@ -43,7 +45,7 @@ class CoordinateDataBase extends DataBase{
   };
   async getType(){
     const [result] = await this.connection.execute(
-        "select id, name as type from coordinate_type"
+        "select id,type from coordinate_type"
     );
     return result;
   };

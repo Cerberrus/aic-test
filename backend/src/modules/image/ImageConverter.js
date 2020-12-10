@@ -1,6 +1,6 @@
 const Sharp = require("sharp");
 const path = require("path");
-const fs = require("fs/promises");
+const fs = require("fs");
 const ManageFiles = require("./ManageFiles");
 const SVGO = require("svgo");
 const fileDataBase = require('./FileDataBase')
@@ -9,6 +9,7 @@ class ImageConverter extends ManageFiles {
     constructor() {
         super();
         this.paths = []
+        console.log(process.cwd())
     }
 
     manipulateImage({method, data}) {
@@ -19,6 +20,8 @@ class ImageConverter extends ManageFiles {
                 return this.addFile(data);
             case "update":
                 return this.updateImage(data);
+            case "check":
+                return this.checkFile(data);
             case "delete":
                 return this.deleteImage(data);
         }
@@ -28,7 +31,7 @@ class ImageConverter extends ManageFiles {
         try {
             const status = await this.__convert(pathImage, toFolder);
             if (status === true) {
-                this.postFileIntoDatabase(id, this.paths, table)
+                await this.addFile({paths: this.paths, id, table})
                 this.deleteFile(pathImage);
             }
 
@@ -37,27 +40,46 @@ class ImageConverter extends ManageFiles {
         }
     }
 
-    async addFile({path, id, table}) {
+    async addFile({paths, id, table}) {
         try {
-            await this.postFileIntoDatabase(id, path, table)
+            paths = paths.map(value => value.split(`${process.cwd()}/uploads`)[1])
+            await this.postFileIntoDatabase(id, paths, table)
         } catch (e) {
             console.log(e)
         }
     }
 
+    async checkFile(objectList) {
+        try {
+            for (let object of objectList) {
+                if (!!object.path) {
+                    const exist = await object.path.filter(path => fs.existsSync(process.cwd() + '/uploads' + path))
+                    if (!!exist) {
+                        object.path = exist.map(path => ('https://aic.xutd.tk' + path))
+                    } else {
+                        object.path = null
+                    }
+                }
+            }
+            return objectList
+        } catch (e) {
+            console.log(e)
+
+        }
+    }
+
     async deleteImage({imagePath}) {
         for (let path of imagePath) {
-            try{
+            try {
                 await this.deleteFile(path);
-            }
-            catch (e) {
+            } catch (e) {
                 console.log('File error')
             }
         }
     }
 
     postFileIntoDatabase(id, paths, table) {
-        for(let path of paths){
+        for (let path of paths) {
             fileDataBase.post(id, path, table)
         }
     }

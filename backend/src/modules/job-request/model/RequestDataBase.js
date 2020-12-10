@@ -4,7 +4,7 @@ class RequestDataBase extends DataBase {
     async getList({orderBy, desc}={orderBy:'id', desc:true}) {
         const [result] = await this.connection.execute(
             "select" +
-            " R.id,R.`name`, R.happy_date, R.phone_number, R.sex, R.email, R.resume_text as resumeText, RS.name as status, V.title as vacancy from summary as R" +
+            " R.id,R.`name`, R.date, R.happy_date, R.phone_number, R.sex, R.email, R.resume_text as resumeText, RS.name as status, V.title as vacancy from summary as R" +
             " join summary_status as RS" +
             " join vacancy as V on R.vacancy_id = V.id and R.status_id = RS.id" +
             ` order by R.${orderBy} ${desc?'DESC':''}`)

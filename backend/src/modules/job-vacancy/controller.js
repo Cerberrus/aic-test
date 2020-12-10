@@ -1,13 +1,17 @@
 const vacancyDataBase = require("./model/VacancyDataBase");
 const workers = require("../../lib/Workers");
-const vacancyCheck = require("./model/VacancyCheck");
 
 
 const toGetJobVacancyList = (req, res) => {
     try {
         vacancyDataBase.getJobVacancyList()
             .then(async vacancyList => {
-                res.status(200).send(await vacancyCheck.checkFileExist(vacancyList))
+                workers.postWorkerMessage("ImageConverterWorker", {
+                    method: "check",
+                    data: vacancyList
+                }, (result) => {
+                    res.status(200).send(result)
+                })
             })
     } catch (e) {
         res.status(409).send();

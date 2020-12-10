@@ -4,5 +4,5 @@ const ImageConverter = require("./ImageConverter");
 parentPort.on("message", async (param) => {
   const imageConverter = new ImageConverter();
   const result = await imageConverter.manipulateImage(param);
-  parentPort.postMessage({ result });
+  parentPort.postMessage(result);
 });
