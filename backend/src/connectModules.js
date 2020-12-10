@@ -6,6 +6,9 @@ dotenv.config({
     path: path.resolve(__dirname, '../../.env')
 }); // connect .env file and use them variables
 
+
+process.env.CURRENT_PROJECT_PATH = process.cwd()
+console.log(process.env.CURRENT_PROJECT_PATH)
 const authCheck = require("./lib/AuthCheck");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -19,7 +22,7 @@ instagram.init();
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:4200',    // reqexp will match all prefixes
+    origin: ['https://aic.xutd.tk', 'http://localhost:3001'],    // reqexp will match all prefixes
     methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS",
     credentials: true,                // required to pass
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
