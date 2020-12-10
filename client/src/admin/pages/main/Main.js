@@ -22,7 +22,7 @@ export default class Sign extends Component{
     checkAutorisation(){
         axios({
             method: 'get',
-            url: 'http://localhost:3000/api/signin',
+            url: process.env.API_BASE + '/signin',
             withCredentials: true
         })
             .then((response)=>{

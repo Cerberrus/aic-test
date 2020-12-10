@@ -3,44 +3,65 @@ import {Link} from "react-router-dom";
 import './Vacancy.css'
 import axios from "axios";
 
-export default class Vacancy extends Component{
+export default class Vacancy extends Component {
 
     state = {
-        vacancy: []
+        vacancy: {
+            list: [],
+            isLoaded: false
+        }
     }
 
     componentDidMount() {
         this.getVacancy()
     }
 
-    getVacancy=()=>{
+    getVacancy = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:3000/api/vacancy',
+            url: process.env.API_BASE + '/vacancy',
             withCredentials: true
         })
-            .then((response)=>{
+            .then((response) => {
                 this.setState({
-                    vacancy:response.data
+                    vacancy: {
+                        list: response.data,
+                        isLoaded: true
+                    }
                 })
-                console.log(response.data)
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log('error')
             })
     }
-    render(){
-        const vacancyList = this.state.vacancy.map((item, index)=>(
-            <div className="vacancy__card" key={index}>
-                <img className="vacancy__image" src="images/girl.png"/>
-                <p className="vacancy__name">{item.name}</p>
-                <p className="vacancy__description">{item.description}</p>
-                <img src="images/close.svg"/>
-                <img src="images/edit.svg"/>
-                <img src="images/hide.svg"/>
-            </div>
-        ))
-        return(
+
+    render() {
+        let vacancyList = []
+        if (this.state.vacancy.isLoaded) {
+            for (let vacancy of this.state.vacancy.list) {
+                vacancyList.push(
+                    <div className="vacancy__card">
+                        <img className="vacancy__image" src={vacancy.path[0]}/>
+                        <p className="vacancy__name">{vacancy.title}</p>
+                        <p className="vacancy__description">{vacancy.description}</p>
+                        <img src="https://aic.xutd.tk/static/icons/close.svg"/>
+                        <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
+                        <img src="https://aic.xutd.tk/static/icons/hide.svg"/>
+                    </div>)
+            }
+        } else {
+                vacancyList.push(
+                    <div className="vacancy__card">
+                        <img className="vacancy__image"/>
+                        <p className="vacancy__name">Загрузка</p>
+                        <p className="vacancy__description">Загрузка</p>
+                        <img src="https://aic.xutd.tk/static/icons/close.svg"/>
+                        <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
+                        <img src="https://aic.xutd.tk/static/icons/hide.svg"/>
+                    </div>
+                )
+        }
+        return (
             <section className="vacancy">
                 <div className="vacancy__top">
                     <h1 className="vacancy_title title">Вакансии</h1>
