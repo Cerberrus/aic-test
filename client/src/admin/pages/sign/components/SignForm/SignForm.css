@@ -1,6 +1,9 @@
-
 .authorization {
-    position: absolute;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    top: -10%;
+    margin: 40px 0;
     padding: 16px 32px;
     width: 382px;
     border-radius: 8px;
@@ -15,16 +18,7 @@
     margin-bottom: 32px;
 }
 
-.button_yellow {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    margin-top: 72px;
-    border: none;
-    background-color: var(--color-yellow);
+.authorization__button {
+    width: 172px;
+    margin: 0 auto;
 }
-
-.authorization__button:hover {
-    cursor: pointer;
-}
-

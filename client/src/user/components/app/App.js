@@ -24,7 +24,7 @@ const App = () => {
                 defaultTitle ="гросс маркет"
                 titleTemplate="гросс маркет - %s"
             >
-                <link rel="preload" href={fontRaleway} as="font" />
+                {/*<link rel="preload" href={fontRaleway} as="font" />*/}
                 <link rel="shortcut icon" href={shortIcon} />
             </Helmet>
 
