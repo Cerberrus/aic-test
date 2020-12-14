@@ -20,6 +20,7 @@ export default class CoordinateItem extends Component{
         },
         typeList: this.props.typeList,
     }
+
     closeModal = () => {
         this.setState(
             {
@@ -33,7 +34,7 @@ export default class CoordinateItem extends Component{
                     typeTitle:this.props.item.properties.typeTitle,
                 }
             }
-            )
+        )
     }
 
     openModal = () => {
@@ -82,12 +83,13 @@ export default class CoordinateItem extends Component{
             withCredentials: true
         })
             .then((response) => {
-                console.log('Successfull')
+                console.log('Successful')
             })
             .catch((error) => {
                 console.log('error')
             })
     }
+
     sendChange=async (e)=>{
         e.preventDefault()
         await this.updateCoordinate()

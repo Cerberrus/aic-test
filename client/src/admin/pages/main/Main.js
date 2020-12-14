@@ -5,6 +5,7 @@ import axios  from "axios"
 
 import Navigation from "./components/navigation/Navigation.js"
 import Coordinate from "./components/coordinate/Coordinate.js"
+import CoordinateItem from './components/coordinate-item/CoordinateItem.js'
 import Request    from "./components/request/Request.js"
 import Vacancy    from "./components/vacancy/Vacancy.js"
 import Slider     from "./components/slider/Slider.js"
@@ -30,7 +31,7 @@ export default class Sign extends Component{
             withCredentials: true
         })
             .then((response)=>{
-                console.log(response);
+                // console.log(response);
             })
             // .catch((error)=>{
             //     console.log(error);
@@ -51,19 +52,22 @@ export default class Sign extends Component{
                     <title>админ панель</title>
                 </Helmet>
 
-                <main className="adminContent container">
+                <div className="adminContent container">
                     <Navigation
                         changeLink = {this.changeLink}
                     />
 
-                    <Switch>
-                        <Route  path="/admin/coordinate" component={Coordinate} />
-                        <Route  path="/admin/request"    component={Request} />
-                        <Route  path="/admin/vacancy"    component={Vacancy} />
-                        <Route  path="/admin/slider"     component={Slider} />
-                        <Route  path="/admin/setting"    component={Setting} />
-                    </Switch>
-                </main>
+                    <main>
+                        <Switch>
+                            <Route  path="/admin/coordinate/:id" component={CoordinateItem} />
+                            <Route  path="/admin/coordinate"     component={Coordinate} />
+                            <Route  path="/admin/request"        component={Request} />
+                            <Route  path="/admin/vacancy"        component={Vacancy} />
+                            <Route  path="/admin/slider"         component={Slider} />
+                            <Route  path="/admin/setting"        component={Setting} />
+                        </Switch>
+                    </main>
+                </div>
             </>
         )
     }

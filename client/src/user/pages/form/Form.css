@@ -44,15 +44,6 @@
     grid-gap: 30px;
 }
 
-.form__radioGroup {
-    display: flex;
-    margin-top: 26px;
-}
-
-.radioGroup__item + .radioGroup__item {
-    margin-left: 28px;
-}
-
 .requestPage__resume {
     height: 140px;
 }
@@ -69,6 +60,10 @@
     height: 24px;
     fill: var(--color-black);
     opacity: 0.3;
+}
+
+.requestPage__radioGroup {
+    margin-top: 26px;
 }
 
 .reCaptcha {

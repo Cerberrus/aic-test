@@ -91,11 +91,14 @@ button,
 }
 
 .button_gray {
-    background-color: var(--color-gray);
+    border: 1px solid var(--color-darkGray);
+    color: var(--color-darkGray);
+    background: none;
 }
 
 .button_gray:hover {
     background-color: var(--color-darkGray);
+    color: var(--color-white);
 }
 
 .button_yellow {
@@ -184,6 +187,14 @@ label {
 input[type=radio]:checked + .form__radio:before {
     background-color: var(--color-black);
     border: 7px solid var(--color-gray);
+}
+
+.form__radioGroup {
+    display: flex;
+}
+
+.radioGroup__item + .radioGroup__item {
+    margin-left: 28px;
 }
 
 .form__checkbox {
@@ -304,4 +315,14 @@ input[type=checkbox]:checked + .form__checkbox:before {
         padding-left:  16px !important;
         padding-right: 16px !important;
     }
+}
+
+
+/* TEMP */
+.title {
+    margin-bottom: 36px;
+    font-family: var(--font-raleway);
+    font-weight: 500;
+    font-size: 32px;
+    color: var(--color-black);
 }

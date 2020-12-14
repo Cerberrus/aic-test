@@ -1,10 +1,6 @@
 import axios from 'axios'
 
 export default class GetData {
-    constructor() {
-        this._apiBase = 'https://aic.xutd.tk/api'
-    }
-
     getResource = async (url) => {
         try {
             const response = await axios({
@@ -18,43 +14,48 @@ export default class GetData {
         }
     }
 
-    getVacancies = async () => {
+    getAllVacancies = async () => {
         const  vacancies = await this.getResource('/vacancy')
-        return vacancies.map(this._transformVacancies);
+        return vacancies.map(this._transformVacancy);
     }
 
-    getInstagramImages = () => {
+    getAllInstagramImages = () => {
         return this.getResource('/instagram/image')
     }
 
-    getSlides = async () => {
+    getAllSlides = async () => {
         const  slides = await this.getResource('/slider')
-        return slides.map(this._transformSlides);
+        return slides.map(this._transformSlide);
     }
 
-    getCoordinates = async () => {
+    getAllCoordinates = async () => {
         const  coordinates = await this.getResource('/coordinate')
         return coordinates
     }
 
+    getCoordinate = async (id) => {
+        const  coordinate = await this.getResource(`/coordinate/${id}`)
+        return coordinate
+    }
+
     _extractImages = (images) => {}
 
-    _transformVacancies = (vacancy) => {
+    _transformVacancy = (vacancy) => {
         return {
             id:          vacancy.id,
-            title:       vacancy.title                     || '',
-            description: vacancy.description               || '',
-            alt:         vacancy.imageDescription          || '',
-            images:      vacancy.path                      || [],
+            title:       vacancy.title            || '',
+            description: vacancy.description      || '',
+            alt:         vacancy.imageDescription || '',
+            images:      vacancy.path             || [],
         }
     }
 
-    _transformSlides = (slide) => {
+    _transformSlide = (slide) => {
         return {
             id:          slide.id,
-            title:       slide.title            || '',
-            alt:         slide.imageDescription || '',
-            images:      slide.path             || [],
+            title:       slide.title              || '',
+            alt:         slide.imageDescription   || '',
+            images:      slide.path               || [],
             active:      false,
         }
     }

@@ -10,7 +10,6 @@ const Header   = loadable(() => import('~user/components/header/Header'))
 const Footer   = loadable(() => import('~user/components/footer/Footer'))
 
 // Import static files
-import './App.css'
 import shortIcon from '~user/static/images/temporary/logo.png'
 
 export default class App extends Component {

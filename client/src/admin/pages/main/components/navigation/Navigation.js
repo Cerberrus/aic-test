@@ -8,7 +8,7 @@ export default class Navigation extends Component {
 
     render(){
         return(
-            <aside className="sidebar">
+            <aside>
                 <nav className="navigation">
                     <ul className="navigation__item">
                         <li className="navigation__list">

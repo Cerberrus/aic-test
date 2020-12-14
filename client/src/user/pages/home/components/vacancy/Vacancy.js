@@ -7,7 +7,7 @@ import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation])
 
-import getData from "~user/services/getData"
+import getData from "~src/services/getData"
 
 // Import static files
 import './Vacancy.css'
@@ -46,7 +46,7 @@ export default class Vacancy extends Component {
     }
 
     componentDidMount() {
-        this.getData.getVacancies()
+        this.getData.getAllVacancies()
             .then(vacancyList => this.setState({vacancyList}))
     }
 

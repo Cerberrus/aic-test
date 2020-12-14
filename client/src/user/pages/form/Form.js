@@ -8,7 +8,7 @@ import Success from "./components/success/Success"
 import Goal    from "./components/goal/Goal"
 import ReCAPTCHA from "react-google-recaptcha"
 
-import getData from "~user/services/getData"
+import getData from "~src/services/getData"
 
 // Import static files
 import './Form.css'
@@ -38,7 +38,7 @@ export default class Form extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
-        this.getData.getVacancies()
+        this.getData.getAllVacancies()
             .then(vacancyList => this.setState({vacancyList}))
     }
 
@@ -230,7 +230,7 @@ export default class Form extends Component {
                             {/* Sex */}
                             <div>
                                 <p>Пол {IconChecked}</p>
-                                <ul className="form__radioGroup">
+                                <ul className="requestPage__radioGroup form__radioGroup">
                                     <li className="radioGroup__item">
                                         <input
                                             type="radio"
