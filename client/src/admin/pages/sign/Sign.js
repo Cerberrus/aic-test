@@ -1,14 +1,13 @@
-import React, {Component} from "react"
-import { Redirect } from "react-router-dom";
+import React, { Component } from "react"
+import { Redirect } from "react-router-dom"
 import axios from "axios"
 
 import SignForm from "./components/SignForm/SignForm.js"
+
 export default class Sign extends Component{
     state = {
         redirect: null
     }
-
-
 
     toSignIn =(username, password)=> {
         axios({
@@ -27,15 +26,8 @@ export default class Sign extends Component{
     }
 
     render() {
-        if(this.state.redirect){
-            return <Redirect to={this.state.redirect}/>
-        }
-        else{
-            return <div>
-                <SignForm
-                    toSignIn={this.toSignIn}
-                />
-            </div>
-        }
+        const { redirect } = this.state
+
+        return redirect ? <Redirect to={redirect}/> : <SignForm toSignIn={this.toSignIn}/>
     }
 }
