@@ -36,10 +36,10 @@ export default class Request extends Component{
             })
     }
 
-    render(){
-        let requestList =[]
-        if(this.state.request.isLoaded){
-            for(let request of this.state.request.list){
+    render() {
+        let requestList = []
+        if (this.state.request.isLoaded) {
+            for (let request of this.state.request.list) {
                 requestList.push(
                     <div className="request" key={request.id}>
                         <div className="request__top">
@@ -53,8 +53,13 @@ export default class Request extends Component{
                             <p className="request__key">Дата рождения:<span className="request__value">{request.happy_date}</span></p>
                             <p className="request__key">Телефон:<a className="request__value" href="tel:+79619999999">{request.phone_number}</a></p>
                             <p className="request__key">Пол:<span className="request__value">{request.sex = 'm'?"Муж.":"Жен."}</span></p>
-                            <p className="request__key">E-mail:<a className="request__value"
-                                                                  href={`mailto:${request.email}`}>{request.email}</a></p>
+                            <p className="request__key">E-mail:
+                                <a className="request__value"
+                                   href={`mailto:${request.email}`}
+                                >
+                                    {request.email}
+                                </a>
+                            </p>
                         </div>
                         <div className="request__group">
                             <p className="request__key request__key_resume">Резюме:</p>
@@ -63,8 +68,9 @@ export default class Request extends Component{
                         {('path' in request)
                             ? <div className="request__group">
                                 <p className="request__key">Резюме (файл):
-                                    <a href="#" download className="request__download">Скачать <img
-                                        src={request.path}/></a>
+                                    <a href="#" download className="request__download">Скачать
+                                        <img src={request.path}/>
+                                    </a>
                                 </p>
                             </div>
                             : <></>
