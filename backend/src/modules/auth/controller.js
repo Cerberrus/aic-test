@@ -25,6 +25,16 @@ const toSignOut = (req, res) => {
     res.status(402).send();
   }
 };
+const toSignUp = (req, res) => {
+  try {
+    authentication.postAdmin(req.body)
+    res.status(200)
+        .clearCookie("auth")
+        .send( "jwt token уничтожен" );
+  } catch (e) {
+    res.status(402).send();
+  }
+};
 
 module.exports = {
   toSignIn,

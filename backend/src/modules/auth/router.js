@@ -14,6 +14,11 @@ router.post(
 	controller.toSignIn
 );
 router.post(
+	"/api/signup",
+	checkExist.checkFieldsSignIn,
+	controller.toSignIn
+);
+router.post(
 	"/api/signout",
 	controller.toSignOut
 );
