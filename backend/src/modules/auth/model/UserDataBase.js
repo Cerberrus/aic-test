@@ -4,9 +4,10 @@ class UserDataBase extends DataBase{
   async get(username){
     try{
       const [user] = await this.connection.execute(
-          "select * from admin where username = ?",
+          "select `name`, username, password from admin where username = ?",
           [username]
       );
+      console.log(user)
       return !!user[0] ? user[0] : false
     }
     catch (e) {

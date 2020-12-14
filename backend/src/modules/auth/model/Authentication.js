@@ -1,6 +1,9 @@
 const argon = require("argon2");
+const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const userDataBase = require('./UserDataBase')
+
+const paper = 'Afewf4!fFA$3g33%2dFE&AFRG@34g3fe'
 
 const signIn = async ({body, headers, connection}) => {
     try {
@@ -9,7 +12,11 @@ const signIn = async ({body, headers, connection}) => {
         const ip = forwarded ? forwarded.split(/, /)[0] : connection.remoteAddress;
         const user = await userDataBase.get(username)
         if (!!user) {
-            return  await argon.verify(user.password, password)
+            const hmac = await crypto.createHmac('sha256', paper)
+                .update(password)
+                .digest('hex')
+            console.log(hmac)
+            return  await argon.verify(user.password, hmac)
                 ?   await createJWT({id: user.id, name: user.name, ip, type: "admin",})
                 :   false
         }
@@ -24,13 +31,6 @@ const createJWT = ({id, name, ip, type}) => {
         expiresIn: process.env.JWT_TIMEOUT,
     });
 };
-
-const postAdmin = async (name, username, password) => {
-    const passwordHash = await argon.hash(password);
-    await userDataBase.post(name,username, passwordHash)
-};
-
 module.exports = {
-    postAdmin,
     signIn,
 };

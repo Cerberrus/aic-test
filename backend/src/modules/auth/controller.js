@@ -25,7 +25,6 @@ const toSignOut = (req, res) => {
     res.status(402).send();
   }
 };
-
 module.exports = {
   toSignIn,
   toSignOut,
