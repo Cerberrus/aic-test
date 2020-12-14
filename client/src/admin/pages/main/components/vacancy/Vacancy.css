@@ -1,8 +1,3 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-
 .vacancy {
     width: 824px;
 }
@@ -21,13 +16,6 @@
     display: grid;
     grid-template-columns: 85px 179px 492px;
     margin-bottom: 30px;
-    font-family: var(--font-raleway);
-    font-weight: 500;
-    font-size: 18px;
-    color: var(--color-black);
-}
-
-.sign {
     font-family: var(--font-raleway);
     font-weight: 500;
     font-size: 18px;
@@ -62,4 +50,9 @@
 
 .vacancy__description {
     padding-right: 20px;
+}
+
+.vacancy__delete {
+    padding: 0;
+    margin-bottom: 10px;
 }

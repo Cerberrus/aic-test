@@ -1,15 +1,13 @@
-import React, {Component} from "react"
-import {Link} from "react-router-dom";
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
+import axios    from "axios"
+
+// Import static files
 import './Vacancy.css'
-import axios from "axios";
 
 export default class Vacancy extends Component {
-
     state = {
-        vacancy: {
-            list: [],
-            isLoaded: false
-        }
+        vacancyList: [],
     }
 
     componentDidMount() {
@@ -24,10 +22,7 @@ export default class Vacancy extends Component {
         })
             .then((response) => {
                 this.setState({
-                    vacancy: {
-                        list: response.data,
-                        isLoaded: true
-                    }
+                    vacancyList: response.data
                 })
             })
             .catch((error) => {
@@ -36,31 +31,8 @@ export default class Vacancy extends Component {
     }
 
     render() {
-        let vacancyList = []
-        if (this.state.vacancy.isLoaded) {
-            for (let vacancy of this.state.vacancy.list) {
-                vacancyList.push(
-                    <div className="vacancy__card">
-                        <img className="vacancy__image" src={vacancy.path[0]}/>
-                        <p className="vacancy__name">{vacancy.title}</p>
-                        <p className="vacancy__description">{vacancy.description}</p>
-                        <img src="https://aic.xutd.tk/static/icons/close.svg"/>
-                        <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
-                        <img src="https://aic.xutd.tk/static/icons/hide.svg"/>
-                    </div>)
-            }
-        } else {
-                vacancyList.push(
-                    <div className="vacancy__card">
-                        <img className="vacancy__image"/>
-                        <p className="vacancy__name">Загрузка</p>
-                        <p className="vacancy__description">Загрузка</p>
-                        <img src="https://aic.xutd.tk/static/icons/close.svg"/>
-                        <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
-                        <img src="https://aic.xutd.tk/static/icons/hide.svg"/>
-                    </div>
-                )
-        }
+        const { vacancyList } = this.state
+
         return (
             <section className="vacancy">
                 <div className="vacancy__top">
@@ -72,7 +44,21 @@ export default class Vacancy extends Component {
                     <p>Название</p>
                     <p>Описание</p>
                 </div>
-                {vacancyList}
+                <ul>
+                    {vacancyList && vacancyList.map((vacancy) => (
+                        <li className="vacancy__card" key={vacancy.id}>
+                            <img className="vacancy__image" src={vacancy.path[0]} />
+                            <p className="vacancy__name">{vacancy.title}</p>
+                            <p className="vacancy__description">{vacancy.description}</p>
+                            <button className="vacancy__delete" title="Удалить">
+                                <img src="https://aic.xutd.tk/static/icons/close.svg"/>
+                            </button>
+                            <Link to="" title="Редактировать">
+                                <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </section>
         )
     }
