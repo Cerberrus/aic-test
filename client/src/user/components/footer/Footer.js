@@ -25,9 +25,9 @@ export default class Footer extends Component {
 
     render() {
         const { showModal } = this.state
+        const { location }  = this.props
 
         const modalTitle = 'Обработка данных'
-
         const modalContent = (
             <>
                 <p style={{marginBottom: '26px', fontSize: '18px'}}>1. Что регулирует настоящая политика конфиденциальности</p>
@@ -53,12 +53,12 @@ export default class Footer extends Component {
                     <p className="footer__shareText">поделиться</p>
                     <ul className="footer__social social">
                         <li className="social__item">
-                            <VKShareButton url={useLocation.path} >
+                            <VKShareButton url={location.pathname}>
                                 <svg className="social__icon social__icon_vk"><use xlinkHref={iconVk}/></svg>
                             </VKShareButton>
                         </li>
                         <li className="social__item">
-                            <FacebookShareButton>
+                            <FacebookShareButton url={location.pathname}>
                                 <svg className="social__icon social__icon_facebook"><use xlinkHref={iconFacebook}/></svg>
                             </FacebookShareButton>
                         </li>
