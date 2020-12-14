@@ -1,9 +1,3 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 .coordinate {
     width: 823px;
 }
@@ -16,11 +10,6 @@
 
 .coordinate__title {
     margin-bottom: 0;
-}
-
-.button_yellow {
-    color: var(--color-black);
-    background-color: var(--color-yellow);
 }
 
 .coordinate__tableHeader {
@@ -49,7 +38,7 @@
     border: 2px solid var(--color-gray);
 }
 
-.coordinate__card > p {
+.coordinate__card {
     font-family: var(--font-raleway);
     font-size: 14px;
     font-weight: 500;
@@ -69,7 +58,9 @@
     margin-top: 12px;
 }
 
-.coordinate__img + .coordinate__img {
-    margin-left: 20px;
+.coordinate__cardList {
+    display: flex;
+    justify-content: space-around;
+    width: 80px;
 }
 
