@@ -1,37 +1,62 @@
-import React, { Component } from "react"
+import React, { Component, useState } from "react"
 import { Link } from "react-router-dom"
 import axios    from "axios"
-
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import CoordinateItem from './CoordinateItem'
 //Import static files
 import './Coordinate.css'
 
 export default class Navigation extends Component {
+    constructor(props) {
+        super(props)
+        this.handler = this.handler.bind(this)
+    }
+
     state = {
-        coordinateList: []
+        manage: false,
+        coordinateList: [],
+        toggle: false,
+        typeList: [],
+        coordinateModal: null
+    }
+
+    handler() {
+        this.setState({
+            updated: false
+        })
     }
 
     componentDidMount() {
-        this.getCoordinate()
+        this.getCoordinateList()
+    }
+    componentDidUpdate(prevState) {
+        if (this.state.value > prevState.value) {
+            this.getCoordinateList()
+        }
     }
 
-    getCoordinate = () => {
+    getCoordinateList = () => {
         axios({
             method: 'get',
             url: process.env.API_BASE + '/coordinate',
             withCredentials: true
         })
             .then((response) => {
+                console.log(response.data.coordinateList)
                 this.setState({
-                    coordinateList: response.data.coordinateList
+                    coordinateList: response.data.coordinateList,
+                    typeList: response.data.typeList
                 })
+                return true
             })
             .catch((error)=>{
                 console.log('error')
             })
+        this.setState({updated : true})
     }
     render() {
         const { features } = this.state.coordinateList
-
         return(
             <section className="coordinate">
                 <div className="coordinate__top">
@@ -43,25 +68,15 @@ export default class Navigation extends Component {
                     <p className="coordinate__item">Координаты</p>
                     <p className="coordinate__item">Название</p>
                 </div>
+
                 <ul>
                     {features && features.map((item) => (
-                        <li className="coordinate__card" key={item.id}>
-                            <p className="coordinate__type">{item.properties.typeTitle}</p>
-                            <p className="coordinate__cords">{item.geometry.coordinates[0]} | {item.geometry.coordinates[1]}</p>
-                            <p className="coordinate__designation">{item.title}</p>
-                            <ul className="coordinate__cardList">
-                                <li>
-                                    <Link to="" title="Редактировать">
-                                        <img src="https://aic.xutd.tk/static/icons/edit.svg"  className="coordinate__img" alt=""/>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <button title="Удалить">
-                                        <img src="https://aic.xutd.tk/static/icons/close.svg" className="coordinate__img" alt=""/>
-                                    </button>
-                                </li>
-                            </ul>
-                        </li>
+                        <CoordinateItem
+                            key={item.id}
+                            item = {item}
+                            typeList={this.state.typeList}
+                            handler={this.handler}
+                        />
                     ))}
                 </ul>
             </section>
