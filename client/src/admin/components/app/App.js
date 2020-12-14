@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Switch, Route }    from "react-router-dom"
+import {Switch, Route } from "react-router-dom"
 import Helmet   from "react-helmet"
 import loadable from "@loadable/component"
 
@@ -15,6 +15,8 @@ import shortIcon from '~user/static/images/temporary/logo.png'
 
 export default class App extends Component {
     render() {
+        const {location} = this.props
+
         return (
             <>
                 <Helmet
@@ -31,7 +33,7 @@ export default class App extends Component {
                         <Route exact path="/admin"      component={MainPage} />
                         <Route       path="/admin/*"    component={MainPage} />
                     </Switch>
-                    <Footer />
+                    <Footer location={location}/>
                 </div>
             </>
         )

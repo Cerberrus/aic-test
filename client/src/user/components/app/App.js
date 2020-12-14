@@ -1,5 +1,5 @@
 import React from "react"
-import { Switch, Route, useLocation } from "react-router-dom"
+import { Switch, Route, useLocation, useHistory } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
 import Helmet   from "react-helmet"
 import loadable from "@loadable/component"
@@ -36,7 +36,7 @@ const App = () => {
                         <Route       path="/form" component={FormPage} />
                     </Switch>
                 </AnimatePresence>
-                <Footer />
+                <Footer location={location}/>
             </div>
         </>
     )
