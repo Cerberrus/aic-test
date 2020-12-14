@@ -1,8 +1,10 @@
-import React, {Component} from "react"
-import {Link} from "react-router-dom";
+import React, { Component } from "react"
+import { NavLink } from "react-router-dom"
+
+// Import static files
 import './Navigation.css'
 
-export default class Navigation extends Component{
+export default class Navigation extends Component {
 
     render(){
         return(
@@ -10,19 +12,19 @@ export default class Navigation extends Component{
                 <nav className="navigation">
                     <ul className="navigation__item">
                         <li className="navigation__list">
-                            <Link to="/admin/coordinate" className="navigation__link" >Координаты</Link>
+                            <NavLink to="/admin/coordinate" className="navigation__link" >Координаты</NavLink>
                         </li>
                         <li className="navigation__list">
-                            <Link to="/admin/request" className="navigation__link" >Запросы</Link>
+                            <NavLink to="/admin/request"    className="navigation__link" >Запросы</NavLink>
                         </li>
                         <li className="navigation__list">
-                            <Link to="/admin/vacancy" className="navigation__link" >Вакансии</Link>
+                            <NavLink to="/admin/vacancy"    className="navigation__link" >Вакансии</NavLink>
                         </li>
                         <li className="navigation__list">
-                            <Link to="/admin/slider" className="navigation__link" >Слайдер</Link>
+                            <NavLink to="/admin/slider"     className="navigation__link" >Слайдер</NavLink>
                         </li>
                         <li className="navigation__list">
-                            <Link to="/admin/setting" className="navigation__link" >Настройки</Link>
+                            <NavLink to="/admin/setting"    className="navigation__link" >Настройки</NavLink>
                         </li>
                     </ul>
                 </nav>
