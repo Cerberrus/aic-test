@@ -6,10 +6,19 @@ router.get(
 	"/api/coordinate",
 	controller.toGetCoordinateList
 );
+router.get(
+	"/api/coordinate/:id",
+	controller.toGetCoordinate
+);
 router.post(
 	"/api/coordinate",
 	authCheck.toCheck,
 	controller.toPostCoordinate
+);
+router.put(
+	"/api/coordinate/:id",
+	authCheck.toCheck,
+	controller.toUpdateCoordinate
 );
 router.delete(
   "/api/coordinate/:id",
@@ -19,7 +28,7 @@ router.delete(
 
 router.get(
 	"/api/coordinate-type",
-	controller.toPostCoordinateType
+	controller.toGetCoordinateTypeList
 );
 router.post(
 	"/api/coordinate-type",
