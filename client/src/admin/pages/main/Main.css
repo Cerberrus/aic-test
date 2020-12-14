@@ -1,0 +1,5 @@
+.adminContent {
+    display: flex;
+    justify-content: space-between;
+    margin: 80px 0;
+}
