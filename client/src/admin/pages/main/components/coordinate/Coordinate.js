@@ -1,28 +1,25 @@
 import React, { Component } from "react"
 import { Helmet } from "react-helmet"
 import { Link }   from "react-router-dom"
-import axios      from "axios"
+import  axios     from "axios"
+
+import getData from "~src/services/getData"
 
 //Import static files
 import './Coordinate.css'
 
 export default class Coordinate extends Component {
+    getData = new getData()
+
     state = {
         coordinateList: [],
     }
 
     componentDidMount() {
-        axios({
-            method: 'get',
-            url: process.env.API_BASE + '/coordinate',
-            withCredentials: true
-        })
-            .then((response) => {
-                const coordinateList = response.data.coordinateList
+        this.getData.getAllCoordinates()
+            .then(response => {
+                const coordinateList = response.coordinateList.features
                 this.setState({coordinateList})
-            })
-            .catch((error)=>{
-                console.log('error')
             })
     }
 
@@ -32,8 +29,15 @@ export default class Coordinate extends Component {
             url: process.env.API_BASE + `/coordinate/${id}`,
             withCredentials: true
         })
-            .then((response) => {
-                console.log('Successful')
+            .then(() => {
+                this.setState(({ coordinateList }) => {
+                    const index = coordinateList.findIndex(el => el.id === id)
+                    const updatedCoordinateList = [...coordinateList.slice(0, index), ...coordinateList.slice(index + 1)]
+
+                    return {
+                        coordinateList: updatedCoordinateList
+                    }
+                })
             })
             .catch((error) => {
                 console.log('error')
@@ -41,7 +45,9 @@ export default class Coordinate extends Component {
     }
 
     render() {
-        const { features } = this.state.coordinateList
+        const { coordinateList } = this.state
+
+        console.log(coordinateList);
 
         return (
             <>
@@ -61,7 +67,7 @@ export default class Coordinate extends Component {
                     </div>
 
                     <ul>
-                        {features && features.map((item) => (
+                        {coordinateList && coordinateList.map((item) => (
                             <li className="coordinate__card" key={item.id}>
                                 <p className="coordinate__type">{item.properties.typeTitle}</p>
                                 <p className="coordinate__cords">{item.geometry.coordinates[0]} | {item.geometry.coordinates[1]}</p>
