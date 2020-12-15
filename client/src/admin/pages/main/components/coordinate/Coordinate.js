@@ -40,7 +40,7 @@ export default class Coordinate extends Component {
                 })
             })
             .catch((error) => {
-                console.log('error')
+                console.log(error)
             })
     }
 

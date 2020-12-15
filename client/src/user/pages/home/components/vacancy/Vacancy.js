@@ -63,8 +63,8 @@ export default class Vacancy extends Component {
         const { vacancyList } = this.state
 
         return (
-            <section className="vacancy">
-                <div className="vacancy__header container">
+            <section className="vacancy container">
+                <div className="vacancy__header">
                     <h2>вакансии в гросс маркете</h2>
                     <div className="vacancy__buttonGroup slider__buttonGroup">
                         <button  className="slider__button sliderVacancy__button_prev button">
