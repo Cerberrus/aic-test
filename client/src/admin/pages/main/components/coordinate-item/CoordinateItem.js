@@ -1,50 +1,55 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Helmet } from "react-helmet"
+import { Link }   from "react-router-dom"
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 //Import static files
 import './CoordinateItem.css'
-import axios from "axios";
-import {Helmet} from "react-helmet";
 
 export default class CoordinateItem extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
-        coordinate: undefined,
-        typeList:   undefined,
+        typeList:   [],
         fields: {
-            longitude: undefined,
-            latitude:  undefined,
+            id:        undefined,
             type:      undefined,
             title:     undefined,
-            id:        undefined,
-        }
+            longitude: undefined,
+            latitude:  undefined,
+        },
+        loading: true,
     }
 
     componentDidMount() {
         const { id } = this.props.match.params
+        this.getCoordinate(id)
+    }
 
-        this.getData.getCoordinate(id)
-            .then(response => {
-                const coordinate = response.coordinate.features
+    getCoordinate = (id) => {
+        if (id !== 'new') {
+            this.model.getCoordinate(id)
+                .then((fields) => {
+                    this.setState({fields})
+                    this.getCoordinateTypes()
+                })
+        } else {
+            this.getCoordinateTypes()
+        }
+    }
 
+    getCoordinateTypes = () => {
+        this.model.getCoordinateTypes()
+            .then((typeList) => {
                 this.setState({
-                    coordinate: coordinate,
-                    typeList:   response.typeList,
-                    fields: {
-                        longitude: coordinate.geometry.coordinates[0],
-                        latitude:  coordinate.geometry.coordinates[1],
-                        type:      coordinate.properties.type,
-                        title:     coordinate.title,
-                        id:        id
-                    }
+                    typeList: typeList,
+                    loading: false
                 })
             })
     }
-
-    setValue = (e) => {
+    
+    setFiled = (e) => {
         const key    = e.target.name
         const value  = e.target.value
         const fields = this.state.fields
@@ -55,58 +60,36 @@ export default class CoordinateItem extends Component {
 
     onSubmit = (e) => {
         e.preventDefault()
-        const {id, title, longitude, latitude, type} = this.state.fields
+        const { id } = this.props.match.params
 
-        axios({
-            method: 'put',
-            url: process.env.API_BASE + `/coordinate/${id}?`+
-                `title=${title}`+
-                `&longitude=${longitude}`+
-                `&latitude=${latitude}`+
-                `&typeId=${type}`,
-            withCredentials: true
-        })
+        id === 'new' ? this.addCoordinate() : this.changeCoordinate()
+    }
+
+    addCoordinate = () => {
+        this.model.postCoordinate(this.state.fields)
             .then((response) => {
-                console.log('Successful')
-            })
-            .catch((error) => {
-                console.log('error')
+                console.log(response);
             })
     }
 
-    newCoord = (e) => {
-        e.preventDefault()
-        const {id, title, longitude, latitude, type} = this.state.fields
-
-        axios({
-            method: 'post',
-            url: process.env.API_BASE + `/coordinate?`+
-                `title=${title}`+
-                `&longitude=${longitude}`+
-                `&latitude=${latitude}`+
-                `&typeId=${type}`,
-            withCredentials: true
-        })
+    changeCoordinate = () => {
+        this.model.putCoordinate(this.state.fields)
             .then((response) => {
-                console.log('Successful')
-            })
-            .catch((error) => {
-                console.log('error')
+                console.log(response);
             })
     }
-
 
     render() {
-        const { coordinate, typeList } = this.state
+        const {loading, fields, typeList } = this.state
 
-        if(coordinate === undefined) {
+        if(loading) {
             return <h1>Loading...</h1>
         }
 
         return (
             <>
                 <Helmet>
-                    <title>{coordinate.title}</title>
+                    <title>{fields.title || 'координаты'}</title>
                 </Helmet>
 
                 <section className="coordinateAdd">
@@ -117,19 +100,19 @@ export default class CoordinateItem extends Component {
                         <ul className="coordinateAdd__list">
                             <li>
                                 <ul className="form__radioGroup">
-                                    {typeList.map((item) => (
-                                        <li className="radioGroup__item" key={item.id}>
+                                    {typeList.map((type) => (
+                                        <li className="radioGroup__item" key={type.id}>
                                             <input
                                                 type="radio"
                                                 name="type"
-                                                id={item.id}
-                                                value={item.id}
-                                                defaultChecked={item.id === coordinate.properties.type}
+                                                id={type.id}
+                                                value={type.id}
+                                                defaultChecked={type.id === fields.type}
+                                                onChange={this.setFiled}
                                                 hidden
-                                                onChange={this.setValue}
                                             />
-                                            <label className="radioGroup__radio form__radio" htmlFor={item.id}>
-                                                <span>{item.type}</span>
+                                            <label className="radioGroup__radio form__radio" htmlFor={type.id}>
+                                                <span>{type.title}</span>
                                             </label>
                                         </li>
                                     ))}
@@ -143,8 +126,8 @@ export default class CoordinateItem extends Component {
                                         type="text"
                                         placeholder="00.000"
                                         name="longitude"
-                                        defaultValue={coordinate.geometry.coordinates[0]}
-                                        onChange={this.setValue}
+                                        defaultValue={fields.longitude}
+                                        onChange={this.setFiled}
                                     />
                                 </label>
                             </li>
@@ -156,8 +139,8 @@ export default class CoordinateItem extends Component {
                                         type="text"
                                         placeholder="00.000"
                                         name="latitude"
-                                        defaultValue={coordinate.geometry.coordinates[1]}
-                                        onChange={this.setValue}
+                                        defaultValue={fields.latitude}
+                                        onChange={this.setFiled}
                                     />
                                 </label>
                             </li>
@@ -168,8 +151,8 @@ export default class CoordinateItem extends Component {
                                         className="requestPage__resume form__input"
                                         placeholder="Введите..."
                                         name="title"
-                                        defaultValue={coordinate.title}
-                                        onChange={this.setValue}
+                                        defaultValue={fields.title}
+                                        onChange={this.setFiled}
                                     />
                                 </label>
                             </li>

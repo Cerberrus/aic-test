@@ -3,20 +3,20 @@ import { Helmet } from "react-helmet"
 import { Link }   from "react-router-dom"
 import  axios     from "axios"
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 //Import static files
 import './Coordinate.css'
 
 export default class Coordinate extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
         coordinateList: [],
     }
 
     componentDidMount() {
-        this.getData.getAllCoordinates()
+        this.model.getAllCoordinates()
             .then(response => {
                 const coordinateList = response.coordinateList.features
                 this.setState({coordinateList})
@@ -58,7 +58,7 @@ export default class Coordinate extends Component {
                 <section className="coordinate">
                     <div className="coordinate__top">
                         <h1 className="title coordinate__title">Координаты</h1>
-                        <Link to='' className="button button_yellow">Добавить</Link>
+                        <Link to='/admin/coordinate/new' className="button button_yellow">Добавить</Link>
                     </div>
                     <div className="coordinate__tableHeader">
                         <p className="coordinate__item">Тип</p>
