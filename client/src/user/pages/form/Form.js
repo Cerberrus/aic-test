@@ -132,7 +132,7 @@ export default class Form extends Component {
                 headers: {
                     'Content-Type': file ? 'multipart/form-data' : 'application/json'
                 },
-                url: `http://xutd.tk/api/request?`+
+                url: `https://aic.xutd.tk/api/summary?`+
                      `g-recaptcha-response=${captcha}&`+
                      `jobVacancyId=${vacancy}&`+
                      `name=${fullName}&`+
@@ -140,7 +140,7 @@ export default class Form extends Component {
                      `phoneNumber=${phone}&`+
                      `${sex && 'sex='+sex+'&'}`+
                      `${mail && 'email='+mail+'&'}`+
-                     `${resume && 'resumeText='+resume+'&'}`
+                     `${resume && 'resumeText='+resume}`
                 ,
                 data: file
             }).then((response)=>{
@@ -149,7 +149,7 @@ export default class Form extends Component {
                     success: true
                 })
             }).catch((error)=>{
-                console.log(error.response)
+                console.log(error)
                 alert('Ошибка!')
             })
         }
