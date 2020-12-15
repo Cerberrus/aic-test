@@ -43,6 +43,19 @@ export default class Model {
         return coordinateTypes.map(this._transformCoordinateType);
     }
 
+    getSettings = async () => {
+        const  settings = await this.getResource(`/setting`)
+        return this._transformSetting(settings)
+    }
+
+    _transformSetting = (setting) => {
+        return {
+            instLogin:    setting.instagramLogin    || '',
+            instPassword: setting.instagramPassword || '',
+            phone:        setting.phone             || '',
+        }
+    }
+
     _transformCoordinate = (coordinate) => {
         return {
             id:        coordinate.coordinate.features.id,
@@ -83,10 +96,12 @@ export default class Model {
     // POST
     postResource = async (url, properties) => {
         try {
+            console.log(`${process.env.API_BASE}${url}?${properties}`);
+
             const response = await axios({
                 method: 'post',
                 url: `${process.env.API_BASE}${url}?${properties}`,
-                withCredentials: true
+                withCredentials: true,
             })
 
             return response
@@ -103,6 +118,15 @@ export default class Model {
             `&typeId=${coordinate.type}`
 
         return await this.postResource(`/coordinate`, properties)
+    }
+
+    postSettings = async (settings) => {
+        const properties =
+            `&phone=${settings.phone}`+
+            `&instagramLogin=${settings.instLogin}`+
+            `&instagramPassword=${settings.instPassword}`
+
+        return await this.postResource(`/setting`, properties)
     }
 
     // PUT
