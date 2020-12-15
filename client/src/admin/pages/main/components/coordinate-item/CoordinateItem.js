@@ -85,11 +85,7 @@ export default class CoordinateItem extends Component {
         const {loading, fields, typeList } = this.state
 
         if(loading) {
-            return (
-                <div className="coordinateAdd__loading">
-                    <Loader/>
-                </div>
-            )
+            return <Loader/>
         }
 
         return (
