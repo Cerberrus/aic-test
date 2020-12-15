@@ -91,14 +91,13 @@ button,
 }
 
 .button_gray {
-    border: 1px solid var(--color-darkGray);
-    color: var(--color-darkGray);
-    background: none;
+    border: 2px solid var(--color-gray);
+    background-color: var(--color-gray);
 }
 
 .button_gray:hover {
+    border-color: var(--color-darkGray);
     background-color: var(--color-darkGray);
-    color: var(--color-white);
 }
 
 .button_yellow {
