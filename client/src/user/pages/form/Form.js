@@ -8,7 +8,7 @@ import Success from "./components/success/Success"
 import Goal    from "./components/goal/Goal"
 import ReCAPTCHA from "react-google-recaptcha"
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 // Import static files
 import './Form.css'
@@ -16,7 +16,7 @@ import iconCheck from '~user/static/icons/check.svg'
 import iconFile from '~user/static/icons/clip.svg'
 
 export default class Form extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
         vacancyList: [],
@@ -38,7 +38,7 @@ export default class Form extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
-        this.getData.getAllVacancies()
+        this.model.getAllVacancies()
             .then(vacancyList => this.setState({vacancyList}))
     }
 

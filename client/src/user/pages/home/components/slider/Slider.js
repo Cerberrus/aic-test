@@ -7,7 +7,7 @@ import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation, EffectFade, Controller]);
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 // Import static files
 import './Slider.css'
@@ -20,7 +20,7 @@ const swiperNavigation = {
 }
 
 export default class Slider extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
         firstSwiper:  null,
@@ -29,7 +29,7 @@ export default class Slider extends Component {
     }
 
     componentDidMount() {
-        this.getData.getAllSlides()
+        this.model.getAllSlides()
             .then(slides => this.setState({slides}))
     }
 

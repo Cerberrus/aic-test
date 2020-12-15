@@ -1,12 +1,12 @@
 import React, { Component } from "react"
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 // Import styles
 import './Gallery.css'
 
 export default class Gallery extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
         images: Array.from({length: 5}),
@@ -14,7 +14,7 @@ export default class Gallery extends Component {
     }
 
     componentDidMount() {
-        this.getData.getAllInstagramImages()
+        this.model.getAllInstagramImages()
             .then(images => this.setState({images}))
     }
 

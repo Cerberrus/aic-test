@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { YMaps, Map, ZoomControl, ObjectManager } from "react-yandex-maps"
 
-import getData from "~src/services/getData"
+import model from "~src/model/model"
 
 // Import static files
 import './Geography.css'
@@ -45,7 +45,7 @@ const managerClusters = {
 }
 
 export default class Geography extends Component {
-    getData = new getData()
+    model = new model()
 
     state = {
         features:   {},
@@ -54,7 +54,7 @@ export default class Geography extends Component {
     }
 
     componentDidMount() {
-        this.getData.getAllCoordinates()
+        this.model.getAllCoordinates()
             .then(response => {
                 const filterList = [
                     {
