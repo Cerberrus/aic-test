@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import { Helmet } from "react-helmet"
 import { Link }   from "react-router-dom"
 
+import Loader from '~admin/components/loader/Loader'
+
 import model from "~src/model/model"
 
 //Import static files
@@ -83,7 +85,11 @@ export default class CoordinateItem extends Component {
         const {loading, fields, typeList } = this.state
 
         if(loading) {
-            return <h1>Loading...</h1>
+            return (
+                <div className="coordinateAdd__loading">
+                    <Loader/>
+                </div>
+            )
         }
 
         return (

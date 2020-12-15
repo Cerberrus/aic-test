@@ -2,6 +2,13 @@
     width: 540px;
 }
 
+.coordinateAdd__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+
 .coordinateAdd__list {
     display: grid;
     grid-template-columns: 1fr;
