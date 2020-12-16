@@ -150,7 +150,7 @@ export default class CoordinateItem extends Component {
                                 <label>
                                     <span>Название</span>
                                     <textarea
-                                        className="requestPage__resume form__input"
+                                        className="form__input"
                                         placeholder="Введите..."
                                         name="title"
                                         defaultValue={fields.title}
