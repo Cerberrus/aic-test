@@ -3,13 +3,14 @@ import { Switch, Route, Redirect } from "react-router-dom"
 import Helmet from "react-helmet"
 import axios  from "axios"
 
-import Navigation from "./components/navigation/Navigation.js"
-import Coordinate from "./components/coordinate/Coordinate.js"
-import CoordinateItem from './components/coordinate-item/CoordinateItem.js'
-import Request    from "./components/request/Request.js"
-import Vacancy    from "./components/vacancy/Vacancy.js"
-import Slider     from "./components/slider/Slider.js"
-import Setting    from "./components/setting/Setting.js"
+import Navigation from "./components/navigation/Navigation"
+import Coordinate from "./components/coordinate/Coordinate"
+import CoordinateItem from './components/coordinate-item/CoordinateItem'
+import Request    from "./components/request/Request"
+import Vacancy    from "./components/vacancy/Vacancy"
+import Slider     from "./components/slider/Slider"
+import SliderItem from "./components/slider-item/SliderItem"
+import Setting    from "./components/setting/Setting"
 
 //Import static files
 import './Main.css'
@@ -59,12 +60,15 @@ export default class Sign extends Component{
 
                     <main>
                         <Switch>
-                            <Route  path="/admin/coordinate/:id" component={CoordinateItem} />
-                            <Route  path="/admin/coordinate"     component={Coordinate} />
-                            <Route  path="/admin/request"        component={Request} />
-                            <Route  path="/admin/vacancy"        component={Vacancy} />
-                            <Route  path="/admin/slider"         component={Slider} />
-                            <Route  path="/admin/setting"        component={Setting} />
+                            <Route  exact path="/admin/coordinate"     component={Coordinate} />
+                            <Route        path="/admin/coordinate/:id" component={CoordinateItem} />
+                            <Route  exact path="/admin/request"        component={Request} />
+                            <Route        path="/admin/request/:id"    component={Request} />
+                            <Route  exact path="/admin/vacancy"        component={Vacancy} />
+                            <Route        path="/admin/vacancy/:id"    component={Vacancy} />
+                            <Route  exact path="/admin/slider"         component={Slider}  />
+                            <Route        path="/admin/slider/:id"     component={SliderItem} />
+                            <Route  exact path="/admin/setting"        component={Setting} />
                         </Switch>
                     </main>
                 </div>
