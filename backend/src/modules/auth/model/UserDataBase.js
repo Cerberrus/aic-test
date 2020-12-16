@@ -7,11 +7,10 @@ class UserDataBase extends DataBase{
           "select `name`, username, password from admin where username = ?",
           [username]
       );
-      console.log(user)
       return !!user[0] ? user[0] : false
     }
     catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -24,7 +23,7 @@ class UserDataBase extends DataBase{
       return true
     }
     catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 }

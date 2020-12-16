@@ -15,6 +15,7 @@ class VacancyDataBase extends DataBase {
             "select id, title, image_description as imageDescription, description from vacancy  where id =?",
             [id]
         );
+        await super.implementPaths(result, 'vacancy_file')
         return result;
     };
 
@@ -27,7 +28,20 @@ class VacancyDataBase extends DataBase {
             return result[0].insertId;
         }
         catch (e) {
-            console.log(e)
+            console.error(e)
+        }
+    };
+
+    async updateJobVacancy({id},{title, description, imageDescription}) {
+        try{
+            await this.connection.execute(
+                "update vacancy set title=?,description=?, image_description=? where id = ?",
+                [title, description, imageDescription, id]
+            );
+            return id;
+        }
+        catch (e) {
+            console.error(e)
         }
     };
 
@@ -40,10 +54,10 @@ class VacancyDataBase extends DataBase {
                 "delete from vacancy where id=?",
                 [id]
             );
-            return vacancy[0];
+            return vacancy[0] || false;
         }
         catch (e) {
-            console.log(e)
+            console.error(e)
         }
     };
 }

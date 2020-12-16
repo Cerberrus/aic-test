@@ -12,7 +12,7 @@ const toSignIn = async (req, res) => {
        .send("jwt token создан");
     else res.status(403).send();
   } catch (e) {
-    console.log(e)
+    console.error(e)
     res.status(402).send(e);
   }
 };

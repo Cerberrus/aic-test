@@ -10,7 +10,9 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "image/jpeg"
   ) {
     cb(null, true);
-  } else cb(null, false);
+  } else {
+    cb(null, false);
+  }
 };
 
 const storage = multer.diskStorage({
@@ -18,17 +20,11 @@ const storage = multer.diskStorage({
     cb(null, process.cwd()+process.env.FILES_TEMP_FOLDER);
   },
   filename: async (req, file, cb) => {
-    const date = new Date();
-    const hash = await crypto
-        .createHash("sha256")
-        .update(req.query.title+date.toString()+file)
-        .digest("hex");
     const extname = await path.extname(file.originalname)
     cb(
       null,
-      `vacancy_${translit(req.query.title)}_${hash}${extname}`
+      `vacancy_${translit(req.query.title)}${extname}`
     );
-    req.files.hash = hash
   },
 });
 
@@ -41,6 +37,7 @@ module.exports = async (req, res, next) => {
     if (err) {
       res.status(501).send("Ошибка загрузки файла")
     } else {
+      console.log('File downloaded')
       next()
     }
   })

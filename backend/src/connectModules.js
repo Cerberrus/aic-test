@@ -20,7 +20,7 @@ instagram.init();
 const app = express();
 
 const corsOptions = {
-    origin: ['https://aic.xutd.tk', 'http://localhost:3001'],    // reqexp will match all prefixes
+    origin: ['https://aic.xutd.tk', 'http://localhost:3001'],    // Указываем разрешенный хосты
     methods: "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS",
     credentials: true,                // required to pass
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
@@ -45,5 +45,6 @@ app.use(require("./modules/job-vacancy/router")); //
 app.use(require("./modules/job-vacancy/router")); //
 app.use(require("./modules/slider/router")); //
 app.use(require("./modules/instagram/router")); //
+app.use(require("./modules/settings/router")); //
 
 module.exports = app;

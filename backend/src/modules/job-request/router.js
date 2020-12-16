@@ -6,44 +6,51 @@ const ReCaptcha = require("../../lib/ReCaptcha");
 const uploader = require("./model/UploadSummary");
 
 router.get(
-  "/api/request",
-  authCheck.toCheck,
-  controller.toGetJobRequestList
+  "/api/summary",
+  /*authCheck.toCheck,      */          // Проверяем авторизован ли пользователь
+  controller.toGetJobRequestList    // Отправляем данные в контроллер
 );
 router.post(
-  "/api/request",
-  /*ReCaptcha.verify,*/
-  checkField.checkFieldsPost,
-  uploader,
-  controller.toPostJobRequest
+  "/api/summary",
+  /*ReCaptcha.verify,*/             // Проверка на правильность recaptcha
+  checkField.checkFieldsPost,       // Проверяем обязательные поля
+  uploader,                         // Загружем файл
+  controller.toPostJobRequest       // Отправляем данные в контроллер
 );
 router.put(
-  "/api/request/:id",
-  authCheck.toCheck,
-  checkField.checkFieldsPost,
-  controller.toUpdateJobRequest
+  "/api/summary/:id",
+  authCheck.toCheck,                // Проверяем авторизован ли пользователь
+  checkField.checkFieldsPost,       // Проверяем обязательные поля
+  controller.toUpdateJobRequest     // Отправляем данные в контроллер
 );
+router.put(
+    "/api/summary/:id",
+    /*authCheck.toCheck,       */         // Проверяем авторизован ли пользователь
+    /*checkField.checkFieldsPost,    */   // Проверяем обязательные поля
+    controller.toUpdateJobRequest     // Отправляем данные в контроллер
+);
+
 router.delete(
-  "/api/request/:id",
-  authCheck.toCheck,
-  controller.toDeleteJobRequest
+  "/api/summary/:id",
+  authCheck.toCheck,                // Проверяем авторизован ли пользователь
+  controller.toDeleteJobRequest     // Отправляем данные в контроллер
 );
 
 router.get(
-    "/api/job-request-status",
-    controller.toGetJobRequestStatusList
+    "/api/summary-status",
+    controller.toGetJobRequestStatusList    // Отправляем данные в контроллер
 );
 router.post(
-    "/api/job-request-status",
-    controller.toPostJobRequestStatus
+    "/api/summary-status",
+    controller.toPostJobRequestStatus       // Отправляем данные в контроллер
 );
 router.put(
-    "/api/job-request-status/:id",
-    controller.toUpdateJobRequestStatus
+    "/api/summary-status/:id",
+    controller.toUpdateJobRequestStatus     // Отправляем данные в контроллер
 );
 router.delete(
-    "/api/job-request-status/:id",
-    controller.toDeleteJobRequestStatus
+    "/api/summary-status/:id",
+    controller.toDeleteJobRequestStatus     // Отправляем данные в контроллер
 );
 
 

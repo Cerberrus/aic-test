@@ -54,15 +54,16 @@ class Workers {
   };
 
   postWorkerMessage = (name, message, callback = null) => {
+    const requestId = Math.random()
     for (let unit of this.workersList) {
       if (unit.name === name) {
-        unit.worker.postMessage(message);
+        unit.worker.postMessage({id: requestId, message});
         this.CurrentWorker = unit.worker
         break
       }
     }
-    this.CurrentWorker.once("message", async (message) => {
-        if(callback !== null) callback(message)
+    this.CurrentWorker.once("message", async ({id, result}) => {
+        if(callback !== null && id === requestId) callback(result)
     });
   }
 }

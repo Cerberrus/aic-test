@@ -3,15 +3,24 @@ const DataBase = require("../../../lib/DataBase");
 class SettingDatabase extends DataBase{
   async getPublicInformationList(){
     const [result] = await this.connection.execute(
-        "select id, `_key` as `key`, `_value` as `value` from setting where private = 0"
+        "select `_key`, `_value` from setting where private = 0"
     );
-    return result;
+    const response = {}
+    for(let object of result){
+      response[[object._key]] = object._value
+    }
+    return response;
   };
   async getSettingList(){
     const [result] = await this.connection.execute(
         "select * from setting"
     );
-    return result;
+    const response = {}
+    for(let object of result){
+      response[[object._key]] = object._value
+    }
+
+    return response
   };
   async getSetting({ key }){
     const [result,] = await this.connection.execute(
@@ -20,14 +29,14 @@ class SettingDatabase extends DataBase{
     );
     return result[0].value;
   };
-  async postSetting({ key, value }){
+  async postSetting({ key, value}){
     try {
       await this.connection.execute(
           "insert into setting(_key, _value) values(?,?) on duplicate key update _value =?",
           [key, value, value]
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
   async deleteSetting({ key }){

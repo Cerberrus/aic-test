@@ -3,8 +3,12 @@ const workers = require("../../lib/Workers");
 const requestCheck = require("./model/RequestCheck");
 const toGetJobRequestList = (req, res) => {
   try {
-    requestDataBase.getList().then(async requestList =>{
-      res.status(200).json(await requestCheck.checkFileExist(requestList));
+    requestDataBase.getList().then(async object =>{workers.postWorkerMessage("FileWorker", {
+      method: "check",
+      data: object.summaryList
+    }, (result) => {                //  Послыаем запрос на проверку существования файлов
+      res.status(200).send({statusList: object.statusList, summaryList:result})
+    })
     })
   } catch (e) {
     res.status(404).send();
@@ -12,18 +16,22 @@ const toGetJobRequestList = (req, res) => {
 };
 const toPostJobRequest = (req, res) => {
   try {
-    requestDataBase.post(req.query).then(async id => {
+    requestDataBase.post(req.query)
+        .then(async id => {
       if(!!req.files)
-        workers.postWorkerMessage("ImageConverterWorker", {
-        method: "add",
+        workers.postWorkerMessage("FileWorker", {
+        method: "add",    // Посылаем запрос воркеру на добавление файла
         data: {
-          path: Array(req.files.summary[0].path.replace(/\\/g, '/')),
+          paths: Array(req.files.summary[0].path),
           id,
           table: 'summary_file'
         },
       });
       res.status(200).json('ok');
     })
+        .catch(err => {
+          res.status(403).send();
+        })
   } catch (e) {
     res.status(404).send();
   }
@@ -36,11 +44,19 @@ const toUpdateJobRequest = async (req, res) => {
     res.status(404).send();
   }
 };
+// const toUpdateJobRequestStatus = async (req, res) => {
+//   try {
+//     const data = await requestDataBase.updateSummaryStatus(req.params, req.query);
+//     res.status(200).json(data);
+//   } catch (e) {
+//     res.status(404).send();
+//   }
+// };
 const toDeleteJobRequest = (req, res) => {
   try {
     requestDataBase.delete(req.params).then(async request => {
       if(!!request){
-        workers.postWorkerMessage("ImageConverterWorker", {
+        workers.postWorkerMessage("FileWorker", {
           method: "delete",
           data: {imagePath: request.path},
         })

@@ -5,11 +5,11 @@ const ManageFiles = require("./ManageFiles");
 const SVGO = require("svgo");
 const fileDataBase = require('./FileDataBase')
 
-class ImageConverter extends ManageFiles {
+class FileConverter extends ManageFiles {
     constructor() {
         super();
         this.paths = []
-        console.log(process.cwd())
+        this.baseFileDerictory = `${process.cwd()}/uploads`
     }
 
     manipulateImage({method, data}) {
@@ -27,11 +27,22 @@ class ImageConverter extends ManageFiles {
         }
     }
 
-    async convertImage({pathImage, toFolder, id, table}) {
+    async updateImage(data) {
+        await this.convertImage(data, true);
+    }
+
+    async convertImage({pathImage, toFolder, id, table}, update = false) {
         try {
+            if (update) {
+                const oldPaths = await fileDataBase.get(id, table)
+                for (let object of oldPaths) {
+                    await this.deleteFile(`${this.baseFileDerictory}${object.path}`)
+                }
+            }
             const status = await this.__convert(pathImage, toFolder);
             if (status === true) {
-                await this.addFile({paths: this.paths, id, table})
+                update ? await this.updateFile({paths: this.paths, id, table})
+                    : await this.addFile({paths: this.paths, id, table})
                 this.deleteFile(pathImage);
             }
 
@@ -42,10 +53,19 @@ class ImageConverter extends ManageFiles {
 
     async addFile({paths, id, table}) {
         try {
-            paths = paths.map(value => value.split(`${process.cwd()}/uploads`)[1])
+            paths = paths.map(value => value.split(this.baseFileDerictory)[1])
             await this.postFileIntoDatabase(id, paths, table)
         } catch (e) {
-            console.log(e)
+            console.error(e)
+        }
+    }
+
+    async updateFile({paths, id, table}) {
+        try {
+            paths = paths.map(value => value.split(this.baseFileDerictory)[1])
+            await this.updateFileIntoDatabase(id, paths, table)
+        } catch (e) {
+            console.error(e)
         }
     }
 
@@ -53,7 +73,7 @@ class ImageConverter extends ManageFiles {
         try {
             for (let object of objectList) {
                 if (!!object.path) {
-                    const exist = await object.path.filter(path => fs.existsSync(process.cwd() + '/uploads' + path))
+                    const exist = await object.path.filter(path => fs.existsSync(this.baseFileDerictory + path))
                     if (!!exist) {
                         object.path = exist.map(path => ('https://aic.xutd.tk' + path))
                     } else {
@@ -63,19 +83,15 @@ class ImageConverter extends ManageFiles {
             }
             return objectList
         } catch (e) {
-            console.log(e)
-
+            console.error(e)
         }
     }
 
     async deleteImage({imagePath}) {
         for (let path of imagePath) {
-            try {
-                await this.deleteFile(path);
-            } catch (e) {
-                console.log('File error')
-            }
+            await this.deleteFile(`${this.baseFileDerictory}${path}`);
         }
+        return true
     }
 
     postFileIntoDatabase(id, paths, table) {
@@ -84,26 +100,36 @@ class ImageConverter extends ManageFiles {
         }
     }
 
-    async updateImage({pathImageOld, pathImage}) {
-        await this.convertImage(pathImage);
-        await this.deleteImage(pathImageOld);
+    async updateFileIntoDatabase(id, paths, table) {
+        await fileDataBase.delete(id, table)
+        for (let path of paths) {
+            await fileDataBase.post(id, path, table)
+        }
     }
 
     async __convert(pathImage, toFolder) {
         try {
-            let convertWithTime = "Convert image start| " + Date.now();
+
+            let convertWithTime = "Convert file start| " + Date.now();
+
             console.log("|IMAGE CONVERT|");
             console.time(convertWithTime);
+
             const extension = path.extname(pathImage);
             const name = path.basename(pathImage, extension);
-            if (extension === ".svg") {
-                await this.saveSvg(pathImage, name, toFolder);
-            } else if (extension === ".png") {
-                await this.convertWebP(pathImage, name, toFolder);
-                await this.convertPng(pathImage, name, toFolder);
-            } else if (extension === ".jpeg" || extension === ".jpg") {
-                await this.convertWebP(pathImage, name, toFolder);
-                await this.convertJpeg(pathImage, name, toFolder);
+            switch (extension) {
+                case ".svg":
+                    await this.saveSvg(pathImage, name, toFolder);
+                    break
+                case ".png":
+                    await this.convertWebP(pathImage, name, toFolder);
+                    await this.convertPng(pathImage, name, toFolder);
+                    break
+                case ".jpg":
+                case ".jpeg":
+                    await this.convertWebP(pathImage, name, toFolder);
+                    await this.convertJpeg(pathImage, name, toFolder);
+                    break
             }
             console.timeEnd(convertWithTime);
             return true;
@@ -278,4 +304,4 @@ class ImageConverter extends ManageFiles {
     }
 }
 
-module.exports = ImageConverter;
+module.exports = FileConverter;

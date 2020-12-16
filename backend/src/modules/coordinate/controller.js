@@ -10,7 +10,6 @@ const toGetCoordinateList = async (req, res) => {
 };
 const toGetCoordinate = async (req, res) => {
   try {
-    console.log(req.params)
     const data = await coordinateDataBase.get(req.params);
     res.status(200).json(data);
   } catch (e) {
@@ -30,7 +29,7 @@ const toUpdateCoordinate = async (req, res) => {
     const data = await coordinateDataBase.update(req.params, req.query);
     res.status(200).json(data);
   } catch (e) {
-    console.log(e)
+    console.error(e)
     res.status(404).send();
   }
 };
@@ -39,6 +38,7 @@ const toDeleteCoordinate = async (req, res) => {
     const data = await coordinateDataBase.delete(req.params);
     res.status(200).json(data);
   } catch (e) {
+    console.error(e)
     res.status(404).send();
   }
 };

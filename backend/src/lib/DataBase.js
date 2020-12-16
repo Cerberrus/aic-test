@@ -13,7 +13,7 @@ class DataBase {
             }
         }
         catch (e) {
-            console.log(e)
+            console.error(e)
         }
     }
     static async #createConnection() {

@@ -56,7 +56,6 @@ class CoordinateDataBase extends DataBase {
     };
 
     async update({id}, {title, longitude, latitude, typeId}) {
-        console.log(id,title, longitude, latitude, typeId)
         id = Number(id);
         longitude = Number(longitude);
         latitude = Number(latitude);
@@ -84,7 +83,7 @@ class CoordinateDataBase extends DataBase {
     async delete({id}) {
         id = Number(id);
         await this.connection.execute(
-            "delete from coordinate where id=?)",
+            "delete from coordinate where id=?",
             [id]
         );
         return this.getList();

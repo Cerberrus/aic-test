@@ -15,13 +15,12 @@ const signIn = async ({body, headers, connection}) => {
             const hmac = await crypto.createHmac('sha256', paper)
                 .update(password)
                 .digest('hex')
-            console.log(hmac)
             return  await argon.verify(user.password, hmac)
                 ?   await createJWT({id: user.id, name: user.name, ip, type: "admin",})
                 :   false
         }
     } catch (e) {
-        console.log(e);
+        console.error(e);
         return false;
     }
 };

@@ -17,7 +17,6 @@ class Instagram {
     try {
       Instagram.#username = await settingDatabase.getSetting({ key: "instagramLogin" });
       Instagram.#password = await settingDatabase.getSetting({ key: "instagramPassword" });
-      console.log(Instagram.#username, Instagram.#password)
       const cookieStore = await new FileCookieStore("./cookies.json");
       Instagram.#client = await new instagram({
         username: Instagram.#username,
@@ -30,20 +29,20 @@ class Instagram {
       });
       await this.recyclePhoto();
     } catch (e) {
-      console.log('Error in init instagram')
+      console.error('Error in init instagram')
       await this.init()
     }
   };
   recyclePhoto = async () => {
     try {
-      console.log("Update image from instagram");
+      console.log("Update file from instagram");
       this.instagramPhotos = await this.getPhotosFromInstagram();
       console.log(
         "Update done, length photo list:",
         this.instagramPhotos.length
       );
     } catch (e) {
-      console.log('Error in recycle instagram photo')
+      console.error('Error in recycle instagram photo')
     }
   };
   getPhotosFromInstagram = async () => {
@@ -82,11 +81,11 @@ class Instagram {
           username: Instagram.#username,
           password: Instagram.#password,
         });
-        console.log("Ошибка авторизации");
+        console.error("Ошибка авторизации");
         return "Ошибка";
       }
     } catch (e) {
-      console.log('Error in update user information')
+      console.error('Error in update user information')
     }
   };
 }
