@@ -29,6 +29,11 @@ export default class Model {
         return slides.map(this._transformSlide);
     }
 
+    getSlide = async (id) => {
+        const  slide = await this.getResource(`/slider/${id}`)
+        return this._transformSlide(slide);
+    }
+
     getAllCoordinates = async () => {
         return await this.getResource('/coordinate')
     }
@@ -86,10 +91,9 @@ export default class Model {
     _transformSlide = (slide) => {
         return {
             id:          slide.id,
-            title:       slide.title              || '',
-            alt:         slide.imageDescription   || '',
-            images:      slide.path               || [],
-            active:      false,
+            title:       slide.title            || '',
+            alt:         slide.imageDescription || '',
+            images:      slide.path             || [],
         }
     }
 
