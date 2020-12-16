@@ -1,0 +1,26 @@
+.file__input {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.file__icon {
+    margin-right: 12px;
+    width: 14px;
+    height: 24px;
+    fill: var(--color-black);
+    opacity: 0.3;
+}
+
+.file__image {
+    width: 80px;
+    height: 80px;
+    margin-top: 14px;
+    margin-right: 12px;
+    border-radius: 8px;
+}
+
+.file__change {
+    display: flex;
+    justify-content: space-between;
+}
