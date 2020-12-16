@@ -1,0 +1,12 @@
+.sliderItem__list {
+    display: grid;
+    grid-template-columns: 540px;
+    grid-gap: 34px;
+}
+
+.sliderItem__buttonGroup {
+    display: grid;
+    grid-template-columns: repeat(2, 132px);
+    grid-gap: 20px;
+    margin-top: 48px;
+}
