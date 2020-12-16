@@ -1,83 +1,73 @@
 import React, {Component} from "react"
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
+
+import model from "~src/model/model"
+
+// Import static files
 import './Slider.css'
-import axios from "axios";
 
 export default class Slider extends Component{
+    model = new model()
 
     state = {
-        slider: {
-            list: [],
-            isLoaded: false
-        }
+        sliderList: [],
+        loading: true
     }
 
     componentDidMount() {
-        this.getSlider()
-    }
-
-    getSlider=()=>{
-        axios({
-            method: 'get',
-            url: process.env.API_BASE + '/slider',
-            withCredentials: true
-        })
-            .then((response)=>{
-                console.log(response)
+        this.model.getAllSlides()
+            .then(sliderList => {
                 this.setState({
-                    slider:{
-                        list: response.data,
-                        isLoaded:true
-                    }
+                    sliderList: sliderList,
+                    loading: false
                 })
-            })
-            .catch((error)=>{
-                console.log('error')
             })
     }
 
     render(){
-        let sliderList= []
-        if(this.state.slider.isLoaded){
-            for(let slider of this.state.slider.list){
-                sliderList.push(
-                    <div className="slider__card">
-                        <img className="slider__image" src={slider.path[0]} alt=""/>
-                        <p className="slider__name">{slider.title}</p>
-                        <p className="slider__description">{slider.imageDescription}</p>
-                        <img src="https://aic.xutd.tk/static/icons/close.svg" alt=""/>
-                        <img src="https://aic.xutd.tk/static/icons/edit.svg" alt=""/>
-                        <img src="https://aic.xutd.tk/static/icons/hide.svg" alt=""/>
-                    </div>
-                )
-            }
+        const { sliderList, loading } = this.state
+
+        if (loading) {
+            return <h1>Загрузка</h1>
         }
-        else{
-            sliderList.push(
-                <div className="slider__card">
-                    <img className="slider__image" src='images/Frame%2047.png' alt=""/>
-                    <p className="slider__name">Загрузка</p>
-                    <p className="slider__description">Загрузка</p>
-                    <img src="https://aic.xutd.tk/static/icons/close.svg" alt=""/>
-                    <img src="https://aic.xutd.tk/static/icons/edit.svg" alt=""/>
-                    <img src="https://aic.xutd.tk/static/icons/hide.svg" alt=""/>
-                </div>
-            )
-        }
+
         return(
             <main>
-                <section className="slider">
-                    <div className="slider__top">
-                        <h1 className="slider__title title">Слайдер</h1>
+                <section className="sliderAdmin">
+                    <div className="sliderAdmin__top">
+                        <h1 className="sliderAdmin__title title">Слайдер</h1>
                         <button className="button_yellow" type="button">Добавить</button>
                     </div>
-                    <div className="slider__tableHead">
+                    <div className="sliderAdmin__tableHead">
                         <p>Фото</p>
                         <p>Название</p>
                         <p>Описание</p>
                     </div>
-                    <>{sliderList}</>
-
+                    <ul>
+                        {sliderList.map((slider) => (
+                            <li key={slider.id} className="sliderAdmin__card">
+                                <img src={slider.images[0]} aria-hidden={true}/>
+                                <p className="sliderAdmin__name">{slider.title}</p>
+                                <p>{slider.alt}</p>
+                                <ul className="sliderAdmin__buttonGroup">
+                                    <li>
+                                        <Link to={`/admin/slider/${slider.id}`} title="Редактировать">
+                                            <img src="https://aic.xutd.tk/static/icons/edit.svg" aria-hidden={true}/>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button
+                                            className="coordinate__button"
+                                            title="Удалить"
+                                            onClick={() => this.onDelete(slider.id)}
+                                        >
+                                            <img src="https://aic.xutd.tk/static/icons/close.svg" aria-hidden={true}/>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
                 </section>
             </main>
         )
