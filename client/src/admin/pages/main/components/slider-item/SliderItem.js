@@ -15,20 +15,38 @@ export default class SliderItem extends Component {
     model = new model()
 
     state = {
-        fields: {},
+        fields: {
+            title:  undefined,
+            alt:    undefined,
+            images: []
+        },
         loading: true,
     }
 
     componentDidMount() {
         const { id } = this.props.match.params
 
-        this.model.getSlide(id)
-            .then((fields) => {
-                this.setState({
-                    fields: fields,
-                    loading: false
+        setTimeout(() => {
+            this.getSlide(id)
+        }, 300)
+    }
+
+    getSlide = (id) => {
+        console.log('WORK')
+
+        if (id !== 'new') {
+            this.model.getSlide(id)
+                .then((fields) => {
+                    this.setState({
+                        fields: fields,
+                        loading: false
+                    })
                 })
+        } else {
+            this.setState({
+                loading: false
             })
+        }
     }
 
     setFiled = (e) => {
@@ -49,18 +67,18 @@ export default class SliderItem extends Component {
         e.preventDefault()
         const { id } = this.props.match.params
 
-        // id === 'new' ? this.addCoordinate() : this.changeCoordinate()
+        id === 'new' ? this.addSlide() : this.changeSlide()
     }
 
-    addCoordinate = () => {
-        this.model.postCoordinate(this.state.fields)
+    addSlide = () => {
+        this.model.postSlide(this.state.fields)
             .then((response) => {
                 console.log(response);
             })
     }
 
-    changeCoordinate = () => {
-        this.model.putCoordinate(this.state.fields)
+    changeSlide = () => {
+        this.model.putSlide(this.state.fields)
             .then((response) => {
                 console.log(response);
             })
