@@ -11,7 +11,7 @@ export default class Model {
 
             return response.data
         } catch (error) {
-            console.error(error);
+            return error.response;
         }
     }
 
@@ -98,19 +98,19 @@ export default class Model {
     }
 
     // POST
-    postResource = async (url, properties) => {
+    postResource = async (url, properties, file=false) => {
         try {
-            console.log(`${process.env.API_BASE}${url}?${properties}`);
-
-            const response = await axios({
+            return await axios({
                 method: 'post',
+                headers: {
+                    'Content-Type': file ? 'multipart/form-data' : 'application/json'
+                },
                 url: `${process.env.API_BASE}${url}?${properties}`,
+                data: file,
                 withCredentials: true,
             })
-
-            return response
         } catch (error) {
-            console.error(error);
+            return error.response;
         }
     }
 
@@ -121,7 +121,17 @@ export default class Model {
             `&latitude=${coordinate.latitude}`+
             `&typeId=${coordinate.type}`
 
-        return await this.postResource(`/coordinate`, properties)
+        return await this.postResource('/coordinate', properties)
+    }
+
+    postSlide = async (slide) => {
+        const properties =
+            `title=${slide.title}`+
+            `&imageDescription=${slide.alt}`
+
+        const file = slide.file
+
+        return await this.postResource('/slider', properties, file)
     }
 
     postSettings = async (settings) => {
@@ -134,17 +144,19 @@ export default class Model {
     }
 
     // PUT
-    putResource = async (url, properties) => {
+    putResource = async (url, properties, file=false) => {
         try {
-            const response = await axios({
+            return await axios({
                 method: 'put',
+                headers: {
+                    'Content-Type': file ? 'multipart/form-data' : 'application/json'
+                },
                 url: `${process.env.API_BASE}${url}?${properties}`,
+                data: file,
                 withCredentials: true
             })
-
-            return response
         } catch (error) {
-            console.error(error);
+            return error.response
         }
     }
 
@@ -156,5 +168,36 @@ export default class Model {
             `&typeId=${coordinate.type}`
 
         return await this.putResource(`/coordinate/${coordinate.id}`, properties)
+    }
+
+    putSlide = async (slide) => {
+        const properties =
+            `title=${slide.title}`+
+            `&imageDescription=${slide.alt}`
+
+        const file = slide.file
+
+        return await this.putResource(`/slider/${slide.id}`, properties, file)
+    }
+
+    // DELETE
+    deleteResource = async (url) => {
+        try {
+            return await axios({
+                method: 'delete',
+                url: `${process.env.API_BASE}${url}`,
+                withCredentials: true
+            })
+        } catch (error) {
+            return error.response
+        }
+    }
+
+    deleteCoordinate = async (id) => {
+        return await this.deleteResource(`/coordinate/${id}`)
+    }
+
+    deleteSlide = async (id) => {
+        return await this.deleteResource(`/slider/${id}`)
     }
 }
