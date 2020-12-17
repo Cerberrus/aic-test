@@ -15,10 +15,9 @@ import Setting    from "./components/setting/Setting"
 //Import static files
 import './Main.css'
 
-export default class Sign extends Component{
+export default class Sign extends Component {
     state = {
         errorAuth: false,
-        errorComponent:'admin/sign',
     }
 
     componentDidMount() {
@@ -32,19 +31,19 @@ export default class Sign extends Component{
             withCredentials: true
         })
             .then((response)=>{
-                // console.log(response);
+                console.log(response);
             })
-            // .catch((error)=>{
-            //     console.log(error);
-            //     this.setState({
-            //         errorAuth: true
-            //     })
-            // })
+            .catch((error)=>{
+                console.log(error);
+                // this.setState({
+                //     errorAuth: true
+                // })
+            })
     }
 
     render() {
         if (this.state.errorAuth) {
-            return <Redirect to={this.state.errorComponent}/>
+            return <Redirect to="/admin/sign"/>
         }
 
         return(
@@ -53,7 +52,7 @@ export default class Sign extends Component{
                     <title>админ панель</title>
                 </Helmet>
 
-                <div className="adminContent container">
+                <div className="admin container">
                     <Navigation
                         changeLink = {this.changeLink}
                     />
@@ -68,7 +67,7 @@ export default class Sign extends Component{
                             <Route        path="/admin/vacancy/:id"    component={Vacancy} />
                             <Route  exact path="/admin/slider"         component={Slider}  />
                             <Route        path="/admin/slider/:id"     component={SliderItem} />
-                            <Route  exact path="/admin/setting"        component={Setting} />
+                            <Route  exact path="/admin"                component={Setting} />
                         </Switch>
                     </main>
                 </div>
