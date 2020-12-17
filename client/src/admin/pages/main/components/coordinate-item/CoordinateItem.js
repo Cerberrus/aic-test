@@ -1,13 +1,10 @@
 import React, { Component } from "react"
 import { Helmet } from "react-helmet"
-import { Link }   from "react-router-dom"
+import {Link, Redirect} from "react-router-dom"
 
 import Loader from '~admin/components/loader/Loader'
 
 import model from "~src/model/model"
-
-//Import static files
-import './CoordinateItem.css'
 
 export default class CoordinateItem extends Component {
     model = new model()
@@ -15,7 +12,6 @@ export default class CoordinateItem extends Component {
     state = {
         typeList:   [],
         fields: {
-            id:        undefined,
             type:      undefined,
             title:     undefined,
             longitude: undefined,
@@ -26,7 +22,10 @@ export default class CoordinateItem extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params
-        this.getCoordinate(id)
+
+        setTimeout(() => {
+            this.getCoordinate(id)
+        }, 300)
     }
 
     getCoordinate = (id) => {
@@ -50,7 +49,7 @@ export default class CoordinateItem extends Component {
                 })
             })
     }
-    
+
     setFiled = (e) => {
         const key    = e.target.name
         const value  = e.target.value
@@ -70,7 +69,12 @@ export default class CoordinateItem extends Component {
     addCoordinate = () => {
         this.model.postCoordinate(this.state.fields)
             .then((response) => {
-                console.log(response);
+                if (response.status === 200) {
+                    return this.props.history.push('/admin/coordinate')
+                } else {
+
+                }
+                console.log(response.status);
             })
     }
 
@@ -90,80 +94,78 @@ export default class CoordinateItem extends Component {
 
         return (
             <>
-                <Helmet>
-                    <title>{fields.title || 'координаты'}</title>
-                </Helmet>
+                <Helmet title={fields.title || 'координаты'}/>
 
-                <section className="coordinateAdd">
-                    <h1 className="title">Координаты</h1>
-                    <form className="coordinateAdd__form" onSubmit={this.onSubmit}>
-                        <p>Тип</p>
+                <h1 className="admin__title">Координаты</h1>
 
-                        <ul className="coordinateAdd__list">
-                            <li>
-                                <ul className="form__radioGroup">
-                                    {typeList.map((type) => (
-                                        <li className="radioGroup__item" key={type.id}>
-                                            <input
-                                                type="radio"
-                                                name="type"
-                                                id={type.id}
-                                                value={type.id}
-                                                defaultChecked={type.id === fields.type}
-                                                onChange={this.setFiled}
-                                                hidden
-                                            />
-                                            <label className="radioGroup__radio form__radio" htmlFor={type.id}>
-                                                <span>{type.title}</span>
-                                            </label>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                            <li>
-                                <label>
-                                    <span>Долгота</span>
-                                    <input
-                                        className="form__input"
-                                        type="text"
-                                        placeholder="00.000"
-                                        name="longitude"
-                                        defaultValue={fields.longitude}
-                                        onChange={this.setFiled}
-                                    />
-                                </label>
-                            </li>
-                            <li>
-                                <label>
-                                    <span>Широта</span>
-                                    <input
-                                        className="form__input"
-                                        type="text"
-                                        placeholder="00.000"
-                                        name="latitude"
-                                        defaultValue={fields.latitude}
-                                        onChange={this.setFiled}
-                                    />
-                                </label>
-                            </li>
-                            <li>
-                                <label>
-                                    <span>Название</span>
-                                    <textarea
-                                        className="form__input"
-                                        placeholder="Введите..."
-                                        name="title"
-                                        defaultValue={fields.title}
-                                        onChange={this.setFiled}
-                                    />
-                                </label>
-                            </li>
-                        </ul>
+                <form className="admin__form" onSubmit={this.onSubmit}>
+                    <ul className="admin__formList">
+                        <li>
+                            <p className="form__radioTitle">Тип *</p>
+                            <ul className="form__radioGroup">
+                                {typeList.map((type) => (
+                                    <li className="radioGroup__item" key={type.id}>
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            id={type.id}
+                                            value={type.id}
+                                            defaultChecked={type.id === fields.type}
+                                            onChange={this.setFiled}
+                                            hidden
+                                        />
+                                        <label className="radioGroup__radio form__radio" htmlFor={type.id}>
+                                            <span>{type.title}</span>
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Долгота *</span>
+                                <input
+                                    className="form__input"
+                                    type="text"
+                                    placeholder="00.000"
+                                    name="longitude"
+                                    defaultValue={fields.longitude}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Широта *</span>
+                                <input
+                                    className="form__input"
+                                    type="text"
+                                    placeholder="00.000"
+                                    name="latitude"
+                                    defaultValue={fields.latitude}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Название *</span>
+                                <textarea
+                                    className="form__input"
+                                    placeholder="Введите..."
+                                    name="title"
+                                    defaultValue={fields.title}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                    </ul>
 
+                    <div className="admin__buttonGroup">
                         <button className="button_yellow">Сохранить</button>
-                        <Link to="/admin/coordinate" className="coordinateAdd__cancel button button_gray">Отменить</Link>
-                    </form>
-                </section>
+                        <Link to="/admin/coordinate" className="button button_gray">Отменить</Link>
+                    </div>
+                </form>
             </>
         )
     }
