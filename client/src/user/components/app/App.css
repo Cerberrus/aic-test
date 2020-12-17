@@ -188,6 +188,10 @@ input[type=radio]:checked + .form__radio:before {
     border: 7px solid var(--color-gray);
 }
 
+.form__radioTitle {
+    margin-bottom: 14px;
+}
+
 .form__radioGroup {
     display: flex;
 }

@@ -10,7 +10,7 @@ import './Sign.css'
 
 export default class Sign extends Component{
     state = {
-        redirect: null
+        redirect: false
     }
 
     toSignIn =(username, password)=> {
@@ -22,7 +22,7 @@ export default class Sign extends Component{
         })
             .then((response)=>{
                 this.setState({
-                    redirect: '/admin'
+                    redirect: true
                 })
             })
             .catch((error)=>{
@@ -33,14 +33,12 @@ export default class Sign extends Component{
         const { redirect } = this.state
 
         if (redirect) {
-            return <Redirect to={this.state.redirect}/>
+            return <Redirect to="/admin"/>
         }
 
         return (
             <>
-                <Helmet>
-                    <title>авторизация</title>
-                </Helmet>
+                <Helmet title="авторизация" />
 
                 <main className="signPage">
                     <SignForm toSignIn={this.toSignIn}/>

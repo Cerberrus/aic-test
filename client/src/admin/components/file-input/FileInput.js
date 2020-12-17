@@ -37,7 +37,7 @@ export default class FileInput extends Component {
                 fileName: event.target.result
             })
         })
-        
+
         reader.readAsDataURL(file)
 
         this.props.onLoadFile(e)
@@ -59,7 +59,7 @@ export default class FileInput extends Component {
         const addFile = (
             <label htmlFor="file" className="file__input form__file form__input">
                 <svg className="file__icon" aria-hidden={true}><use xlinkHref={iconFile}/></svg>
-                <p>выберете или перетащите файл</p>
+                <p>выберите или перетащите файл</p>
             </label>
         )
 

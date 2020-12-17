@@ -53,12 +53,12 @@ export default class Footer extends Component {
                     <p className="footer__shareText">поделиться</p>
                     <ul className="footer__social social">
                         <li className="social__item">
-                            <VKShareButton url={location.pathname}>
+                            <VKShareButton url={window.location.href}>
                                 <svg className="social__icon social__icon_vk"><use xlinkHref={iconVk}/></svg>
                             </VKShareButton>
                         </li>
                         <li className="social__item">
-                            <FacebookShareButton url={location.pathname}>
+                            <FacebookShareButton url={window.location.href}>
                                 <svg className="social__icon social__icon_facebook"><use xlinkHref={iconFacebook}/></svg>
                             </FacebookShareButton>
                         </li>

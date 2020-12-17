@@ -308,7 +308,7 @@ export default class Form extends Component {
                                 />
                                 <label htmlFor="resume_file" className="resumeFile form__file form__input">
                                     <svg className="resumeFile__icon"><use xlinkHref={iconFile}/></svg>
-                                    <p className="resumeFile__text">выберете или перетащите файл</p>
+                                    <p className="resumeFile__text">выберите или перетащите файл</p>
                                 </label>
                             </div>
                         </div>
