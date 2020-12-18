@@ -15,6 +15,10 @@ export default class Model {
         }
     }
 
+    getAuthorizationStatus = async () => {
+        return await this.getResource('/signin');
+    }
+
     getAllVacancies = async () => {
         const  vacancies = await this.getResource('/vacancy');
         return vacancies.map(this._transformVacancy);
@@ -143,15 +147,15 @@ export default class Model {
     }
 
     // POST
-    postResource = async (url, properties, file=false) => {
+    postResource = async (url, properties, data=false) => {
         try {
             return await axios({
                 method: 'post',
                 headers: {
-                    'Content-Type': file ? 'multipart/form-data' : 'application/json'
+                    'Content-Type': data ? 'multipart/form-data' : 'application/json'
                 },
-                url: `${process.env.API_BASE}${url}?${properties}`,
-                data: file,
+                url: `${process.env.API_BASE}${url}${properties && `?${properties}`}`,
+                data: data,
                 withCredentials: true,
             })
         } catch (error) {
@@ -199,16 +203,41 @@ export default class Model {
         return await this.postResource(`/setting`, properties);
     }
 
+    postFormData = async (data) => {
+        const properties =
+            `g-recaptcha-response=${data.captcha}&`+
+            `jobVacancyId=${data.vacancy}&`+
+            `name=${data.fullName}&`+
+            `happyDate=${data.date}&`+
+            `phoneNumber=${data.phone}&`+
+            `${data.sex    && `sex=${data.sex}&`}`+
+            `${data.mail   && `email=${data.mail}&`}`+
+            `${data.resume && `resumeText=${data.resume}`}`
+
+        const file = data.file
+
+        return await this.postResource('/summary', properties, file);
+    }
+
+    postToSign = async (sign) => {
+        const data = {
+            username: sign.username,
+            password: sign.password
+        }
+
+        return await this.postResource(`/signin`, '', data);
+    }
+
     // PUT
-    putResource = async (url, properties, file=false) => {
+    putResource = async (url, properties, data=false) => {
         try {
             return await axios({
                 method: 'put',
                 headers: {
-                    'Content-Type': file ? 'multipart/form-data' : 'application/json'
+                    'Content-Type': data ? 'multipart/form-data' : 'application/json'
                 },
-                url: `${process.env.API_BASE}${url}?${properties}`,
-                data: file,
+                url: `${process.env.API_BASE}${url}${properties && `?${properties}`}`,
+                data: data,
                 withCredentials: true
             })
         } catch (error) {

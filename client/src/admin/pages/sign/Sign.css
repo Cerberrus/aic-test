@@ -1,5 +1,35 @@
-.signPage {
+.authorization {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.authorization__form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    top: -10%;
+    margin: 40px 0;
+    padding: 16px 32px;
+    width: 382px;
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.authorization__title {
+    text-align: center;
+}
+
+.authorization__group {
+    margin-bottom: 32px;
+}
+
+.authorization__button {
+    width: 172px;
+    margin: 0 auto;
+}
+
+.authorization__error {
+    margin: 8px 0;
+    color: var(--color-red);
 }
