@@ -155,7 +155,6 @@
     }
 
     .modal__header_fixed {
-        flex-direction: row;
         padding-bottom: 24px;
     }
 

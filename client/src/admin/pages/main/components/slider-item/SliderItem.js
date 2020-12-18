@@ -7,19 +7,16 @@ import FileInput from "~admin/components/file-input/FileInput"
 
 import model from "~src/model/model"
 
-//Import static files
-import './SliderItem.css'
-import iconFile from "~user/static/icons/clip.svg";
-
 export default class SliderItem extends Component {
     model = new model()
 
     state = {
         fields: {
-            title:  undefined,
-            alt:    undefined,
+            title:  '',
+            alt:    '',
             images: []
         },
+        error:     '',
         loading: true,
     }
 
@@ -32,8 +29,6 @@ export default class SliderItem extends Component {
     }
 
     getSlide = (id) => {
-        console.log('WORK')
-
         if (id !== 'new') {
             this.model.getSlide(id)
                 .then((fields) => {
@@ -66,26 +61,26 @@ export default class SliderItem extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         const { id } = this.props.match.params
+        const sendType = id === 'new' ? this.model.postSlide : this.model.putSlide
 
-        id === 'new' ? this.addSlide() : this.changeSlide()
+        this.sendSlide(sendType)
     }
 
-    addSlide = () => {
-        this.model.postSlide(this.state.fields)
+    sendSlide = (sendType) => {
+        sendType(this.state.fields)
             .then((response) => {
-                console.log(response);
-            })
-    }
-
-    changeSlide = () => {
-        this.model.putSlide(this.state.fields)
-            .then((response) => {
-                console.log(response);
+                if (response.status === 200) {
+                    return this.props.history.push('/admin/slider')
+                } else {
+                    this.setState({
+                        error: 'Упс, что-то пошло не так'
+                    })
+                }
             })
     }
 
     render() {
-        const {loading, fields } = this.state
+        const { fields, loading, error } = this.state
 
         if(loading) {
             return <Loader/>
@@ -93,53 +88,52 @@ export default class SliderItem extends Component {
 
         return (
             <>
-                <Helmet>
-                    <title>{fields.title || 'слайдер'}</title>
-                </Helmet>
+                <Helmet title={fields.title || 'слайдер'}/>
 
-                <section>
-                    <h1 className="title">Слайдер</h1>
-                    <form onSubmit={this.onSubmit}>
-                        <ul className="sliderItem__list">
-                            <li>
-                                <FileInput
-                                    name={'file'}
-                                    fileName={fields.images[2]}
-                                    onLoadFile={this.setFiled}
+                <h1 className="admin__title">Слайдер</h1>
+
+                <form className="admin__form" onSubmit={this.onSubmit}>
+                    <ul className="admin__formList">
+                        <li>
+                            <FileInput
+                                name={'file'}
+                                fileName={fields.images[2]}
+                                onLoadFile={this.setFiled}
+                            />
+                        </li>
+                        <li>
+                            <label>
+                                <span>Подпись к изображению</span>
+                                <textarea
+                                    className="form__input"
+                                    placeholder="Введите..."
+                                    name="alt"
+                                    defaultValue={fields.alt}
+                                    onChange={this.setFiled}
                                 />
-                            </li>
-                            <li>
-                                <label>
-                                    <span>Подпись к изображению</span>
-                                    <textarea
-                                        className="form__input"
-                                        placeholder="Введите..."
-                                        name="alt"
-                                        defaultValue={fields.alt}
-                                        onChange={this.setFiled}
-                                    />
-                                </label>
-                            </li>
-                            <li>
-                                <label>
-                                    <span>Описание</span>
-                                    <textarea
-                                        className="form__input"
-                                        placeholder="Введите..."
-                                        name="title"
-                                        defaultValue={fields.title}
-                                        onChange={this.setFiled}
-                                    />
-                                </label>
-                            </li>
-                        </ul>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Описание</span>
+                                <textarea
+                                    className="form__input"
+                                    placeholder="Введите..."
+                                    name="title"
+                                    defaultValue={fields.title}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                    </ul>
 
-                        <div className="sliderItem__buttonGroup">
-                            <button className="button_yellow">Сохранить</button>
-                            <Link to="/admin/slider" className="button button_gray">Отменить</Link>
-                        </div>
-                    </form>
-                </section>
+                    <div className="admin__buttonGroup">
+                        <button className="button_yellow">Сохранить</button>
+                        <Link to="/admin/slider" className="button button_gray">Отменить</Link>
+                    </div>
+
+                    {error && <p className="admin__error">{error}</p>}
+                </form>
             </>
         )
     }

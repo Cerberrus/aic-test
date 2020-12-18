@@ -5,6 +5,11 @@
     overflow: hidden;
 }
 
+.admin__error {
+    margin: 8px 0;
+    color: var(--color-red);
+}
+
 .admin__title {
     font-size: 32px;
     font-weight: 500;

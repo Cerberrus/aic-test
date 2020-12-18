@@ -22,6 +22,7 @@ export default class App extends Component {
                     defaultTitle ="гросс маркет"
                     titleTemplate="гросс маркет - %s"
                 >
+                    <meta name="viewport" content="width=1110"/>
                     <link rel="shortcut icon" href={shortIcon} />
                 </Helmet>
 

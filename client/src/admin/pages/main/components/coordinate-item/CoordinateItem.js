@@ -12,11 +12,12 @@ export default class CoordinateItem extends Component {
     state = {
         typeList:   [],
         fields: {
-            type:      undefined,
-            title:     undefined,
-            longitude: undefined,
-            latitude:  undefined,
+            type:      '',
+            title:     '',
+            longitude: '',
+            latitude:  '',
         },
+        error:     '',
         loading: true,
     }
 
@@ -62,31 +63,26 @@ export default class CoordinateItem extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         const { id } = this.props.match.params
+        const sendType = id === 'new' ? this.model.postCoordinate : this.model.putCoordinate
 
-        id === 'new' ? this.addCoordinate() : this.changeCoordinate()
+        this.sendCoordinate(sendType)
     }
 
-    addCoordinate = () => {
-        this.model.postCoordinate(this.state.fields)
+    sendCoordinate = (sendType) => {
+        sendType(this.state.fields)
             .then((response) => {
                 if (response.status === 200) {
                     return this.props.history.push('/admin/coordinate')
                 } else {
-
+                    this.setState({
+                        error: 'Упс, что-то пошло не так'
+                    })
                 }
-                console.log(response.status);
-            })
-    }
-
-    changeCoordinate = () => {
-        this.model.putCoordinate(this.state.fields)
-            .then((response) => {
-                console.log(response);
             })
     }
 
     render() {
-        const {loading, fields, typeList } = this.state
+        const { fields, typeList, loading, error } = this.state
 
         if(loading) {
             return <Loader/>
@@ -165,6 +161,8 @@ export default class CoordinateItem extends Component {
                         <button className="button_yellow">Сохранить</button>
                         <Link to="/admin/coordinate" className="button button_gray">Отменить</Link>
                     </div>
+
+                    {error && <p className="admin__error">{error}</p>}
                 </form>
             </>
         )

@@ -3,10 +3,12 @@ import React, { Component } from "react"
 // Import static files
 import './FileInput.css'
 import iconFile from "~user/static/icons/clip.svg"
+import iconEdit from "~user/static/icons/edit.svg"
 
 export default class FileInput extends Component {
     state = {
-        fileName: ''
+        fileName: '',
+        error: ''
     }
 
     componentDidMount() {
@@ -16,41 +18,45 @@ export default class FileInput extends Component {
     }
 
     onLoad = (e) => {
+        const { onLoadFile } = this.props
         const reader = new FileReader();
         const file = e.target.files[0];
 
         reader.addEventListener('load', event => {
-
-
             // Validation
+            if (!file.type) {
+                this.setState({
+                    error: 'Данный тип файла не поддерживается'
+                })
+                return
+            }
 
-            // if (!file.type) {
-            //     status.textContent = 'Error: The File.type property does not appear to be supported on this browser.';
-            //     return;
-            // }
-            // if (!file.type.match('image.*')) {
-            //     status.textContent = 'Error: The selected file does not appear to be an image.'
-            //     return;
-            // }
+            if (!file.type.match('image.*')) {
+                this.setState({
+                    error: 'Выбранный файл не является изображением'
+                })
+                return
+            }
 
             this.setState({
-                fileName: event.target.result
+                fileName: event.target.result,
+                error: false,
             })
         })
 
         reader.readAsDataURL(file)
-
-        this.props.onLoadFile(e)
+        onLoadFile(e)
     }
 
     render() {
         const { name } = this.props
-        const { fileName } = this.state
+        const { fileName, error } = this.state
 
         const changeFile = (
             <div className="file__change">
                 <img src={fileName} className="file__image" aria-hidden={true}/>
                 <label htmlFor="file" className="file__input form__file form__input">
+                    <svg className="file__icon" aria-hidden={true}><use xlinkHref={iconEdit}/></svg>
                     <p>изменить</p>
                 </label>
             </div>
@@ -73,6 +79,7 @@ export default class FileInput extends Component {
                     hidden
                 />
                 {fileName ? changeFile : addFile}
+                {error && <p className="admin__error">{error}</p>}
             </>
         );
     }

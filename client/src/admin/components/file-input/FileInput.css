@@ -2,6 +2,11 @@
     display: flex;
     align-items: center;
     color: rgba(0, 0, 0, 0.3);
+    transition: .2s;
+}
+
+.file__input:hover {
+    background-color: var(--color-darkGray);
 }
 
 .file__icon {
@@ -13,14 +18,9 @@
 }
 
 .file__image {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    max-height: 300px;
     margin-top: 14px;
     margin-right: 12px;
     border-radius: 8px;
-}
-
-.file__change {
-    display: flex;
-    justify-content: space-between;
 }
