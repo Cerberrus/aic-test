@@ -79,7 +79,7 @@ export default class VacancyItemItem extends Component {
     render() {
         const { fields, loading, error } = this.state
 
-        if(loading) {
+        if( loading) {
             return <Loader/>
         }
 

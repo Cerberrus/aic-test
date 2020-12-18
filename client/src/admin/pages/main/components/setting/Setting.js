@@ -1,12 +1,13 @@
 import React, { Component } from "react"
-import {Link, Redirect} from "react-router-dom"
 
+// Import components
 import Loader from "~admin/components/loader/Loader"
+
+// Import model
+import model from "~src/model/model"
 
 // Import static files
 import './Setting.css'
-
-import model from "~src/model/model"
 
 export default class Setting extends Component {
     model = new model()
@@ -55,6 +56,7 @@ export default class Setting extends Component {
         return(
             <>
                 <h1 className="title">Настройки</h1>
+
                 <form className="setting" onSubmit={this.onSubmit}>
                     <label>
                         <span>Контактый телефон *</span>
