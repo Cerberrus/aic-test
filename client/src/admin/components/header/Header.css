@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    padding-bottom: 34px;
+}
+
+.header__logout {
+    display: flex;
+    align-items: center;
+    transition: .2s;
+}
+
+.header__logout:hover {
+    color: var(--color-red);
+}
+
+.header__iconLogout {
+    margin-left: 16px;
+    width: 20px;
+    height: 20px;
+    fill: var(--color-black);
+    transition: .2s;
+}
+
+.header__logout:hover .header__iconLogout {
+    fill: var(--color-red);
+}
