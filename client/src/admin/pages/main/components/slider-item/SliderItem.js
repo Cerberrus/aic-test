@@ -103,7 +103,7 @@ export default class SliderItem extends Component {
                         </li>
                         <li>
                             <label>
-                                <span>Подпись к изображению</span>
+                                <span>Подпись к изображению *</span>
                                 <textarea
                                     className="form__input"
                                     placeholder="Введите..."
@@ -115,7 +115,7 @@ export default class SliderItem extends Component {
                         </li>
                         <li>
                             <label>
-                                <span>Описание</span>
+                                <span>Текст слайда *</span>
                                 <textarea
                                     className="form__input"
                                     placeholder="Введите..."

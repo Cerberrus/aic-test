@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
-import Loader from "~admin/components/loader/Loader"
-
 import model from "~src/model/model"
 
 // Import static files
@@ -15,16 +13,12 @@ export default class Slider extends Component{
 
     state = {
         sliderList: undefined,
-        loading: true
     }
 
     componentDidMount() {
         this.model.getAllSlides()
             .then(sliderList => {
-                this.setState({
-                    sliderList: sliderList,
-                    loading: false
-                })
+                this.setState({sliderList})
             })
     }
 
@@ -43,7 +37,7 @@ export default class Slider extends Component{
     }
 
     render(){
-        const { sliderList, loading } = this.state
+        const { sliderList } = this.state
 
         const animationVariants = {
             hidden: (index) => ({
