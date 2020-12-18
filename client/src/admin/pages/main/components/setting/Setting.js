@@ -17,13 +17,15 @@ export default class Setting extends Component {
     }
 
     componentDidMount() {
-        this.model.getSettings()
-            .then((settings) => {
-                this.setState({
-                    settings: settings,
-                    loading:  false,
+        setTimeout(() => {
+            this.model.getSettings()
+                .then((settings) => {
+                    this.setState({
+                        settings: settings,
+                        loading:  false,
+                    })
                 })
-            })
+        }, 300)
     }
 
     setFiled = (e) => {
