@@ -22,5 +22,7 @@
     max-height: 300px;
     margin-top: 14px;
     margin-right: 12px;
+    border: 2px solid var(--color-gray);
     border-radius: 8px;
+    object-fit: contain;
 }

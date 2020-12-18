@@ -11,16 +11,13 @@ export default class Home extends Component {
     render() {
         return (
             <>
-                <Helmet>
-                    <title>главная</title>
-                    <meta name="description" content="Home page" />
-                </Helmet>
+                <Helmet title="главная" />
 
                 <motion.main
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1}}
                     exit={{opacity: 0 }}
-                    transition={{delay: 0.2}}
+                    transition={{delay: 0.3}}
                 >
                     <Slider />
                     <Vacancy />

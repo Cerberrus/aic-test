@@ -12,7 +12,7 @@
 }
 
 .sliderText {
-    width: 45%;
+    width: 39%;
     padding-top: 48px;
 }
 
@@ -74,11 +74,13 @@
 
 @media (max-width: 1048px) {
     .sliderText {
-        padding-top: 100px;
+        width: 43%;
+        max-width: 760px;
+        padding-top: 70px;
     }
 
     .sliderText__slide {
-        font-size: 54px;
+        font-size: 64px;
     }
 
     .sliderPhoto {
@@ -93,6 +95,16 @@
     .sliderPhoto__slide {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .sliderText {
+        padding-top: 90px;
+    }
+
+    .sliderText__slide {
+        font-size: 54px;
     }
 }
 
