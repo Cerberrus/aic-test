@@ -1,65 +1,115 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
-import axios    from "axios"
+import { AnimatePresence, motion } from "framer-motion"
+
+import model from "~src/model/model"
 
 // Import static files
-import './Vacancy.css'
+import iconDelete from "~user/static/icons/close.svg"
+import iconEdit   from "~user/static/icons/edit.svg"
 
 export default class Vacancy extends Component {
+    model = new model()
+
     state = {
-        vacancyList: [],
+        vacancyList: undefined,
     }
 
     componentDidMount() {
-        this.getVacancy()
+        this.model.getAllVacancies()
+            .then(vacancyList => {
+                this.setState({vacancyList})
+            })
     }
 
-    getVacancy = () => {
-        axios({
-            method: 'get',
-            url: process.env.API_BASE + '/vacancy',
-            withCredentials: true
-        })
-            .then((response) => {
-                this.setState({
-                    vacancyList: response.data
+    onDelete = (id) => {
+        this.model.deleteVacancy(id)
+            .then(() => {
+                this.setState(({ vacancyList }) => {
+                    const index = vacancyList.findIndex(el => el.id === id)
+                    const updatedVacancyList = [...vacancyList.slice(0, index), ...vacancyList.slice(index + 1)]
+
+                    return {
+                        vacancyList: updatedVacancyList
+                    }
                 })
-            })
-            .catch((error) => {
-                console.log('error')
             })
     }
 
     render() {
         const { vacancyList } = this.state
 
+        const animationVariants = {
+            hidden: (index) => ({
+                opacity: 0,
+                scale: 0.8,
+            }),
+            visible: (index) => ({
+                opacity: 1,
+                scale: 1,
+                transition: {
+                    delay: (index + 1) * 0.03,
+                },
+            }),
+            removed: {
+                opacity: 0,
+                x: 400,
+                transition: {
+                    delay: 0.06,
+                },
+            },
+        }
+
         return (
-            <section className="vacancy">
-                <div className="vacancy__top">
-                    <h1 className="vacancy_title title">Вакансии</h1>
-                    <button className="button_yellow" type="button">Добавить</button>
+            <>
+                <div className="admin__header">
+                    <h1 className="admin__title">Вакансии</h1>
+                    <Link to="/admin/vacancy/new" className="button button_yellow">Добавить</Link>
                 </div>
-                <div className="vacancy__tableHead">
-                    <p>Фото</p>
-                    <p>Название</p>
-                    <p>Описание</p>
-                </div>
-                <ul>
-                    {vacancyList && vacancyList.map((vacancy) => (
-                        <li className="vacancy__card" key={vacancy.id}>
-                            <img className="vacancy__image" src={vacancy.path[0]} />
-                            <p className="vacancy__name">{vacancy.title}</p>
-                            <p className="vacancy__description">{vacancy.description}</p>
-                            <button className="vacancy__delete" title="Удалить">
-                                <img src="https://aic.xutd.tk/static/icons/close.svg"/>
-                            </button>
-                            <Link to="" title="Редактировать">
-                                <img src="https://aic.xutd.tk/static/icons/edit.svg"/>
-                            </Link>
-                        </li>
-                    ))}
+
+                <ul className="admin__tableHead">
+                    <li>Фото</li>
+                    <li>Название</li>
+                    <li>Описание</li>
                 </ul>
-            </section>
+
+                <ul className="admin__tableList">
+                    <AnimatePresence>
+                        {vacancyList && vacancyList.map((vacancy, index) => (
+                            <motion.li
+                                className="admin__tableItem"
+                                variants={animationVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="removed"
+                                custom={index}
+                                key={vacancy.id}
+                            >
+                                <img src={vacancy.images[0]} alt={vacancy.alt}/>
+                                <p>{vacancy.title}</p>
+                                <p>{vacancy.description}</p>
+
+                                <div className="admin__changeGroup">
+                                    <Link to={`/admin/vacancy/${vacancy.id}`} title="Редактировать">
+                                        <svg className="admin__icon admin__icon_color_green" aria-hidden={true}>
+                                            <use xlinkHref={iconEdit}/>
+                                        </svg>
+                                    </Link>
+                                    <button
+                                        className="admin__button_edit"
+                                        title="Удалить"
+                                        onClick={() => this.onDelete(vacancy.id)}
+                                    >
+                                        <svg className="admin__icon admin__icon_color_red" aria-hidden={true}>
+                                            <use xlinkHref={iconDelete}/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </motion.li>
+                        ))}
+                    </AnimatePresence>
+                </ul>
+            </>
         )
     }
 }
