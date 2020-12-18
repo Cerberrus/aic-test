@@ -12,7 +12,14 @@ import iconFacebook from '~user/static/icons/facebook.svg'
 
 export default class Footer extends Component {
     state = {
-        showModal: false
+        showModal: false,
+        url:          '',
+    }
+
+    componentDidMount() {
+        this.setState({
+            url: window.location.href
+        })
     }
 
     toggleModal = () => {
@@ -24,8 +31,7 @@ export default class Footer extends Component {
     }
 
     render() {
-        const { showModal } = this.state
-        const { location }  = this.props
+        const { showModal, url } = this.state
 
         const modalTitle = 'Обработка данных'
         const modalContent = (
@@ -53,12 +59,12 @@ export default class Footer extends Component {
                     <p className="footer__shareText">поделиться</p>
                     <ul className="footer__social social">
                         <li className="social__item">
-                            <VKShareButton url={window.location.href}>
+                            <VKShareButton url={url}>
                                 <svg className="social__icon social__icon_vk"><use xlinkHref={iconVk}/></svg>
                             </VKShareButton>
                         </li>
                         <li className="social__item">
-                            <FacebookShareButton url={window.location.href}>
+                            <FacebookShareButton url={url}>
                                 <svg className="social__icon social__icon_facebook"><use xlinkHref={iconFacebook}/></svg>
                             </FacebookShareButton>
                         </li>
