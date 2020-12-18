@@ -15,7 +15,7 @@ const Navigation = () => (
                     <NavLink to="/admin/coordinate" className="navigation__link" >Координаты</NavLink>
                 </li>
                 <li className="navigation__list">
-                    <NavLink to="/admin/request"    className="navigation__link" >Запросы</NavLink>
+                    <NavLink to="/admin/request"    className="navigation__link" >Заявки</NavLink>
                 </li>
                 <li className="navigation__list">
                     <NavLink to="/admin/vacancy"    className="navigation__link" >Вакансии</NavLink>
