@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 
 // Import static files
 import './Modal.css'
@@ -6,7 +7,7 @@ import iconCross from '~user/static/icons/cross.svg'
 
 export default class Modal extends Component {
     state = {
-        headerSticky: false
+        headerSticky: false,
     }
 
     onScroll = (e) => {
@@ -15,26 +16,52 @@ export default class Modal extends Component {
     }
 
     render() {
-        const { toggleModal, showModal=false, title, content } = this.props
+        const { toggleModal, showModal, title, content } = this.props
         const { headerSticky } = this.state
 
         return (
-            <>
-                <div className={showModal ? 'modal fadeIn' : 'modal' /* fadeOut */}> 
-                    <div className={headerSticky ?  'modal__header modal__header_fixed' : 'modal__header'}>
-                        <p className="modal__title">{title}</p>
-                        <button className="modal__close" onClick={toggleModal}><svg className="modal__closeIcon"><use xlinkHref={iconCross}/></svg></button>
-                    </div>
-                    <div className="modal__content" onScroll={this.onScroll}>
-                        {content}
-                    </div>
-                </div>
+            <AnimatePresence>
+                {showModal && (<>
+                    <motion.div
+                        className="modal"
+                        initial={{
+                            opacity: 0,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            transition: { duration: 0.3 }
+                        }}
+                        exit={{
+                            opacity: 0,
+                            transition: { duration: 0.3 }
+                        }}
+                    >
+                        <div className={headerSticky ?  'modal__header modal__header_fixed' : 'modal__header'}>
+                            <p className="modal__title">{title}</p>
+                            <button className="modal__close" onClick={toggleModal}><svg className="modal__closeIcon"><use xlinkHref={iconCross}/></svg></button>
+                        </div>
+                        <div className="modal__content" onScroll={this.onScroll}>
+                            {content}
+                        </div>
+                    </motion.div>
 
-                <div
-                    className={showModal ? 'overlay fadeIn' : 'overlay' /* fadeOut */}
-                    onClick={toggleModal}
-                />
-            </>
+                    <motion.div
+                        className="overlay"
+                        initial={{
+                            opacity: 0,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            transition: { duration: 0.3 }
+                        }}
+                        exit={{
+                            opacity: 0,
+                            transition: { duration: 0.3 }
+                        }}
+                        onClick={toggleModal}
+                    />
+                </>)}
+            </AnimatePresence>
         )
     }
 }
