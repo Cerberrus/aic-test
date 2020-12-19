@@ -26,7 +26,7 @@ export default class VacancyItemItem extends Component {
 
         setTimeout(() => {
             this.getVacancy(id)
-        }, 300)
+        }, 700)
     }
 
     getVacancy = (id) => {

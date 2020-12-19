@@ -4,7 +4,7 @@
     align-items: center;
     padding-top: 32px;
     padding-bottom: 34px;
-    transition: .6s;
+    transition: background .6s;
 }
 
 .header_theme_gray {

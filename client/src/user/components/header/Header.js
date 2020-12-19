@@ -9,7 +9,7 @@ import Logo      from '~user/components/logo/Logo'
 
 export default class Header extends Component {
     state = {
-        linkSticky: false
+        linkSticky: false,
     }
 
     componentDidMount() {
@@ -23,8 +23,8 @@ export default class Header extends Component {
     }
 
     render() {
-        const { theme='white' } = this.props
         const { linkSticky } = this.state
+        const { theme } = this.props
 
         const whiteTheme = (
             <div>

@@ -26,7 +26,7 @@ export default class CoordinateItem extends Component {
 
         setTimeout(() => {
             this.getCoordinate(id)
-        }, 300)
+        }, 700)
     }
 
     getCoordinate = (id) => {

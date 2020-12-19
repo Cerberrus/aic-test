@@ -25,7 +25,7 @@ export default class SliderItem extends Component {
 
         setTimeout(() => {
             this.getSlide(id)
-        }, 300)
+        }, 700)
     }
 
     getSlide = (id) => {

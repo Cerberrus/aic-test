@@ -1,12 +1,13 @@
 import React, { Component } from "react"
 
 // Import Swiper React components
-import SwiperCore, { Navigation, EffectFade, Controller } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, EffectFade, Controller } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.min.css"
 
-SwiperCore.use([Navigation, EffectFade, Controller]);
+SwiperCore.use([Navigation, EffectFade, Controller])
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
