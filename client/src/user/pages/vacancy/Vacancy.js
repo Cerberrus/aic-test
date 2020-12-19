@@ -1,10 +1,13 @@
 import React, {Component} from "react"
 import NumberFormat from "react-number-format"
-import { motion }   from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import Helmet    from "react-helmet"
 import ReCAPTCHA from "react-google-recaptcha"
 
 // Import components
+import Loader    from '~user/components/loader/Loader'
+import Header from '~user/components/header/Header'
+import Footer from '~user/components/footer/Footer'
 import Success from "./components/success/Success"
 import Goal    from "./components/goal/Goal"
 
@@ -12,11 +15,11 @@ import Goal    from "./components/goal/Goal"
 import model from "~src/model/model"
 
 // Import static files
-import './Form.css'
+import './Vacancy.css'
 import iconCheck from '~user/static/icons/check.svg'
 import iconFile from '~user/static/icons/clip.svg'
 
-export default class Form extends Component {
+export default class Vacancy extends Component {
     model = new model()
 
     state = {
@@ -34,13 +37,20 @@ export default class Form extends Component {
             captcha:   ''
         },
         error:         false,
-        success:       false
+        loading:        true,
+        success:       false,
     }
 
     componentDidMount() {
         window.scrollTo(0, 0)
         this.model.getAllVacancies()
             .then(vacancyList => this.setState({vacancyList}))
+
+        setTimeout(() => {
+            this.setState({
+                loading: false
+            })
+        }, 800)
     }
 
     validation = (e) => {
@@ -153,7 +163,7 @@ export default class Form extends Component {
     }
 
     render() {
-        const { vacancyList, success } = this.state
+        const { vacancyList, success, loading } = this.state
         const { vacancy, fullName, date, phone, mail, resume } = this.state.formData
 
         const IconChecked = <svg className="form__iconCheck" aria-hidden={true}><use xlinkHref={iconCheck}/></svg>
@@ -335,15 +345,29 @@ export default class Form extends Component {
             <>
                 <Helmet title="анкета" />
 
-                <motion.main
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{delay: 0.2}}
-                    className="requestPage container"
+                <AnimatePresence>
+                    {loading && <Loader/>}
+                </AnimatePresence>
+
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                    }}
+                    animate={{
+                        opacity: 1,
+                    }}
+                    exit={{
+                        opacity: 0,
+                    }}
+                    transition={{delay: 0.1}}
+                    className="page__body"
                 >
-                   {success ? <Success /> : Form}
-                </motion.main>
+                    <Header theme="gray"/>
+                    <main className="requestPage container">
+                       {success ? <Success /> : Form}
+                    </main>
+                    <Footer/>
+                </motion.div>
             </>
         )
     }
