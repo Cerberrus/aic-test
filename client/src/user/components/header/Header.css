@@ -53,6 +53,10 @@
         transition: 0.5s ease-in-out;
     }
 
+    .header__link:hover {
+        background-color: var(--color-yellow);
+    }
+
     .header__link_fixed {
         top: 18px;
         opacity: 1;
