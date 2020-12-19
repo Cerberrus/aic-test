@@ -1,6 +1,9 @@
 import React, { Component } from "react"
 import Helmet from "react-helmet"
-import axios from "axios"
+
+// Import components
+import Header from '~admin/components/header/Header'
+import Footer from '~user/components/footer/Footer'
 
 // Import model
 import model from "~src/model/model"
@@ -30,18 +33,10 @@ export default class Sign extends Component{
 
     onSubmit = (e) => {
         e.preventDefault()
+        const { fields } = this.state
 
-        const { username, password } = this.state.fields
-
-
-        axios({
-            method: 'post',
-            url: process.env.API_BASE +'/signin',
-            withCredentials: true,
-            data:{username, password}
-        })
-            .then((response)=>{
-                console.log(response);
+        this.model.postToSignIn(fields)
+            .then((response) => {
                 if (response.status === 201) {
                     return this.props.history.push('/admin')
                 } else {
@@ -50,23 +45,11 @@ export default class Sign extends Component{
                     })
                 }
             })
-            .catch((error)=>{
-                console.log(error);
+            .catch(() => {
                 this.setState({
                     error: 'Указан неверный логин или пароль'
                 })
             })
-
-        // this.model.postToSign(fields)
-        //     .then((response)=>{
-        //         if (response.status === 200) {
-        //             return this.props.history.push('/admin')
-        //         } else {
-        //             this.setState({
-        //                 error: 'Указан неверный логин или пароль'
-        //             })
-        //         }
-        //     })
     }
 
     render() {
@@ -75,39 +58,42 @@ export default class Sign extends Component{
         return (
             <>
                 <Helmet title="авторизация" />
-
-                <main className="authorization">
-                    <form className="authorization__form" onSubmit={this.onSubmit}>
-                        <h1 className="authorization__title title">Авторизация</h1>
-                        <div className="authorization__group">
-                            <label>
-                                <span>Логин</span>
-                                <input
-                                    className="form__input"
-                                    name="username"
-                                    type="text"
-                                    placeholder="Введите..."
-                                    value={username}
-                                    onChange={this.setFiled}/>
-                            </label>
-                        </div>
-                        <div className="authorization__group">
-                            <label>
-                                <span>Пароль</span>
-                                <input
-                                    className="form__input"
-                                    name="password"
-                                    type="password"
-                                    placeholder="*************"
-                                    value={password}
-                                    onChange={this.setFiled}
-                                />
-                            </label>
-                        </div>
-                        <button className="authorization__button button_yellow">Авторизоваться</button>
-                        {error && <p className="authorization__error">{error}</p>}
-                    </form>
-                </main>
+                <div className="page__body">
+                    <Header />
+                    <main className="authorization">
+                        <form className="authorization__form" onSubmit={this.onSubmit}>
+                            <h1 className="authorization__title title">Авторизация</h1>
+                            <div className="authorization__group">
+                                <label>
+                                    <span>Логин</span>
+                                    <input
+                                        className="form__input"
+                                        name="username"
+                                        type="text"
+                                        placeholder="Введите..."
+                                        value={username}
+                                        onChange={this.setFiled}/>
+                                </label>
+                            </div>
+                            <div className="authorization__group">
+                                <label>
+                                    <span>Пароль</span>
+                                    <input
+                                        className="form__input"
+                                        name="password"
+                                        type="password"
+                                        placeholder="*************"
+                                        value={password}
+                                        onChange={this.setFiled}
+                                    />
+                                </label>
+                            </div>
+                            <button className="authorization__button button_yellow">Авторизоваться</button>
+                            {error && <p className="authorization__error">{error}</p>}
+                        </form>
+                    </main>
+                    <Footer />
+                </div>
             </>
         )
     }

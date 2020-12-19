@@ -2,69 +2,17 @@ import React, { Component } from "react"
 import {Switch, Route } from "react-router-dom"
 import Helmet   from "react-helmet"
 import loadable from "@loadable/component"
-import axios from "axios"
 
 // Import components with loadable for tree shaking
 const MainPage = loadable(() => import('~admin/pages/main/Main'))
 const SignPage = loadable(() => import('~admin/pages/sign/Sign'))
-const Header   = loadable(() => import('~admin/components/header/Header'))
-const Footer   = loadable(() => import('~user/components/footer/Footer'))
-
-// Import model
-import model from "~src/model/model"
 
 // Import static files
-import shortIcon from '~user/static/images/temporary/logo.png'
+import appleIcon  from '~user/static/images/favicon180x180.png'
+import favIcon    from '~user/static/images/favicon32x32.png'
 
 export default class App extends Component {
-    model = new model()
-
-    state = {
-        authorization: false
-    }
-
-    componentDidMount() {
-        this.getAuthorizationStatus()
-    }
-
-    getAuthorizationStatus()  {
-        axios({
-            method: 'get',
-            url: process.env.API_BASE +'/signin',
-            withCredentials: true,
-        })
-            .then((response)=>{
-                if (response.status !== 200) {
-                    this.setState({
-                        authorization: false
-                    })
-                    return this.props.history.push('/admin/sign')
-                } else {
-                    this.setState({
-                        authorization: true
-                    })
-                }
-            })
-            .catch((error)=>{
-                console.log(error);
-                this.props.history.push("/admin/sign")
-            })
-
-        // this.model.getAuthorizationStatus()
-        //     .then((response) => {
-        //         console.log("CHECK: ",response);
-        //         if (response.status !== 200) {
-        //             this.setState({
-        //                 authorization: false
-        //             })
-        //             return this.props.history.push('/admin/sign')
-        //         }
-        //     })
-    }
-
     render() {
-        const { authorization } = this.state
-
         return (
             <>
                 <Helmet
@@ -72,18 +20,15 @@ export default class App extends Component {
                     titleTemplate="гросс маркет - %s"
                 >
                     <meta name="viewport" content="width=1110"/>
-                    <link rel="shortcut icon" href={shortIcon} />
+                    <link rel="apple-touch-icon" sizes="180x180"    href={appleIcon} />
+                    <link rel="icon" type="image/png" sizes="32x32" href={favIcon} />
                 </Helmet>
 
-                <div className="page__body">
-                    <Header authorization={authorization} />
-                    <Switch>
-                        <Route       path="/admin/sign" component={SignPage} />
-                        <Route exact path="/admin"      component={MainPage} />
-                        <Route       path="/admin/*"    component={MainPage} />
-                    </Switch>
-                    <Footer/>
-                </div>
+                <Switch>
+                    <Route exact path="/admin/sign" component={SignPage} />
+                    <Route exact path="/admin"      component={MainPage} />
+                    <Route       path="/admin/*"    component={MainPage} />
+                </Switch>
             </>
         )
     }

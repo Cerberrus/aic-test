@@ -15,10 +15,6 @@ export default class Model {
         }
     }
 
-    getAuthorizationStatus = async () => {
-        return await this.getResource('/signin');
-    }
-
     getAllVacancies = async () => {
         const  vacancies = await this.getResource('/vacancy');
         return vacancies.map(this._transformVacancy);
@@ -147,7 +143,7 @@ export default class Model {
     }
 
     // POST
-    postResource = async (url, properties, data=false) => {
+    postResource = async (url, properties='', data=false) => {
         try {
             return await axios({
                 method: 'post',
@@ -219,17 +215,12 @@ export default class Model {
         return await this.postResource('/summary', properties, file);
     }
 
-    postToSign = async (sign) => {
-        const data = {
-            username: sign.username,
-            password: sign.password
-        }
-
-        return await this.postResource(`/signin`, '', data);
+    postSignOut = async () => {
+        return await this.postResource('/signout')
     }
 
     // PUT
-    putResource = async (url, properties, data=false) => {
+    putResource = async (url, properties='', data=false) => {
         try {
             return await axios({
                 method: 'put',
@@ -306,5 +297,37 @@ export default class Model {
 
     deleteVacancy = async (id) => {
         return await this.deleteResource(`/vacancy/${id}`)
+    }
+
+    // For admin
+    getAuthorizationStatus = async () => {
+        try {
+            return await axios({
+                method: 'get',
+                url: process.env.API_BASE +'/signin',
+                withCredentials: true,
+            })
+        } catch (error) {
+            return error
+        }
+    }
+
+
+    postToSignIn = async (sign) => {
+        const data = {
+            username: sign.username,
+            password: sign.password
+        }
+
+        try {
+            return axios({
+                method: 'post',
+                url: process.env.API_BASE +'/signin',
+                withCredentials: true,
+                data: data
+            })
+        } catch (error) {
+            return error
+        }
     }
 }
