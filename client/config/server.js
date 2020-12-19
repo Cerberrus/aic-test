@@ -4,11 +4,8 @@ import minifier from "string-minify"
 import React from "react"
 import Helmet from "react-helmet"
 import { renderToString } from "react-dom/server"
-import { createStore} from "redux"
-import { Provider } from "react-redux"
-import reducers from "~user/reducers"
 import { StaticRouter } from "react-router"
-import { ChunkExtractor, ChunkExtractorManager } from "@loadable/server"
+import { ChunkExtractor } from "@loadable/server"
 
 const app = express()/*require('../../backend/src/connectModules')*/
 
@@ -20,16 +17,11 @@ app.get('*', async (req, res) => {
     let   statsFile = path.resolve('dist/modern-scripts.json')
     const modernExtractor = new ChunkExtractor({ statsFile, entrypoints: ["client"] })
 
-    const initialState = {initialText: "Rendered on the server"}
     const context = {}
-
-    const store = createStore(reducers, initialState)
 
     const appMarkup = renderToString(
         <StaticRouter location={req.url} context={context} >
-            <Provider store={store}>
-                {modernExtractor.collectChunks(<App />)}
-            </Provider>
+            {modernExtractor.collectChunks(<App />)}
         </StaticRouter>
     )
 
@@ -40,11 +32,9 @@ app.get('*', async (req, res) => {
     const legacyExtractor = new ChunkExtractor({ statsFile, entrypoints: ["client"] })
 
     renderToString(
-        <Provider store={store}>
-            <StaticRouter location={req.url} context={context} >
-                    {legacyExtractor.collectChunks(<App />)}
-            </StaticRouter>
-        </Provider>
+        <StaticRouter location={req.url} context={context} >
+            {legacyExtractor.collectChunks(<App />)}
+        </StaticRouter>
     )
 
     const buildScripts = (jsonScripts) => {
@@ -88,9 +78,7 @@ app.get('*', async (req, res) => {
             </head>
             <body>
                 <div id="app">${appMarkup}</div>
-                
-                <script>window.APP_STATE=${JSON.stringify(initialState)} </script>
-    
+                    
                 <script type="module">
                     ${buildScripts(modernExtractor.getScriptElements())}
                 </script>
