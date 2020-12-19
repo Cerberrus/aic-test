@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { FacebookShareButton, VKShareButton} from "react-share"
-import { useLocation } from "react-router-dom"
+import { FacebookShareButton, VKShareButton } from "react-share"
 
+// Import components
 import Modal from '~user/components/modal/Modal'
 
 // Import static files
@@ -13,13 +13,6 @@ import iconFacebook from '~user/static/icons/facebook.svg'
 export default class Footer extends Component {
     state = {
         showModal: false,
-        url:          '',
-    }
-
-    componentDidMount() {
-        this.setState({
-            url: window.location.href
-        })
     }
 
     toggleModal = () => {
@@ -31,7 +24,7 @@ export default class Footer extends Component {
     }
 
     render() {
-        const { showModal, url } = this.state
+        const { showModal } = this.state
 
         const modalTitle = 'Обработка данных'
         const modalContent = (
@@ -59,12 +52,12 @@ export default class Footer extends Component {
                     <p className="footer__shareText">поделиться</p>
                     <ul className="footer__social social">
                         <li className="social__item">
-                            <VKShareButton url={url}>
+                            <VKShareButton url={process.env.URL_BASE}>
                                 <svg className="social__icon social__icon_vk"><use xlinkHref={iconVk}/></svg>
                             </VKShareButton>
                         </li>
                         <li className="social__item">
-                            <FacebookShareButton url={url}>
+                            <FacebookShareButton url={process.env.URL_BASE}>
                                 <svg className="social__icon social__icon_facebook"><use xlinkHref={iconFacebook}/></svg>
                             </FacebookShareButton>
                         </li>
