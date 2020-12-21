@@ -22,12 +22,12 @@ class Instagram {
       Instagram.#password = await settingDatabase.getSetting({ key: "instagramPassword" });
       const cookieStore = await new FileCookieStore("./cookies.json");
       Instagram.#client = await new instagram({
-        username: Instagram.#username,
+        username: Instagram.#usernamePrivate,
         password: Instagram.#password,
         cookieStore,
       });
       await Instagram.#client.login({
-        username: Instagram.#username,
+        username: Instagram.#usernamePrivate,
         password: Instagram.#password,
       });
       await this.recyclePhoto();
