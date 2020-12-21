@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react"
 
 // Import static files
-import './Goal.css'
+import "./Goal.css"
 
-const Goal = () => (
+const Goal = ({ phone }) => (
     <section className="goal">
         <h2 className="goal__tile">Наша суперцель</h2>
         <p>
@@ -12,7 +12,7 @@ const Goal = () => (
             Мы уверены, что в ближайшие годы достигнем этого и будет здорово,<br/>
             если вместе с тобой.
         </p>
-        <a href="tel:79264331416" className="goal__link button button_gray">+7 (926) 433-14-16</a>
+        <a href={`tel:${phone}`} className="goal__link button button_gray">+{phone}</a>
     </section>
 )
 
