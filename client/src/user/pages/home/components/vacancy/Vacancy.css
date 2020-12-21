@@ -87,6 +87,7 @@
     object-fit: contain;
 }
 
+/* Media queries */
 @media (max-width: 1200px) {
     .vacancy__buttonGroup {
         display: none;
