@@ -1,13 +1,13 @@
 import React, { Component } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Link }   from  "react-router-dom"
 import { Helmet } from "react-helmet"
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
-import './Summary.css'
-import iconDownload from '~user/static/icons/download.svg'
+import "./Summary.css"
+import iconDownload from "~src/static/icons/download.svg"
 
 export default class Summary extends Component {
     model = new model()
@@ -123,7 +123,7 @@ export default class Summary extends Component {
                                     <p className="request__key">
                                         Пол:
                                         <span className="request__value">
-                                            {summary.sex = 'm' ? "Муж." : "Жен."}
+                                            {summary.sex = "m" ? "Муж." : "Жен."}
                                         </span>
                                     </p>
                                     {summary.mail && (

@@ -1,10 +1,10 @@
 import React, { Component }  from "react"
+import { Switch, Route }     from "react-router-dom"
 import Helmet from "react-helmet"
-import { Switch, Route } from "react-router-dom"
 
 // Import components
-import Header         from '~admin/components/header/Header'
-import Footer         from '~user/components/footer/Footer'
+import Header         from "~admin/components/header/Header"
+import Footer         from "~user/components/footer/Footer"
 import Navigation     from "./components/navigation/Navigation"
 import Coordinate     from "./components/coordinate/Coordinate"
 import CoordinateItem from "./components/coordinate-item/CoordinateItem"
@@ -19,7 +19,7 @@ import Summary        from "./components/summary/Summary"
 import model from "~src/model/model"
 
 //Import static files
-import './Main.css'
+import "./Main.css"
 
 export default class Main extends Component {
     model = new model()
@@ -39,8 +39,8 @@ export default class Main extends Component {
     checkAuthorization = (prevState) => {
         this.model.getAuthorizationStatus()
             .then((response) => {
-                if (response.status !== 200) {
-                    return this.props.history.push("/admin/sign")
+                if (response.status !== 200 && prevState === false) {
+                    return this.props.history.replace("/admin/sign")
                 } else {
                     if (prevState === false) {
                         this.setState({
@@ -57,7 +57,9 @@ export default class Main extends Component {
 
         return (
             <>
-                <Helmet title="админ панель"/>
+                <Helmet title="админ панель">
+                    <meta name="viewport" content="width=1110"/>
+                </Helmet>
 
                 <div className="page__body">
                     <Header authorization={true} history={history} />
@@ -66,6 +68,7 @@ export default class Main extends Component {
                             <Navigation/>
                             <main>
                                 <Switch>
+                                    <Route  exact path="/admin"                component={Setting} />
                                     <Route  exact path="/admin/coordinate"     component={Coordinate} />
                                     <Route        path="/admin/coordinate/:id" component={CoordinateItem} />
                                     <Route  exact path="/admin/vacancy"        component={Vacancy} />
@@ -73,7 +76,6 @@ export default class Main extends Component {
                                     <Route  exact path="/admin/slider"         component={Slider}  />
                                     <Route        path="/admin/slider/:id"     component={SliderItem} />
                                     <Route  exact path="/admin/request"        component={Summary} />
-                                    <Route  exact path="/admin"                component={Setting} />
                                 </Switch>
                             </main>
                         </div>

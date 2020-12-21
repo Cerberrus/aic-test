@@ -1,33 +1,32 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 import Helmet from "react-helmet"
 
 // Import components
-import Header from '~admin/components/header/Header'
-import Footer from '~user/components/footer/Footer'
+import Header from "~admin/components/header/Header"
+import Footer from "~user/components/footer/Footer"
 
 // Import model
 import model from "~src/model/model"
 
 // Import static files
-import './Sign.css'
+import "./Sign.css"
 
 export default class Sign extends Component{
     model = new model()
 
     state = {
         fields: {
-            username:    '',
-            password:    '',
+            username:    "",
+            password:    "",
         },
-        error: '',
+        error: "",
     }
 
     setFiled = (e) => {
         const fields = this.state.fields
         const key    = e.target.name
-        const value  = e.target.value
 
-        fields[key]  = value
+        fields[key]  = e.target.value
         this.setState({fields})
     }
 
@@ -38,16 +37,16 @@ export default class Sign extends Component{
         this.model.postToSignIn(fields)
             .then((response) => {
                 if (response.status === 201) {
-                    return this.props.history.push('/admin')
+                    return this.props.history.replace("/admin")
                 } else {
                     this.setState({
-                        error: 'Указан неверный логин или пароль'
+                        error: "Указан неверный логин или пароль"
                     })
                 }
             })
             .catch(() => {
                 this.setState({
-                    error: 'Указан неверный логин или пароль'
+                    error: "Указан неверный логин или пароль"
                 })
             })
     }
@@ -57,7 +56,10 @@ export default class Sign extends Component{
 
         return (
             <>
-                <Helmet title="авторизация" />
+                <Helmet title="авторизация">
+                    <meta name="viewport" content="width=1110"/>
+                </Helmet>
+
                 <div className="page__body">
                     <Header />
                     <main className="authorization">

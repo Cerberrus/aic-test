@@ -11,13 +11,13 @@
     background-color: var(--color-gray);
 }
 
-.header__iconPhone {
-    display: none;
-}
-
 .header__link {
     margin-left: 29px;
     padding: 10px 14px;
+}
+
+.header__iconPhone {
+    display: none;
 }
 
 .header__iconCross {

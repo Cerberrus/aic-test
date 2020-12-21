@@ -6,15 +6,14 @@ import Loader from "~admin/components/loader/Loader"
 // Import model
 import model from "~src/model/model"
 
-// Import static files
-import './Setting.css'
-
 export default class Setting extends Component {
     model = new model()
 
     state = {
-        settings: {},
-        loading:  true
+        settings:   {},
+        success: false,
+        error:   false,
+        loading:  true,
     }
 
     componentDidMount() {
@@ -26,15 +25,17 @@ export default class Setting extends Component {
                         loading:  false,
                     })
                 })
-        }, 300)
+        }, 700)
     }
 
     setFiled = (e) => {
-        const key      = e.target.name
-        const value    = e.target.value
-        const settings = this.state.settings
+        const key   = e.target.name
+        const value = e.target.value
 
-        settings[key]  = value
+        const settings = this.state.settings
+        settings['success'] = false
+        settings[key]       = value
+
         this.setState({settings})
     }
 
@@ -42,12 +43,22 @@ export default class Setting extends Component {
         e.preventDefault()
         this.model.postSettings(this.state.settings)
             .then((response) => {
-                console.log(response);
+                if (response.status === 200) {
+                    this.setState({
+                        error:  false,
+                        success: true,
+                    })
+                } else {
+                    this.setState({
+                        success: false,
+                        error:    true
+                    })
+                }
             })
     }
 
     render(){
-        const { loading, settings } = this.state
+        const { success, loading, settings, error  } = this.state
 
         if (loading) {
             return <Loader/>
@@ -55,60 +66,56 @@ export default class Setting extends Component {
 
         return(
             <>
-                <h1 className="title">Настройки</h1>
+                <h1 className="admin__title">Настройки</h1>
 
-                <form className="setting" onSubmit={this.onSubmit}>
-                    <label>
-                        <span>Контактый телефон *</span>
-                        <input
-                            className="form__input"
-                            type=" tel"
-                            placeholder="+7 ("
-                            name="phone"
-                            defaultValue={settings.phone}
-                            onChange={this.setFiled}
-                        />
-                    </label>
+                <form className="admin__form" onSubmit={this.onSubmit}>
+                    <ul className="admin__formList">
+                        <li>
+                            <label>
+                                <span>Контактый телефон *</span>
+                                <input
+                                    className="form__input"
+                                    type=" tel"
+                                    placeholder="+7 ("
+                                    name="phone"
+                                    defaultValue={settings.phone}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Имя пользователя Instagram аккаунта</span>
+                                <input
+                                    className="form__input"
+                                    type="text"
+                                    placeholder="login"
+                                    name="instLogin"
+                                    defaultValue={settings.instLogin}
+                                    onChange={this.setFiled}
+                                />
+                            </label>
+                        </li>
+                    </ul>
 
-                    <label>
-                        <span>Логин Instagram аккаунта</span>
-                        <input
-                            className="form__input"
-                            type="text"
-                            placeholder="login"
-                            name="instLogin"
-                            defaultValue={settings.instLogin}
-                            onChange={this.setFiled}
-                        />
-                    </label>
-
-                    <label>
-                        <span>Пароль Instagram аккаунта</span>
-                        <input
-                            className="form__input"
-                            type="text"
-                            placeholder="password"
-                            name="instPassword"
-                            defaultValue={settings.instPassword}
-                            onChange={this.setFiled}
-                        />
-                    </label>
-
-                    <div className="setting__buttonGroup">
+                    <div className="admin__buttonGroup">
                         <button
                             type="submit"
-                            className="setting__button button_yellow"
+                            className="button_yellow"
                         >
                             Сохранить
                         </button>
                         <button
                             type="button"
-                            className="setting__button button button_gray"
+                            className="button_gray"
                             onClick={() => window.location.reload()}
                         >
                             Отменить
                         </button>
                     </div>
+
+                    {error && <p className="admin__error">Упс! Что-то пошло не так</p>}
+                    {success && <p className="admin__success">Настройки успешно применены</p>}
                 </form>
             </>
         )

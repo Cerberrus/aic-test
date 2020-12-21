@@ -1,9 +1,10 @@
 import React, { Component } from "react"
 
+// Import model
 import model from "~src/model/model"
 
-// Import styles
-import './Gallery.css'
+// Import static files
+import "./Gallery.css"
 
 export default class Gallery extends Component {
     model = new model()
@@ -37,7 +38,7 @@ export default class Gallery extends Component {
                     {images && showList.map((image, index) => (
                         <li
                             key={index}
-                            className={!image ? 'gallery__item block_load' : 'gallery__item'}
+                            className={`gallery__item ${!image && "block_load"}`}
                         >
                             {image && <img src={image}  alt="" className="gallery__image" />}
                         </li>

@@ -1,17 +1,8 @@
-.loader {
+.adminLoader {
     display: flex;
     justify-content: space-around;
     margin-top: 14%;
     margin-left: 50%;
     width: 70px;
     height: 60px;
-}
-
-
-.loader__circle {
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: var(--color-black);
 }

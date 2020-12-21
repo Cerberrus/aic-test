@@ -3,11 +3,12 @@ import { Helmet } from "react-helmet"
 import { Link }   from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 
+// Import model
 import model from "~src/model/model"
 
-//Import static files
-import iconDelete from "~user/static/icons/close.svg"
-import iconEdit   from "~user/static/icons/edit.svg"
+// Import static files
+import iconDelete from "~src/static/icons/close.svg"
+import iconEdit   from "~src/static/icons/edit.svg"
 
 export default class Coordinate extends Component {
     model = new model()
@@ -68,7 +69,7 @@ export default class Coordinate extends Component {
 
                 <div className="admin__header">
                     <h1 className="admin__title">Координаты</h1>
-                    <Link to='/admin/coordinate/new' className="button button_yellow">Добавить</Link>
+                    <Link to="/admin/coordinate/new" className="button button_yellow">Добавить</Link>
                 </div>
 
                 <ul className="admin__tableHead">

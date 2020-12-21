@@ -6,7 +6,7 @@ import model from "~src/model/model"
 // Import static files
 import './Header.css'
 import Logo       from '~user/components/logo/Logo'
-import IconLogout from '~user/static/icons/logout.svg'
+import IconLogout from '~src/static/icons/logout.svg'
 
 export default class Header extends Component {
     model = new model()

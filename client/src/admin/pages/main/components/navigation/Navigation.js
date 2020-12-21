@@ -2,7 +2,7 @@ import React  from "react"
 import { NavLink } from "react-router-dom"
 
 // Import static files
-import './Navigation.css'
+import "./Navigation.css"
 
 const Navigation = () => (
     <aside>

@@ -1,10 +1,12 @@
-import React, { Component } from "react"
-import { Helmet } from "react-helmet"
-import { Link }   from "react-router-dom"
+import React, {Component} from "react"
+import {Helmet} from "react-helmet"
+import {Link} from "react-router-dom"
 
-import Loader from '~admin/components/loader/Loader'
+// Import components
+import Loader from "~admin/components/loader/Loader"
 import FileInput from "~admin/components/file-input/FileInput"
 
+// Import model
 import model from "~src/model/model"
 
 export default class SliderItem extends Component {
@@ -12,11 +14,11 @@ export default class SliderItem extends Component {
 
     state = {
         fields: {
-            title:  '',
-            alt:    '',
+            title:  "",
+            alt:    "",
             images: []
         },
-        error:     '',
+        error:     "",
         loading: true,
     }
 
@@ -29,7 +31,7 @@ export default class SliderItem extends Component {
     }
 
     getSlide = (id) => {
-        if (id !== 'new') {
+        if (id !== "new") {
             this.model.getSlide(id)
                 .then((fields) => {
                     this.setState({
@@ -47,21 +49,24 @@ export default class SliderItem extends Component {
     setFiled = (e) => {
         const fields = this.state.fields
         const key    = e.target.name
-        let   value  = e.target.value
 
-        if (key === 'file') {
-            value = new FormData()
-            value.append('slider', e.target.files[0])
-        }
+        fields[key]  = e.target.value
+        this.setState({fields})
+    }
 
-        fields[key]  = value
+    onLoadFile = (file) => {
+        const value = new FormData()
+        value.append("slider", file)
+
+        const fields   = this.state.fields
+        fields["file"] = value
         this.setState({fields})
     }
 
     onSubmit = (e) => {
         e.preventDefault()
         const { id } = this.props.match.params
-        const sendType = id === 'new' ? this.model.postSlide : this.model.putSlide
+        const sendType = id === "new" ? this.model.postSlide : this.model.putSlide
 
         this.sendSlide(sendType)
     }
@@ -70,10 +75,10 @@ export default class SliderItem extends Component {
         sendType(this.state.fields)
             .then((response) => {
                 if (response.status === 200) {
-                    return this.props.history.push('/admin/slider')
+                    return this.props.history.push("/admin/slider")
                 } else {
                     this.setState({
-                        error: 'Упс, что-то пошло не так'
+                        error: "Упс, что-то пошло не так"
                     })
                 }
             })
@@ -88,7 +93,7 @@ export default class SliderItem extends Component {
 
         return (
             <>
-                <Helmet title={fields.title || 'слайдер'}/>
+                <Helmet title={fields.title || "слайдер"}/>
 
                 <h1 className="admin__title">Слайдер</h1>
 
@@ -96,9 +101,9 @@ export default class SliderItem extends Component {
                     <ul className="admin__formList">
                         <li>
                             <FileInput
-                                name={'file'}
+                                name={"file"}
                                 fileName={fields.images[2]}
-                                onLoadFile={this.setFiled}
+                                onLoadFile={this.onLoadFile}
                             />
                         </li>
                         <li>

@@ -10,6 +10,11 @@
     color: var(--color-red);
 }
 
+.admin__success {
+    margin: 8px 0;
+    color: var(--color-lightGreen);
+}
+
 .admin__title {
     font-size: 32px;
     font-weight: 500;

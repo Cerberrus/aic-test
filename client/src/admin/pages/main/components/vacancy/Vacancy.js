@@ -2,11 +2,12 @@ import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
-import iconDelete from "~user/static/icons/close.svg"
-import iconEdit   from "~user/static/icons/edit.svg"
+import iconDelete from "~src/static/icons/close.svg"
+import iconEdit   from "~src/static/icons/edit.svg"
 
 export default class Vacancy extends Component {
     model = new model()

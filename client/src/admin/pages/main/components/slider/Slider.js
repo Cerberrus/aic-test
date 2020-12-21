@@ -2,11 +2,12 @@ import React, { Component } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
-import iconDelete from "~user/static/icons/close.svg"
-import iconEdit   from "~user/static/icons/edit.svg"
+import iconDelete from "~src/static/icons/close.svg"
+import iconEdit   from "~src/static/icons/edit.svg"
 
 export default class Slider extends Component{
     model = new model()
@@ -40,7 +41,7 @@ export default class Slider extends Component{
         const { sliderList } = this.state
 
         const animationVariants = {
-            hidden: (index) => ({
+            hidden: () => ({
                 opacity: 0,
                 scale: 0.8,
             }),

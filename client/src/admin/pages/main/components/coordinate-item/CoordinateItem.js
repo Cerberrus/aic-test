@@ -1,9 +1,11 @@
 import React, { Component } from "react"
+import { Link }   from "react-router-dom"
 import { Helmet } from "react-helmet"
-import {Link, Redirect} from "react-router-dom"
 
-import Loader from '~admin/components/loader/Loader'
+// Import components
+import Loader from "~admin/components/loader/Loader"
 
+// Import model
 import model from "~src/model/model"
 
 export default class CoordinateItem extends Component {
@@ -12,12 +14,12 @@ export default class CoordinateItem extends Component {
     state = {
         typeList:   [],
         fields: {
-            type:      '',
-            title:     '',
-            longitude: '',
-            latitude:  '',
+            type:      "",
+            title:     "",
+            longitude: "",
+            latitude:  "",
         },
-        error:     '',
+        error:     "",
         loading: true,
     }
 
@@ -30,7 +32,7 @@ export default class CoordinateItem extends Component {
     }
 
     getCoordinate = (id) => {
-        if (id !== 'new') {
+        if (id !== "new") {
             this.model.getCoordinate(id)
                 .then((fields) => {
                     this.setState({fields})
@@ -63,7 +65,7 @@ export default class CoordinateItem extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         const { id } = this.props.match.params
-        const sendType = id === 'new' ? this.model.postCoordinate : this.model.putCoordinate
+        const sendType = id === "new" ? this.model.postCoordinate : this.model.putCoordinate
 
         this.sendCoordinate(sendType)
     }
@@ -72,10 +74,10 @@ export default class CoordinateItem extends Component {
         sendType(this.state.fields)
             .then((response) => {
                 if (response.status === 200) {
-                    return this.props.history.push('/admin/coordinate')
+                    return this.props.history.push("/admin/coordinate")
                 } else {
                     this.setState({
-                        error: 'Упс, что-то пошло не так'
+                        error: "Упс, что-то пошло не так"
                     })
                 }
             })
@@ -90,7 +92,7 @@ export default class CoordinateItem extends Component {
 
         return (
             <>
-                <Helmet title={fields.title || 'координаты'}/>
+                <Helmet title={fields.title || "координаты"}/>
 
                 <h1 className="admin__title">Координаты</h1>
 

@@ -2,10 +2,8 @@ import React from "react"
 import { Link } from "react-router-dom"
 
 // Import styles
-import './Logo.css'
-
-//Temporary
-import logo from '~user/static/images/logo.png'
+import "./Logo.css"
+import logo from "~src/static/images/logo.png"
 
 const Logo = () => (
     <Link to="/" title="Перейти на главную" className="logo">
@@ -14,6 +12,4 @@ const Logo = () => (
     </Link>
 )
 
-
 export default Logo
-
