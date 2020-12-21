@@ -2,8 +2,9 @@ import React, { Component } from "react"
 
 // Import static files
 import './FileInput.css'
-import iconFile from "~user/static/icons/clip.svg"
-import iconEdit from "~user/static/icons/edit.svg"
+import iconFile from "~src/static/icons/clip.svg"
+import iconEdit from "~src/static/icons/edit.svg"
+import Dropzone from "react-dropzone";
 
 export default class FileInput extends Component {
     state = {
@@ -13,14 +14,13 @@ export default class FileInput extends Component {
 
     componentDidMount() {
         const { fileName } = this.props
-
         fileName && this.setState({fileName})
     }
 
-    onLoad = (e) => {
+    onLoad = (files) => {
         const { onLoadFile } = this.props
-        const reader = new FileReader();
-        const file = e.target.files[0];
+        const reader = new FileReader()
+        const file = files[0]
 
         reader.addEventListener('load', event => {
             // Validation
@@ -45,7 +45,7 @@ export default class FileInput extends Component {
         })
 
         reader.readAsDataURL(file)
-        onLoadFile(e)
+        onLoadFile(file)
     }
 
     render() {
@@ -53,32 +53,47 @@ export default class FileInput extends Component {
         const { fileName, error } = this.state
 
         const changeFile = (
-            <div className="file__change">
+            <div>
                 <img src={fileName} className="file__image" aria-hidden={true}/>
-                <label htmlFor="file" className="file__input form__file form__input">
+                <div className="file__input form__input">
                     <svg className="file__icon" aria-hidden={true}><use xlinkHref={iconEdit}/></svg>
                     <p>изменить</p>
-                </label>
+                </div>
             </div>
         )
 
         const addFile = (
-            <label htmlFor="file" className="file__input form__file form__input">
+            <div className="file__input form__input">
                 <svg className="file__icon" aria-hidden={true}><use xlinkHref={iconFile}/></svg>
                 <p>выберите или перетащите файл</p>
-            </label>
+            </div>
         )
 
         return (
             <>
-                <input
-                    type="file"
-                    id="file"
-                    name={name}
-                    onChange={this.onLoad}
-                    hidden
-                />
-                {fileName ? changeFile : addFile}
+                <Dropzone
+                    onDrop={this.onLoad}
+                    accept="image/*"
+                >
+                    {({getRootProps, getInputProps}) => (
+                        <div
+                            {...getRootProps({
+                                title: 'Выберите файл',
+                                role:  'input',
+                                className: 'file__wrapper'
+                            })}
+                        >
+                            <input
+                                {...getInputProps({
+                                    multiple: false,
+                                    name:    {name},
+                                })}
+                            />
+                            {fileName ? changeFile : addFile}
+                        </div>
+                    )}
+                </Dropzone>
+
                 {error && <p className="admin__error">{error}</p>}
             </>
         );

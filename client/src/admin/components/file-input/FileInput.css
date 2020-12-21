@@ -1,8 +1,13 @@
+.file__wrapper {
+    outline: none;
+}
+
 .file__input {
     display: flex;
     align-items: center;
     color: rgba(0, 0, 0, 0.3);
     transition: .2s;
+    cursor: pointer;
 }
 
 .file__input:hover {
