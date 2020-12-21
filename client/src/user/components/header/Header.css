@@ -4,20 +4,20 @@
     align-items: center;
     padding-top: 32px;
     padding-bottom: 34px;
-    transition: 1s;
+    transition: background .6s;
 }
 
 .header_theme_gray {
     background-color: var(--color-gray);
 }
 
-.header__iconPhone {
-    display: none;
-}
-
 .header__link {
     margin-left: 29px;
     padding: 10px 14px;
+}
+
+.header__iconPhone {
+    display: none;
 }
 
 .header__iconCross {
@@ -51,6 +51,10 @@
         z-index: 200;
         opacity: 0;
         transition: 0.5s ease-in-out;
+    }
+
+    .header__link:hover {
+        background-color: var(--color-yellow);
     }
 
     .header__link_fixed {

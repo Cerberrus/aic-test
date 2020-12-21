@@ -1,18 +1,20 @@
 import React, { Component } from "react"
 import { Helmet } from "react-helmet"
 import { Link }   from "react-router-dom"
-import  axios     from "axios"
+import { AnimatePresence, motion } from "framer-motion"
 
+// Import model
 import model from "~src/model/model"
 
-//Import static files
-import './Coordinate.css'
+// Import static files
+import iconDelete from "~src/static/icons/close.svg"
+import iconEdit   from "~src/static/icons/edit.svg"
 
 export default class Coordinate extends Component {
     model = new model()
 
     state = {
-        coordinateList: [],
+        coordinateList: undefined,
     }
 
     componentDidMount() {
@@ -24,11 +26,7 @@ export default class Coordinate extends Component {
     }
 
     onDelete = (id) => {
-        axios({
-            method: 'delete',
-            url: process.env.API_BASE + `/coordinate/${id}`,
-            withCredentials: true
-        })
+        this.model.deleteCoordinate(id)
             .then(() => {
                 this.setState(({ coordinateList }) => {
                     const index = coordinateList.findIndex(el => el.id === id)
@@ -39,55 +37,82 @@ export default class Coordinate extends Component {
                     }
                 })
             })
-            .catch((error) => {
-                console.log(error)
-            })
     }
 
     render() {
         const { coordinateList } = this.state
 
-        console.log(coordinateList);
+        const animationVariants = {
+            hidden: (index) => ({
+                opacity: 0,
+                scale: 0.8,
+            }),
+            visible: (index) => ({
+                opacity: 1,
+                scale: 1,
+                transition: {
+                    delay: (index + 1) * 0.03,
+                },
+            }),
+            removed: {
+                opacity: 0,
+                x: 400,
+                transition: {
+                    delay: 0.06,
+                },
+            },
+        }
 
         return (
             <>
-                <Helmet>
-                    <title>координаты</title>
-                </Helmet>
+                <Helmet title="координаты" />
 
-                <section className="coordinate">
-                    <div className="coordinate__top">
-                        <h1 className="title coordinate__title">Координаты</h1>
-                        <Link to='/admin/coordinate/new' className="button button_yellow">Добавить</Link>
-                    </div>
-                    <div className="coordinate__tableHeader">
-                        <p className="coordinate__item">Тип</p>
-                        <p className="coordinate__item">Координаты</p>
-                        <p className="coordinate__item">Название</p>
-                    </div>
+                <div className="admin__header">
+                    <h1 className="admin__title">Координаты</h1>
+                    <Link to="/admin/coordinate/new" className="button button_yellow">Добавить</Link>
+                </div>
 
-                    <ul>
-                        {coordinateList && coordinateList.map((item) => (
-                            <li className="coordinate__card" key={item.id}>
-                                <p className="coordinate__type">{item.properties.typeTitle}</p>
-                                <p className="coordinate__cords">{item.geometry.coordinates[0]} | {item.geometry.coordinates[1]}</p>
-                                <p className="coordinate__designation">{item.title}</p>
-                                <ul className="coordinate__cardList">
-                                    <li>
-                                        <Link to={`/admin/coordinate/${item.id}`} title="Редактировать">
-                                            <img src="https://aic.xutd.tk/static/icons/edit.svg"  className="coordinate__img" alt=""/>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <button className="coordinate__button" title="Удалить" onClick={() => this.onDelete(item.id)}>
-                                            <img src="https://aic.xutd.tk/static/icons/close.svg" className="coordinate__img" alt=""/>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </li>
+                <ul className="admin__tableHead">
+                    <li>Тип</li>
+                    <li>Координаты</li>
+                    <li>Название</li>
+                </ul>
+
+                <ul className="admin__tableList">
+                    <AnimatePresence>
+                        {coordinateList && coordinateList.map((item, index) => (
+                            <motion.li
+                                className="admin__tableItem"
+                                variants={animationVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="removed"
+                                custom={index}
+                                key={item.id}
+                            >
+                                <p>{item.properties.typeTitle}</p>
+                                <p>{item.geometry.coordinates[0]} | {item.geometry.coordinates[1]}</p>
+                                <p>{item.title}</p>
+                                <div className="admin__changeGroup">
+                                    <Link to={`/admin/coordinate/${item.id}`} title="Редактировать">
+                                        <svg className="admin__icon admin__icon_color_green" aria-hidden={true}>
+                                            <use xlinkHref={iconEdit}/>
+                                        </svg>
+                                    </Link>
+                                    <button
+                                        className="admin__button_edit"
+                                        title="Удалить"
+                                        onClick={() => this.onDelete(item.id)}
+                                    >
+                                        <svg className="admin__icon admin__icon_color_red" aria-hidden={true}>
+                                            <use xlinkHref={iconDelete}/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </motion.li>
                         ))}
-                    </ul>
-                </section>
+                    </AnimatePresence>
+                </ul>
             </>
         )
     }

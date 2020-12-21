@@ -1,0 +1,6 @@
+.errorPage {
+    display: flex;
+    justify-content: center;
+    padding: 20vh 0;
+    text-align: center;
+}

@@ -1,11 +1,12 @@
 import React, { Component } from "react"
 import { YMaps, Map, ZoomControl, ObjectManager } from "react-yandex-maps"
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
-import './Geography.css'
-import iconPlacemark from '~user/static/images/placemark.png'
+import "./Geography.css"
+import iconPlacemark from "~src/static/images/placemark.png"
 
 // Map config
 const mapState = {
@@ -19,12 +20,12 @@ const mapOptions = {
 }
 
 const zoomOptions = {
-    size: 'small',
+    size: "small",
     position: {
-        top: 'auto',
+        top: "auto",
         right: 0,
         bottom: 0,
-        left: 'auto',
+        left: "auto",
     }
 }
 
@@ -34,14 +35,14 @@ const managerOptions = {
 }
 
 const managerObjects = {
-    iconLayout: 'default#image',
+    iconLayout: "default#image",
     iconImageHref: iconPlacemark,
     iconImageSize: [44, 44],
     iconImageOffset: [-5, -38],
 }
 
 const managerClusters = {
-    preset: 'islands#orangeClusterIcons',
+    preset: "islands#orangeClusterIcons",
 }
 
 export default class Geography extends Component {
@@ -59,7 +60,7 @@ export default class Geography extends Component {
                 const filterList = [
                     {
                         id: -1,
-                        type: 'показать всё'
+                        type: "показать всё"
                     }
                 ]
 
@@ -98,7 +99,7 @@ export default class Geography extends Component {
                             {filterList.map((item) => (
                                 <button
                                     key={item.id}
-                                    className={`geography__button ${filter === item.id && 'geography__button_active'}`}
+                                    className={`geography__button ${filter === item.id && "geography__button_active"}`}
                                     onClick={() => this.selectFilter(item.id)}
                                 >
                                     {item.type}

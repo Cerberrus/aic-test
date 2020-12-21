@@ -1,0 +1,325 @@
+/* Global styles */
+@font-face {
+    font-family: 'EuclidCircularB';
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+    src: url('./static/fonts/EuclidCircularB-Medium.woff2') format('woff2'),
+         url('./static/fonts/EuclidCircularB-Medium.woff') format('woff');
+}
+
+/* Properties */
+:root {
+    /* Colors */
+    --color-black:      #000000;
+    --color-white:      #ffffff;
+    --color-red:        #FF6666;
+    --color-yellow:     #FFDF31;
+    --color-lightGreen: #10C300;
+    --color-gray:       #F5F5F5;
+    --color-darkGray:   #B3B3B3;
+
+    /* Fonts */
+    --font-EuclidCircularB: 'EuclidCircularB', 'Arial', 'Helvetica', sans-serif;
+
+    /* Other */
+    --container-width:  1110px;
+    --header-height:    111px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    font-weight: 500;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    font-family: var(--font-EuclidCircularB);
+    font-size: 18px;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--color-gray);
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--color-darkGray)
+}
+
+.page__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 130vh;
+    color: var(--color-black);
+    overflow-x: hidden;
+}
+
+main {
+    flex-grow: 1;
+}
+
+h2 {
+    margin-bottom: 35px;
+    font-size: 32px;
+}
+
+a {
+    color: var(--color-black);
+    text-decoration: none;
+}
+
+button,
+.button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--color-black);
+    cursor: pointer;
+    transition: background .2s, border .2s;
+}
+
+.button_gray {
+    border: 2px solid var(--color-gray);
+    background-color: var(--color-gray);
+}
+
+.button_gray:hover {
+    border-color: var(--color-darkGray);
+    background-color: var(--color-darkGray);
+}
+
+.button_yellow {
+    border: 2px solid var(--color-yellow);
+    background-color: var(--color-yellow);
+}
+
+.button_yellow:hover {
+    background-color: transparent;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+svg {
+    user-select: none;
+}
+
+/* Inputs */
+label {
+    position: relative;
+}
+
+.form__input {
+    display: block;
+    margin-top: 14px;
+    padding: 12px 16px 14px 16px;
+    width: 100%;
+    max-width: 540px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    outline: none;
+    resize: none;
+    background-color: var(--color-gray);
+}
+
+.form__input::placeholder {
+    color: var(--color-black);
+    opacity: 0.3;
+}
+
+.form__input_error {
+    background-color: rgba(255, 102, 102, 0.3);
+}
+
+.form__input_error::placeholder {
+    opacity: 1;
+}
+
+.form__select {
+    appearance: none;
+    background-image: url('./static/icons/arrow.png');
+    background-repeat: no-repeat;
+    background-position: right 16px top 50%, 0 0;
+    background-size: 10px;
+}
+
+.form__radio {
+    position: relative;
+    cursor: pointer;
+}
+
+.form__radio:before {
+    content: '';
+    box-sizing: border-box;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    vertical-align: middle;
+    border-radius: 50%;
+    border: 12px solid var(--color-gray);
+    z-index: 2;
+    transition: .2s ease-in-out;
+}
+
+input[type=radio]:checked + .form__radio:before {
+    background-color: var(--color-black);
+    border: 7px solid var(--color-gray);
+}
+
+.form__radioTitle {
+    margin-bottom: 14px;
+}
+
+.form__radioGroup {
+    display: flex;
+}
+
+.radioGroup__item + .radioGroup__item {
+    margin-left: 28px;
+}
+
+.form__checkbox {
+    cursor: pointer;
+}
+
+.form__checkbox:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 8px;
+    background-color: var(--color-gray);
+    transition: .2s;
+}
+
+input[type=checkbox]:checked + .form__checkbox:before {
+    background-image: url('./static/icons/check.png');
+    background-size: cover;
+}
+
+.form__file {
+    cursor: pointer;
+}
+
+/* Other */
+.container {
+    padding-left:  calc(50% - var(--container-width) / 2) !important;
+    padding-right: calc(50% - var(--container-width) / 2) !important;
+}
+
+.visuallyHidden {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+}
+
+/* Slider */
+.slider__button {
+    padding: 4px 16px;
+    background: none;
+}
+
+.slider__button:nth-of-type(1) {
+    transform: rotate(180deg);
+}
+
+.slider__button:nth-of-type(2) {
+    border-left: 2px solid var(--color-gray);
+}
+
+.slider__button.swiper-button-disabled .slider__icon {
+    opacity: 0.2;
+}
+
+.slider__icon {
+    width: 10px;
+    height: 10px;
+    fill: var(--color-black);
+}
+
+/* Block loader */
+.block_load {
+    position: relative;
+    background-color: var(--color-darkGray) !important;
+    opacity: 0.6 !important;
+}
+
+.block_load:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    width: 500%;
+    margin-left: -250%;
+    animation: phAnimation 0.8s linear infinite;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 54%) 50% 50%;
+}
+
+@keyframes phAnimation {
+    0% {
+        transform: translate3d(-30%, 0, 0);
+    }
+    100% {
+        transform: translate3d(30%, 0, 0);
+    }
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+    :root {
+        --container-width: calc(100% - 40px * 2);
+        --header-height:   104px;
+    }
+
+    .container {
+        padding-left:  40px !important;
+        padding-right: 40px !important;
+    }
+
+    .form__input {
+        max-width: none;
+    }
+}
+
+@media (max-width:  767px) {
+    :root {
+        --header-height:   95px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .container {
+        padding-left:  16px !important;
+        padding-right: 16px !important;
+    }
+}

@@ -1,85 +1,115 @@
-import React, {Component} from "react"
-import {Link} from "react-router-dom";
-import './Slider.css'
-import axios from "axios";
+import React, { Component } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Link } from "react-router-dom"
+
+// Import model
+import model from "~src/model/model"
+
+// Import static files
+import iconDelete from "~src/static/icons/close.svg"
+import iconEdit   from "~src/static/icons/edit.svg"
 
 export default class Slider extends Component{
+    model = new model()
 
     state = {
-        slider: {
-            list: [],
-            isLoaded: false
-        }
+        sliderList: undefined,
     }
 
     componentDidMount() {
-        this.getSlider()
+        this.model.getAllSlides()
+            .then(sliderList => {
+                this.setState({sliderList})
+            })
     }
 
-    getSlider=()=>{
-        axios({
-            method: 'get',
-            url: process.env.API_BASE + '/slider',
-            withCredentials: true
-        })
-            .then((response)=>{
-                console.log(response)
-                this.setState({
-                    slider:{
-                        list: response.data,
-                        isLoaded:true
+    onDelete = (id) => {
+        this.model.deleteSlide(id)
+            .then(() => {
+                this.setState(({ sliderList }) => {
+                    const index = sliderList.findIndex(el => el.id === id)
+                    const updatedCoordinateList = [...sliderList.slice(0, index), ...sliderList.slice(index + 1)]
+
+                    return {
+                        sliderList: updatedCoordinateList
                     }
                 })
-            })
-            .catch((error)=>{
-                console.log('error')
             })
     }
 
     render(){
-        let sliderList= []
-        if(this.state.slider.isLoaded){
-            for(let slider of this.state.slider.list){
-                sliderList.push(
-                    <div className="slider__card">
-                        <img className="slider__image" src={slider.path[0]} alt=""/>
-                        <p className="slider__name">{slider.title}</p>
-                        <p className="slider__description">{slider.imageDescription}</p>
-                        <img src="https://aic.xutd.tk/static/icons/close.svg" alt=""/>
-                        <img src="https://aic.xutd.tk/static/icons/edit.svg" alt=""/>
-                        <img src="https://aic.xutd.tk/static/icons/hide.svg" alt=""/>
-                    </div>
-                )
-            }
-        }
-        else{
-            sliderList.push(
-                <div className="slider__card">
-                    <img className="slider__image" src='images/Frame%2047.png' alt=""/>
-                    <p className="slider__name">Загрузка</p>
-                    <p className="slider__description">Загрузка</p>
-                    <img src="https://aic.xutd.tk/static/icons/close.svg" alt=""/>
-                    <img src="https://aic.xutd.tk/static/icons/edit.svg" alt=""/>
-                    <img src="https://aic.xutd.tk/static/icons/hide.svg" alt=""/>
-                </div>
-            )
-        }
-        return(
-            <main>
-                <section className="slider">
-                    <div className="slider__top">
-                        <h1 className="slider__title title">Слайдер</h1>
-                        <button className="button_yellow" type="button">Добавить</button>
-                    </div>
-                    <div className="slider__tableHead">
-                        <p>Фото</p>
-                        <p>Название</p>
-                        <p>Описание</p>
-                    </div>
-                    <>{sliderList}</>
+        const { sliderList } = this.state
 
-                </section>
-            </main>
+        const animationVariants = {
+            hidden: () => ({
+                opacity: 0,
+                scale: 0.8,
+            }),
+            visible: (index) => ({
+                opacity: 1,
+                scale: 1,
+                transition: {
+                    delay: (index + 1) * 0.03,
+                },
+            }),
+            removed: {
+                opacity: 0,
+                x: 400,
+                transition: {
+                    delay: 0.06,
+                },
+            },
+        }
+
+        return(
+            <>
+                <div className="admin__header">
+                    <h1 className="admin__title">Слайдер</h1>
+                    <Link to="/admin/slider/new" className="button button_yellow">Добавить</Link>
+                </div>
+
+                <ul className="admin__tableHead">
+                    <li>Фото</li>
+                    <li>Название</li>
+                    <li>Описание</li>
+                </ul>
+
+                <ul className="admin__tableList">
+                    <AnimatePresence>
+                        {sliderList && sliderList.map((slider, index) => (
+                            <motion.li
+                                className="admin__tableItem"
+                                variants={animationVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="removed"
+                                custom={index}
+                                key={index}
+                            >
+                                <img src={slider.images[0]} aria-hidden={true}/>
+                                <p>{slider.title}</p>
+                                <p>{slider.alt}</p>
+                                <div className="admin__changeGroup">
+                                    <Link to={`/admin/slider/${slider.id}`} title="Редактировать">
+                                        <svg className="admin__icon admin__icon_color_green" aria-hidden={true}>
+                                            <use xlinkHref={iconEdit}/>
+                                        </svg>
+                                    </Link>
+                                    <button
+                                        className="admin__button_edit"
+                                        title="Удалить"
+                                        onClick={() => this.onDelete(slider.id)}
+                                    >
+                                        <svg className="admin__icon admin__icon_color_red" aria-hidden={true}>
+                                            <use xlinkHref={iconDelete}/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </motion.li>
+                        ))}
+                    </AnimatePresence>
+                </ul>
+            </>
         )
     }
 }

@@ -1,32 +1,62 @@
 import React, { Component } from "react"
 import Helmet from "react-helmet"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
-import Slider    from  './components/slider/Slider'
-import Vacancy   from  './components/vacancy/Vacancy'
-import Gallery   from  './components/gallery/Gallery'
-import Geography from  './components/geography/Geography'
+// Import components
+import Loader    from "~user/components/loader/Loader"
+import Header    from "~user/components/header/Header"
+import Footer    from "~user/components/footer/Footer"
+import Slider    from  "./components/slider/Slider"
+import Vacancy   from  "./components/vacancy/Vacancy"
+import Gallery   from  "./components/gallery/Gallery"
+import Geography from  "./components/geography/Geography"
 
 export default class Home extends Component {
+    state = {
+        loading: true
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                loading: false
+            })
+        }, 800)
+    }
+
     render() {
+        const { loading } = this.state
+
         return (
             <>
-                <Helmet>
-                    <title>главная</title>
-                    <meta name="description" content="Home page" />
-                </Helmet>
+                <Helmet title="главная" />
 
-                <motion.main
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1}}
-                    exit={{opacity: 0 }}
-                    transition={{delay: 0.2}}
+                <AnimatePresence>
+                    {loading && <Loader/>}
+                </AnimatePresence>
+
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                    }}
+                    animate={{
+                        opacity: 1,
+                    }}
+                    exit={{
+                        opacity: 0,
+                    }}
+                    transition={{delay: 0.1}}
+                    className="page__body"
                 >
-                    <Slider />
-                    <Vacancy />
-                    <Gallery />
-                    <Geography/>
-                </motion.main>
+                    <Header theme="white"/>
+                    <main>
+                        <Slider />
+                        <Vacancy />
+                        <Gallery />
+                        <Geography/>
+                    </main>
+                    <Footer/>
+                </motion.div>
             </>
         )
     }

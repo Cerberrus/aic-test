@@ -1,20 +1,33 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 
+// Import model
+import model from "~src/model/model"
+
 // Import static files
-import './Header.css'
-import iconCross from '~user/static/icons/cross.svg'
-import iconPhone from '~user/static/icons/phone.svg'
-import Logo      from '~user/components/logo/Logo'
+import "./Header.css"
+import iconCross from "~src/static/icons/cross.svg"
+import iconPhone from "~src/static/icons/phone.svg"
+import Logo      from "~user/components/logo/Logo"
 
 export default class Header extends Component {
+    model = new model()
+
     state = {
-        linkSticky: false
+        linkSticky: false,
+        phone:         "",
     }
 
     componentDidMount() {
+        this.model.getInformation()
+            .then(response => {
+                this.setState({
+                    phone: response.phone
+                })
+            })
+
         window.scrollTo(0, 0)
-        window.addEventListener('scroll', this.onScroll)
+        window.addEventListener("scroll", this.onScroll)
     }
 
     onScroll = () => {
@@ -23,29 +36,34 @@ export default class Header extends Component {
     }
 
     render() {
-        const { theme='white' } = this.props
-        const { linkSticky } = this.state
+        const { linkSticky, phone } = this.state
+        const { theme } = this.props
 
         const whiteTheme = (
             <div>
-                <a href="tel:79264331416" title="Позвонить">
-                    <span className="header__phone">+7 (926) 433-14-16</span>
+                <a href={`tel:${phone}`} title="Позвонить">
+                    <span className="header__phone">+{phone}</span>
                     <svg  className="header__iconPhone"><use xlinkHref={iconPhone}/></svg>
                 </a>
-                <Link to="/form" className={linkSticky ? "header__link header__link_fixed button button_yellow" : "header__link button button_yellow"}>заполнить анкету</Link>
+                <Link
+                    to="/form"
+                    className={`header__link button button_yellow ${linkSticky && " header__link_fixed"}`}
+                >
+                    заполнить анкету
+                </Link>
             </div>
         )
 
         const grayTheme  = (
-            <Link to='/'>
+            <Link to="/" title="Перейти на главную">
                 <svg className="header__iconCross"><use xlinkHref={iconCross}/></svg>
             </Link>
         )
 
         return (
-            <header className={theme === 'gray' ? 'header header_theme_gray container' : 'header container'} >
+            <header className={`header container ${theme === "gray" && " header_theme_gray"}`}>
                 <Logo />
-                {theme === 'gray' ? grayTheme : whiteTheme}
+                {theme === "gray" ? grayTheme : whiteTheme}
             </header>
         )
     }

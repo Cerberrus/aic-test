@@ -2,63 +2,38 @@ import React from "react"
 import { motion } from "framer-motion"
 
 // Import static files
-import './Loader.css'
+import "./Loader.css"
+import logo from "~src/static/images/logo.png"
 
-
-// Animation setting
-const loadingContainerVariants = {
-    start: {
-        transition: {
-            staggerChildren: 0.2
-        }
-    },
-    end: {
-        transition: {
-            staggerChildren: 0.2
-        }
-    }
-}
-
-const loadingCircleVariants = {
-    start: {
-        y: "50%"
-    },
-    end: {
-        y: "150%"
-    }
-}
-
-const loadingCircleTransition = {
-    duration: 0.5,
-    yoyo: Infinity,
-    ease: "easeInOut"
-}
-
-const Loader = () => {
-    return (
+const Loader = () => (
+    <motion.div
+        className="adminLoader"
+        exit={{
+            opacity: 0,
+        }}
+        transition={{ duration: 0.6 }}
+    >
         <motion.div
-            className="loader"
-            variants={loadingContainerVariants}
-            initial="start"
-            animate="end"
+            initial={{
+                opacity: 0,
+                y: -30,
+            }}
+            animate={{
+                opacity: 1,
+                y: 0,
+                transition: {
+                    duration: 0.6,
+                    yoyo: Infinity,
+                }
+            }}
+            exit={{
+                opacity: 0
+            }}
+            transition={{ duration: 0.6 }}
         >
-            <motion.span
-                className="loader__circle"
-                variants={loadingCircleVariants}
-                transition={loadingCircleTransition}
-            />
-            <motion.span
-                className="loader__circle"
-                variants={loadingCircleVariants}
-                transition={loadingCircleTransition}
-            />
-            <motion.span
-                className="loader__circle"
-                variants={loadingCircleVariants}
-                transition={loadingCircleTransition}
-            />
+            <img src={logo} aria-hidden={true}/>
         </motion.div>
-    )
-}
+    </motion.div>
+)
 
 export default Loader

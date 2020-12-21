@@ -1,9 +1,10 @@
 import React, { Component } from "react"
 
+// Import model
 import model from "~src/model/model"
 
-// Import styles
-import './Gallery.css'
+// Import static files
+import "./Gallery.css"
 
 export default class Gallery extends Component {
     model = new model()
@@ -29,23 +30,28 @@ export default class Gallery extends Component {
         let {images, length} = this.state
         const showList = images.slice(0, length)
 
-        if (showList.length) {
-            return (
-                <section className="gallery container">
-                    <h2>мы в инстаграме</h2>
+        return (
+            <section className="gallery container">
+                <h2>мы в инстаграме</h2>
 
-                    <ul className="gallery__list">
-                        {showList.map((image, index) => (
-                            <li key={index} className={!image ? 'gallery__item block_load' : 'gallery__item'}>
-                                {image && <img src={image}  alt="" className="gallery__image" /> }
-                            </li>
-                        ))}
-                    </ul>
-                    <button className="gallery__button button_gray" onClick={this.continueLoad}>показать ещё</button>
-                </section>
-            )
-        }
+                <ul className="gallery__list">
+                    {images && showList.map((image, index) => (
+                        <li
+                            key={index}
+                            className={`gallery__item ${!image && "block_load"}`}
+                        >
+                            {image && <img src={image}  alt="" className="gallery__image" />}
+                        </li>
+                    ))}
+                </ul>
 
-        return false
+                <button
+                    className="gallery__button button_gray"
+                    onClick={this.continueLoad}
+                >
+                    показать ещё
+                </button>
+            </section>
+        )
     }
 }

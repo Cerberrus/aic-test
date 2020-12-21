@@ -1,0 +1,77 @@
+.requestPage {
+    padding: 72px 0;
+}
+
+.requestPage__title {
+    font-size: 72px;
+    line-height: 0.9;
+}
+
+.requestPage__content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 48px;
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+    .requestPage__form {
+        grid-template-columns: 1fr;
+    }
+
+    .requestPage__content {
+        flex-direction: column;
+        margin-top: 72px;
+    }
+
+    .reCaptcha__info {
+        margin-left: 30px;
+    }
+
+    .requestPage__agreement {
+        align-items: flex-start;
+    }
+
+    .requestPage__agreementText {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 767px) {
+    .requestPage {
+        padding: 48px 0;
+    }
+
+    .requestPage__title {
+        font-size: 48px;
+    }
+
+    .requestPage__content {
+        margin-top: 48px;
+    }
+
+    .requestPage__formGroup {
+        grid-template-columns: 1fr;
+    }
+
+    .radioGroup__item + .radioGroup__item {
+        margin-left: 54px;
+    }
+
+    .reCaptcha__group {
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .reCaptcha__block {
+        transform:scale(0.95);
+        transform-origin:0 0;
+    }
+
+    .reCaptcha__info {
+        margin-top: 24px;
+        margin-left: 0;
+        padding-top: 0;
+        text-align: left;
+    }
+}

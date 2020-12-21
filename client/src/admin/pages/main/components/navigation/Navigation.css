@@ -2,20 +2,12 @@
     margin-right: 48px;
 }
 
-.navigation__item {
-    list-style: none;
-}
-
 .navigation__link {
     display: block;
     margin-bottom: 16px;
     padding: 12px 0 12px 16px;
     width: 250px;
     border-bottom: 1px solid var(--color-darkGray);
-    font-family: var(--font-raleway);
-    font-weight: 500;
-    font-size: 18px;
-    text-decoration: none;
     color: var(--color-darkGray);
     transition: .2s;
 }

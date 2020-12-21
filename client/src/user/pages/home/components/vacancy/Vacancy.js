@@ -1,17 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 
 // Import Swiper React components
-import SwiperCore, { Navigation } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Navigation } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.min.css"
 
 SwiperCore.use([Navigation])
 
+// Import model
 import model from "~src/model/model"
 
 // Import static files
-import './Vacancy.css'
-import iconArrow from '~user/static/icons/arrow.svg'
+import "./Vacancy.css"
+import iconArrow from "~src/static/icons/arrow.svg"
 
 // Swiper settings
 const swiperBreakpoints = {
@@ -25,7 +26,7 @@ const swiperBreakpoints = {
     },
     // when window width is >= 768px
     768: {
-        slidesPerView: 'auto',
+        slidesPerView: "auto",
         centeredSlides: false,
         slideToClickedSlide: false,
         initialSlide: 0,
@@ -34,8 +35,8 @@ const swiperBreakpoints = {
 }
 
 const swiperNavigation = {
-    prevEl: '.sliderVacancy__button_prev',
-    nextEl: '.sliderVacancy__button_next'
+    prevEl: ".sliderVacancy__button_prev",
+    nextEl: ".sliderVacancy__button_next"
 }
 
 export default class Vacancy extends Component {
@@ -67,10 +68,10 @@ export default class Vacancy extends Component {
                 <div className="vacancy__header">
                     <h2>вакансии в гросс маркете</h2>
                     <div className="vacancy__buttonGroup slider__buttonGroup">
-                        <button  className="slider__button sliderVacancy__button_prev button">
+                        <button  className="slider__button sliderVacancy__button_prev button" aria-label="Предыдущий слайд">
                             <svg className="slider__icon"><use xlinkHref={iconArrow}/></svg>
                         </button>
-                        <button  className="slider__button sliderVacancy__button_next button">
+                        <button  className="slider__button sliderVacancy__button_next button" aria-label="Следующий слайд">
                             <svg className="slider__icon"><use xlinkHref={iconArrow}/></svg>
                         </button>
                     </div>
@@ -81,15 +82,31 @@ export default class Vacancy extends Component {
                     navigation={swiperNavigation}
                     className="vacancy__slider vacancySlider"
                 >
-                    {vacancyList.map((vacancy) => (
+                    {vacancyList && vacancyList.map((vacancy) => (
                         <SwiperSlide
                             key={vacancy.id}
-                            className={`vacancySlider__slide ${vacancy.active && 'vacancySlider__slide_active'}`}
+                            className={`vacancySlider__slide ${vacancy.active && "vacancySlider__slide_active"}`}
                             onClick={() => this.toggleVacancy(vacancy.id)}
                         >
                             <div className="vacancySlider__slideFront" title="Подробнее">
                                 <h3 className="vacancySlider__name">{vacancy.title}</h3>
-                                <img src={vacancy.images[0]} alt={vacancy.alt} />
+                                {(vacancy.images.length > 1) ? (
+                                    <picture>
+                                        <source
+                                            srcSet={`${vacancy.images[0]} 1x,
+                                                     ${vacancy.images[1]} 2x`}
+                                            type="image/webp"
+                                        />
+                                        <img
+                                            src={vacancy.images[2]}
+                                            srcSet={`${vacancy.images[3]} 2x`}
+                                            alt={vacancy.alt}
+                                            className="sliderPhoto__image"
+                                        />
+                                    </picture>
+                                ) : (
+                                    <img src={vacancy.images[0]} alt={vacancy.alt}/>
+                                )}
                             </div>
                             <div className="vacancySlider__slideBack">
                                 <p className="vacancySlider__name">{vacancy.title}</p>
