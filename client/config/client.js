@@ -1,21 +1,20 @@
 import React from "react"
-import { render, hydrate } from 'react-dom'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { loadableReady } from '@loadable/component'
+import { render, hydrate } from "react-dom"
+import { BrowserRouter }   from "react-router-dom"
+import { loadableReady }   from "@loadable/component"
 
-import AppUser from '~user/components/app/App'
-import AppAdmin from '~admin/components/app/App'
+// Import components
+import App from "~src/App"
 
-const {externals: {isDev}} = require('./webpack/base.config')
+// Import global properties
+const {externals: {isDev}} = require("./webpack/base.config")
 
 const content = [
     <BrowserRouter>
-        <Switch>
-            <Route       path="/admin" component={AppAdmin} />
-            <Route       path="/*"     component={AppUser} />
-        </Switch>
+        <App/>
     </BrowserRouter>
-    ,document.getElementById('app')
+    ,document.getElementById("app")
 ]
 
+// For build (ssr) and dev mode
 isDev ? render(...content) : loadableReady(() => hydrate(...content))

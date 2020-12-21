@@ -9,12 +9,12 @@ import { ChunkExtractor } from "@loadable/server"
 
 const app = express()/*require('../../backend/src/connectModules')*/
 
-import App from "~user/components/app/App"
+import App from "~src/App"
 
-app.use(express.static(path.join(__dirname, '../dist')))
+app.use(express.static(path.join(__dirname, "../dist")))
 
-app.get('*', async (req, res) => {
-    let   statsFile = path.resolve('dist/modern-scripts.json')
+app.get("*", async (req, res) => {
+    let   statsFile = path.resolve("dist/modern-scripts.json")
     const modernExtractor = new ChunkExtractor({ statsFile, entrypoints: ["client"] })
 
     const context = {}
@@ -28,7 +28,7 @@ app.get('*', async (req, res) => {
     const helmet = Helmet.renderStatic();
 
     //For legacy scripts
-    statsFile = path.resolve('dist/legacy-scripts.json')
+    statsFile = path.resolve("dist/legacy-scripts.json")
     const legacyExtractor = new ChunkExtractor({ statsFile, entrypoints: ["client"] })
 
     renderToString(
@@ -38,7 +38,7 @@ app.get('*', async (req, res) => {
     )
 
     const buildScripts = (jsonScripts) => {
-        let result = ''
+        let result = ""
         let i = 0
 
         jsonScripts.map((item, index) =>  {
