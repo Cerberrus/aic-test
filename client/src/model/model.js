@@ -1,11 +1,14 @@
-import axios from 'axios'
+import axios from "axios"
+
+// Import static files
+import defaultImage from "~src/static/images/default.png"
 
 export default class Model {
     // GET
     getResource = async (url) => {
         try {
             const response = await axios({
-                method: 'get',
+                method: "get",
                 url: `${process.env.API_BASE}${url}`,
             })
 
@@ -16,7 +19,7 @@ export default class Model {
     }
 
     getAllVacancies = async () => {
-        const  vacancies = await this.getResource('/vacancy');
+        const  vacancies = await this.getResource("/vacancy");
         return vacancies.map(this._transformVacancy);
     }
 
@@ -26,11 +29,11 @@ export default class Model {
     }
 
     getAllInstagramImages = () => {
-        return this.getResource('/instagram/image');
+        return this.getResource("/instagram/image");
     }
 
     getAllSlides = async () => {
-        const  slides = await this.getResource('/slider');
+        const  slides = await this.getResource("/slider");
         return slides.map(this._transformSlide);
     }
 
@@ -40,7 +43,7 @@ export default class Model {
     }
 
     getAllCoordinates = async () => {
-        return await this.getResource('/coordinate');
+        return await this.getResource("/coordinate");
     }
 
     getCoordinate = async (id) => {
@@ -58,6 +61,10 @@ export default class Model {
         return this._transformSetting(settings);
     }
 
+    getInformation = async () => {
+        return await this.getResource(`/information`);
+    }
+
     getSummary = async () => {
         const  summary = await this.getResource(`/summary`);
         return this._transformSummary(summary);
@@ -65,7 +72,7 @@ export default class Model {
 
     _transformDate = (date) => {
         const dateMatch = date.match(/\d*-\d*-\d*/)
-        return dateMatch[0].replace(/-/gi, '/')
+        return dateMatch[0].replace(/-/gi, "/")
     }
 
     _transformSummary = (summary) => {
@@ -79,15 +86,15 @@ export default class Model {
         const summaryList = summary.summaryList.map((summary) => {
             return {
                 id:         summary.id,
-                name:       summary.name                            || '',
-                sex:        summary.sex                             || '',
-                dateBirth:  this._transformDate(summary.happy_date) || '',
-                phone:      summary.phone_number                    || '',
-                mail:       summary.email                           || '',
-                resume:     summary.resumeText                      || 'Нет данных',
-                file:       summary.path                            || '',
-                vacancy:    summary.vacancy                         || 'Не выбрано',
-                date:       this._transformDate(summary.date)       || '', //fix
+                name:       summary.name                            || "",
+                sex:        summary.sex                             || "",
+                dateBirth:  this._transformDate(summary.happy_date) || "",
+                phone:      summary.phone_number                    || "",
+                mail:       summary.email                           || "",
+                resume:     summary.resumeText                      || "Нет данных",
+                file:       summary.path                            || "",
+                vacancy:    summary.vacancy                         || "Не выбрано",
+                date:       this._transformDate(summary.date)       || "",
                 statusId:   summary.statusId                        ||  1,
             }
         })
@@ -100,9 +107,9 @@ export default class Model {
 
     _transformSetting = (setting) => {
         return {
-            instLogin:    setting.instagramLogin    || '',
-            instPassword: setting.instagramPassword || '',
-            phone:        setting.phone             || '',
+            instLogin:    setting.instagramLogin    || "",
+            instPassword: setting.instagramPassword || "",
+            phone:        setting.phone             || "",
         }
     }
 
@@ -110,7 +117,7 @@ export default class Model {
         return {
             id:        coordinate.coordinate.features.id,
             type:      coordinate.coordinate.features.properties.type         || -1,
-            title:     coordinate.coordinate.features.title                   || '',
+            title:     coordinate.coordinate.features.title                   || "",
             longitude: coordinate.coordinate.features.geometry.coordinates[0] ||  0,
             latitude:  coordinate.coordinate.features.geometry.coordinates[1] ||  0,
         }
@@ -119,36 +126,36 @@ export default class Model {
     _transformCoordinateType = (type) => {
         return {
             id:    type.id,
-            title: type.type || '',
+            title: type.type || "",
         }
     }
 
     _transformVacancy = (vacancy) => {
         return {
             id:          vacancy.id,
-            title:       vacancy.title            || '',
-            description: vacancy.description      || '',
-            alt:         vacancy.imageDescription || '',
-            images:      vacancy.path             || [],
+            title:       vacancy.title            || "",
+            description: vacancy.description      || "",
+            alt:         vacancy.imageDescription || "",
+            images:      vacancy.path             || [defaultImage],
         }
     }
 
     _transformSlide = (slide) => {
         return {
             id:          slide.id,
-            title:       slide.title            || '',
-            alt:         slide.imageDescription || '',
-            images:      slide.path             || [],
+            title:       slide.title            || "",
+            alt:         slide.imageDescription || "",
+            images:      slide.path             || [defaultImage],
         }
     }
 
     // POST
-    postResource = async (url, properties='', data=false) => {
+    postResource = async (url, properties="", data=false) => {
         try {
             return await axios({
-                method: 'post',
+                method: "post",
                 headers: {
-                    'Content-Type': data ? 'multipart/form-data' : 'application/json'
+                    "Content-Type": data ? "multipart/form-data" : "application/json"
                 },
                 url: `${process.env.API_BASE}${url}${properties && `?${properties}`}`,
                 data: data,
@@ -166,7 +173,7 @@ export default class Model {
             `&latitude=${coordinate.latitude}`+
             `&typeId=${coordinate.type}`;
 
-        return await this.postResource('/coordinate', properties);
+        return await this.postResource("/coordinate", properties);
     }
 
     postSlide = async (slide) => {
@@ -176,7 +183,7 @@ export default class Model {
 
         const file = slide.file;
 
-        return await this.postResource('/slider', properties, file);
+        return await this.postResource("/slider", properties, file);
     }
 
     postVacancy = async (vacancy) => {
@@ -187,14 +194,13 @@ export default class Model {
 
         const file = vacancy.file;
 
-        return await this.postResource('/vacancy', properties, file);
+        return await this.postResource("/vacancy", properties, file);
     }
 
     postSettings = async (settings) => {
         const properties =
             `&phone=${settings.phone}`+
-            `&instagramLogin=${settings.instLogin}`+
-            `&instagramPassword=${settings.instPassword}`;
+            `&instagramLogin=${settings.instLogin}`;
 
         return await this.postResource(`/setting`, properties);
     }
@@ -212,20 +218,16 @@ export default class Model {
 
         const file = data.file
 
-        return await this.postResource('/summary', properties, file);
-    }
-
-    postSignOut = async () => {
-        return await this.postResource('/signout')
+        return await this.postResource("/summary", properties, file);
     }
 
     // PUT
-    putResource = async (url, properties='', data=false) => {
+    putResource = async (url, properties="", data=false) => {
         try {
             return await axios({
-                method: 'put',
+                method: "put",
                 headers: {
-                    'Content-Type': data ? 'multipart/form-data' : 'application/json'
+                    "Content-Type": data ? "multipart/form-data" : "application/json"
                 },
                 url: `${process.env.API_BASE}${url}${properties && `?${properties}`}`,
                 data: data,
@@ -278,7 +280,7 @@ export default class Model {
     deleteResource = async (url) => {
         try {
             return await axios({
-                method: 'delete',
+                method: "delete",
                 url: `${process.env.API_BASE}${url}`,
                 withCredentials: true
             })
@@ -303,15 +305,14 @@ export default class Model {
     getAuthorizationStatus = async () => {
         try {
             return await axios({
-                method: 'get',
-                url: process.env.API_BASE +'/signin',
+                method: "get",
+                url: process.env.API_BASE +"/signin",
                 withCredentials: true,
             })
         } catch (error) {
             return error
         }
     }
-
 
     postToSignIn = async (sign) => {
         const data = {
@@ -321,13 +322,17 @@ export default class Model {
 
         try {
             return axios({
-                method: 'post',
-                url: process.env.API_BASE +'/signin',
+                method: "post",
+                url: process.env.API_BASE +"/signin",
                 withCredentials: true,
                 data: data
             })
         } catch (error) {
             return error
         }
+    }
+
+    postSignOut = async () => {
+        return await this.postResource("/signout")
     }
 }
