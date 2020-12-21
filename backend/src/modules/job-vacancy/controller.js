@@ -20,12 +20,12 @@ const toGetJobVacancyList = (req, res) => {
 const toGetJobVacancy = async (req, res) => {
     try {
         vacancyDataBase.getJobVacancy(req.params.id)
-            .then(async vacancy =>{
+            .then(async vacancy => {
                 workers.postWorkerMessage("FileWorker", {
                     method: "check",
                     data: vacancy
                 }, (result) => {
-                    res.status(200).send(result)
+                    res.status(200).send(result[0])
                 })
             })
     } catch (e) {
@@ -34,17 +34,22 @@ const toGetJobVacancy = async (req, res) => {
 };
 const toPostJobVacancy = (req, res) => {
     try {
-        const imagePath = process.cwd()+process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
+        const imagePath = process.cwd() + process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
         vacancyDataBase.postJobVacancy(req.query).then(id => {
-            workers.postWorkerMessage("FileWorker", {
-                method: "convert",
-                data: {
-                    pathImage: req.files.vacancy[0].path,
-                    toFolder: imagePath,
-                    id,
-                    table: 'vacancy_file'
-                },
-            });
+            try{
+                workers.postWorkerMessage("FileWorker", {
+                    method: "convert",
+                    data: {
+                        pathImage: req.files.vacancy[0].path,
+                        toFolder: imagePath,
+                        id,
+                        table: 'vacancy_file'
+                    },
+                });
+            }
+            catch (e) {
+                console.log('File not found')
+            }
             res.status(200).send('Успешная отправка');
         })
     } catch (e) {
@@ -52,27 +57,38 @@ const toPostJobVacancy = (req, res) => {
         console.error(e);
     }
 };
-const toUpdateJobVacancy = async (req,res)=>{
-    vacancyDataBase.updateJobVacancy(req.params,req.query)
-        .then(id => {
-            const imagePath = process.cwd()+process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
-            workers.postWorkerMessage("FileWorker", {
-                method: "update",
-                data: {
-                    pathImage: req.files.vacancy[0].path,
-                    toFolder: imagePath,
-                    id,
-                    table: 'vacancy_file'
-                },
-            });
-            res.status(200).send();
-        })
+const toUpdateJobVacancy = async (req, res) => {
+    try {
+        vacancyDataBase.updateJobVacancy(req.params, req.query)
+            .then(id => {
+                try{
+                    const imagePath = process.cwd() + process.env.FILES_STATIC_IMAGES_VACANCY_FOLDER;
+                    workers.postWorkerMessage("FileWorker", {
+                        method: "update",
+                        data: {
+                            pathImage: req.files.vacancy[0].path,
+                            toFolder: imagePath,
+                            id,
+                            table: 'vacancy_file'
+                        },
+                    });
+                }
+                catch (e) {
+                    console.log('File not found')
+                }
+
+                res.status(200).send();
+            })
+
+    } catch (e) {
+        console.log(e)
+    }
 }
 const toDeleteJobVacancy = async (req, res) => {
     try {
         vacancyDataBase.deleteJobVacancy(req.params)
             .then(vacancy => {
-                if(!!vacancy){
+                if (!!vacancy) {
                     workers.postWorkerMessage("FileWorker", {
                         method: "delete",
                         data: {imagePath: vacancy.path},

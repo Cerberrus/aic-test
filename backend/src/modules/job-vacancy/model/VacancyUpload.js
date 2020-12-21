@@ -1,16 +1,17 @@
 const multer = require("multer");
 const path = require("path");
 const translit = require("../../../lib/Translit");
-const crypto = require('crypto')
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => { //Фильтр на определенные типы изображений
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg"
   ) {
+    console.log("File pass")
     cb(null, true);
   } else {
+    console.log("File not pass")
     cb(null, false);
   }
 };

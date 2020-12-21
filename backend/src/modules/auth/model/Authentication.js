@@ -3,9 +3,9 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const userDataBase = require('./UserDataBase')
 
-const paper = 'Afewf4!fFA$3g33%2dFE&AFRG@34g3fe'
+const paper = 'Afewf4!fFA$3g33%2dFE&AFRG@34g3fe'    //Секретный ключ для паролей
 
-const signIn = async ({body, headers, connection}) => {
+const signIn = async ({body, headers, connection}) => { //Метод для входа пользователя
     try {
         const {username, password} = body;
         const forwarded = headers["x-forwarded-for"];
@@ -18,6 +18,8 @@ const signIn = async ({body, headers, connection}) => {
             return  await argon.verify(user.password, hmac)
                 ?   await createJWT({id: user.id, name: user.name, ip, type: "admin",})
                 :   false
+        }else {
+            return false
         }
     } catch (e) {
         console.error(e);
@@ -25,7 +27,7 @@ const signIn = async ({body, headers, connection}) => {
     }
 };
 
-const createJWT = ({id, name, ip, type}) => {
+const createJWT = ({id, name, ip, type}) => {   //Создаем JWT код
     return jwt.sign({id, name, ip, type}, process.env.JWT_SECURY_KEY, {
         expiresIn: process.env.JWT_TIMEOUT,
     });

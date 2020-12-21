@@ -5,16 +5,19 @@ const settingDatabase = require("../../settings/model/SettingDataBase");
 class Instagram {
   
   static #username
+  static #usernamePrivate
   static #password
   static #client
   
   constructor() {
     setInterval(async () => await Instagram.#client.login(), 7200000);
     setInterval(async () => await this.recyclePhoto(), 3600000);
+    this.instagramPhotos = []
   }
 
   init = async () => {
     try {
+      Instagram.#usernamePrivate = await settingDatabase.getSetting({ key: "instagramLoginPrivate" });
       Instagram.#username = await settingDatabase.getSetting({ key: "instagramLogin" });
       Instagram.#password = await settingDatabase.getSetting({ key: "instagramPassword" });
       const cookieStore = await new FileCookieStore("./cookies.json");
@@ -29,64 +32,31 @@ class Instagram {
       });
       await this.recyclePhoto();
     } catch (e) {
-      console.error('Error in init instagram')
+      console.log('Error in init instagram')
       await this.init()
     }
   };
   recyclePhoto = async () => {
     try {
-      console.log("Update file from instagram");
-      this.instagramPhotos = await this.getPhotosFromInstagram();
-      console.log(
-        "Update done, length photo list:",
-        this.instagramPhotos.length
-      );
+      this.instagramPhotos = []
+      console.log("Update image from instagram");
+      await this.getPhotosFromInstagram();
     } catch (e) {
-      console.error('Error in recycle instagram photo')
+      console.log(e)
+      console.log('Error in recycle instagram photo')
     }
   };
-  getPhotosFromInstagram = async () => {
-    const { user } = await Instagram.#client.getPhotosByUsername({
-      username: "la_loqiemean" /*Instagram.#username*/,
-      first: 999999,
-    });
-    const result = [];
-    for (let edge of user.edge_owner_to_timeline_media.edges) {
-      result.push(edge.node.display_url);
-    }
-    return result;
+  getPhotosFromInstagram = async () => {      //Отправляет первые 50 изображений с instagram
+      const { user } = await Instagram.#client.getPhotosByUsername({
+        username: Instagram.#username,
+        first: 50,
+      });
+      for (let edge of user.edge_owner_to_timeline_media.edges) {
+        this.instagramPhotos.push(edge.node.display_url);
+      }
   };
   getPhotos = async () => {
     return this.instagramPhotos;
-  };
-  updateUserInformation = async ({ username, password }) => {
-    try {
-      const { authenticated } = await Instagram.#client.login({ username, password });
-      if (authenticated) {
-        Instagram.#username = username;
-        Instagram.#password = password;
-        await settingDatabase.postSetting({
-          key: "instagramLogin",
-          value: Instagram.#username,
-        });
-        await settingDatabase.postSetting({
-          key: "instagramPassword",
-          value: Instagram.#password,
-        });
-        await this.getPhotosFromInstagram();
-        console.log("Успешная авторизация");
-        return "Успешно";
-      } else {
-        await Instagram.#client.login({
-          username: Instagram.#username,
-          password: Instagram.#password,
-        });
-        console.error("Ошибка авторизации");
-        return "Ошибка";
-      }
-    } catch (e) {
-      console.error('Error in update user information')
-    }
   };
 }
 

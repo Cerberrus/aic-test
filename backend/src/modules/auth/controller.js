@@ -5,7 +5,7 @@ const toSignIn = async (req, res) => {
     const jwt = await authentication.signIn(req);
     if (jwt !== false)
       res.status(201)
-       .cookie("auth", jwt,{
+       .cookie("auth", jwt,{    //Отправляем jwt в cookies
          sameSite: 'lax',
          secure: false
        })

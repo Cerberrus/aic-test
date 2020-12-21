@@ -7,12 +7,12 @@ const uploader = require("./model/UploadSummary");
 
 router.get(
   "/api/summary",
-  /*authCheck.toCheck,      */          // Проверяем авторизован ли пользователь
+  authCheck.toCheck,                // Проверяем авторизован ли пользователь
   controller.toGetJobRequestList    // Отправляем данные в контроллер
 );
 router.post(
   "/api/summary",
-  /*ReCaptcha.verify,*/             // Проверка на правильность recaptcha
+  ReCaptcha.verify,                 // Проверка на правильность recaptcha
   checkField.checkFieldsPost,       // Проверяем обязательные поля
   uploader,                         // Загружем файл
   controller.toPostJobRequest       // Отправляем данные в контроллер
@@ -20,19 +20,11 @@ router.post(
 router.put(
   "/api/summary/:id",
   authCheck.toCheck,                // Проверяем авторизован ли пользователь
-  checkField.checkFieldsPost,       // Проверяем обязательные поля
   controller.toUpdateJobRequest     // Отправляем данные в контроллер
 );
-router.put(
-    "/api/summary/:id",
-    /*authCheck.toCheck,       */         // Проверяем авторизован ли пользователь
-    /*checkField.checkFieldsPost,    */   // Проверяем обязательные поля
-    controller.toUpdateJobRequest     // Отправляем данные в контроллер
-);
-
 router.delete(
   "/api/summary/:id",
-  authCheck.toCheck,                // Проверяем авторизован ли пользователь
+  authCheck.toCheck,               // Проверяем авторизован ли пользователь
   controller.toDeleteJobRequest     // Отправляем данные в контроллер
 );
 

@@ -8,21 +8,21 @@ router.get(
 	controller.toGetPublicInformationList);
 router.get(
 	"/api/setting",
-	/*authCheck.toCheck,*/
+	authCheck.toCheck,
 	controller.toGetSettingList);
 router.post(
 	"/api/setting",
-	/*authCheck.toCheck,*/
+	authCheck.toCheck,
 	check.checkPost,
 	controller.toPostSetting);		// Принимает поля ключ(key) и значение(value)
 router.put(
 	"/api/setting",
-	/*authCheck.toCheck,*/
+	authCheck.toCheck,
 	check.checkPost,
 	controller.toPostSetting);		// Принимает поля ключ(key) и значение(value)
 router.delete(
   "/api/setting/:key",
-  /*authCheck.toCheck,*/
+  authCheck.toCheck,
   controller.toDeleteSetting 		// Удаляет запись по ключу(key)
 );
 

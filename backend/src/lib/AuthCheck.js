@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const checkType = async (userJWT) => {
+const checkType = async (userJWT) => {          //Проверяем тип пользователя
   try {
     if (userJWT.type === "admin") return true;
     else return false;
@@ -8,7 +8,7 @@ const checkType = async (userJWT) => {
     return false;
   }
 };
-const checkIP = async (userJWT, ip) => {
+const checkIP = async (userJWT, ip) => {      //Проверяем ip адресс на валидность
   try {
     if (userJWT.ip === ip) return true;
     else return false;
@@ -17,7 +17,7 @@ const checkIP = async (userJWT, ip) => {
     return false;
   }
 };
-const toCheck = async (req, res, next) => {
+const toCheck = async (req, res, next) => {     //Проверяем наличие jwt токена и его валидность
   try {
     if ("auth" in req.cookies) {
       const forwarded = req.headers["x-forwarded-for"];

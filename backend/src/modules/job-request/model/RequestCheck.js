@@ -16,21 +16,6 @@ class RequestCheck extends Check {
             next();
         else res.status(400).json(result);
     }
-
-    async checkPost(req, res, next) {
-
-    };
-
-    async checkFileExist(requestList) {
-        for (let request of requestList) {
-            await super.checkFileExist(request.path)
-                .then(async paths => {
-                    if (paths.length > 0) request.path = await this.cutPath(paths, process.cwd()+ process.env.FILES_UPLOADS)
-                    else delete request.path
-                })
-        }
-        return requestList
-    }
 }
 
 module.exports = new RequestCheck();

@@ -14,21 +14,21 @@ router.get(
 );
 router.post(
   "/api/vacancy",
-  /*authCheck.toCheck,			*/// Проверяем авторизован ли пользователь
+  authCheck.toCheck,			// Проверяем авторизован ли пользователь
   checkExist.checkPost,			// Проверяем обязательные поля
   uploader,						// Загружем файл(изображение)
   controller.toPostJobVacancy 	// Отправляем данные в контроллер
 );
 router.put(
 	"/api/vacancy/:id",
-	/*authCheck.toCheck,	*/			// Проверяем авторизован ли пользователь
+	authCheck.toCheck,				// Проверяем авторизован ли пользователь
 	checkExist.checkPost,			// Проверяем обязательные поля
 	uploader,						// Загружем файл(изображение)
 	controller.toUpdateJobVacancy 	// Отправляем данные в контроллер
 );
 router.delete(
   "/api/vacancy/:id",
-  /*authCheck.toCheck,		*/	// Проверяем авторизован ли пользователь
+  authCheck.toCheck,			// Проверяем авторизован ли пользователь
   controller.toDeleteJobVacancy // Отправляем данные в контроллер
 );
 

@@ -6,9 +6,11 @@ const toGetJobRequestList = (req, res) => {
     requestDataBase.getList().then(async object =>{workers.postWorkerMessage("FileWorker", {
       method: "check",
       data: object.summaryList
-    }, (result) => {                //  Послыаем запрос на проверку существования файлов
+    }, (result) => {                //  Посылаем запрос на проверку существования файлов
       res.status(200).send({statusList: object.statusList, summaryList:result})
     })
+    }).catch(err =>{
+      res.status(404).send();
     })
   } catch (e) {
     res.status(404).send();
@@ -41,17 +43,9 @@ const toUpdateJobRequest = async (req, res) => {
     const data = await requestDataBase.updateSummaryStatus(req.params, req.query);
     res.status(200).json(data);
   } catch (e) {
-    res.status(404).send();
+    res.status(403).send();
   }
 };
-// const toUpdateJobRequestStatus = async (req, res) => {
-//   try {
-//     const data = await requestDataBase.updateSummaryStatus(req.params, req.query);
-//     res.status(200).json(data);
-//   } catch (e) {
-//     res.status(404).send();
-//   }
-// };
 const toDeleteJobRequest = (req, res) => {
   try {
     requestDataBase.delete(req.params).then(async request => {

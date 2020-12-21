@@ -5,14 +5,14 @@ let instance = null;
 
 class Workers {
   constructor() {
-    if (instance) {
+    if (instance) {       //При существовании созданного экземпляра, возращаем ранее созданный экземпляр
       return instance;
     }
     instance = this;
     return instance;
   }
 
-  initWorkers = async (files) => {
+  initWorkers = async (files) => {    //Инициализация воркеров, полученных в параметре
     try {
       const workersList = [];
       for (let file of files) {
@@ -32,17 +32,17 @@ class Workers {
     }
   };
 
-  getWorkersList = () => {
+  getWorkersList = () => {            //Отдает всех воркеров
     return this.workersList;
   };
-  getWorker = (name) => {
+  getWorker = (name) => {             //Отдает определенного воркера по имени
     for (let unit of this.workersList) {
       if (unit.name === name) {
         return  unit.worker
       }
     }
   };
-  postNewWorker = async (file) => {
+  postNewWorker = async (file) => {   //Добавляет новый воркер
     for (let i = 0; i < file.count; i++) {
       const worker = await new Worker(file.path, {});
       this.workersList.push({
@@ -53,7 +53,7 @@ class Workers {
     }
   };
 
-  postWorkerMessage = (name, message, callback = null) => {
+  postWorkerMessage = (name, message, callback = null) => { //Отправляет воркеру сообщение
     const requestId = Math.random()
     for (let unit of this.workersList) {
       if (unit.name === name) {

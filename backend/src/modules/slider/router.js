@@ -8,23 +8,27 @@ router.get(
     "/api/slider",
     controller.toGetSliderDataList
 );
+router.get(
+    "/api/slider/:id",
+    controller.toGetSliderData
+);
 router.post(
     "/api/slider",
-    /*authCheck.toCheck,*/
+    authCheck.toCheck,
     checkFields.checkPost,
     uploader,
     controller.toPostSliderData
 );
 router.put(
     "/api/slider/:id",
-    /*authCheck.toCheck,*/
+    authCheck.toCheck,
     checkFields.checkPost,
     uploader,
     controller.toUpdateSliderData
 );
 router.delete(
     "/api/slider/:id",
-    /*authCheck.toCheck,*/
+    authCheck.toCheck,
     controller.toDeleteSliderData
 );
 

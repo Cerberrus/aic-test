@@ -1,13 +1,13 @@
 const DataBase = require('../../../lib/DataBase')
 
 class RequestDataBase extends DataBase {
-    async getList({orderBy, desc}={orderBy:'id', desc:true}) {
+    async getList() {
         const [result] = await this.connection.execute(
             "select" +
             " R.id,R.`name`, R.date, R.happy_date, R.phone_number, R.sex, R.email, R.resume_text as resumeText, RS.status, RS.id as statusId, V.title as vacancy from summary as R" +
             " join summary_status as RS" +
             " join vacancy as V on R.vacancy_id = V.id and R.status_id = RS.id" +
-            ` order by R.${orderBy} ${desc?'DESC':''}`)
+            ` order by RS.id, R.date DESC`)
         await super.implementPaths(result, 'summary_file')
         const statusList = await this.getStatusList()
         return {statusList, summaryList:result};
@@ -19,10 +19,11 @@ class RequestDataBase extends DataBase {
         return result;
     };
 
-    async updateSummaryStatus(id) {
+    async updateSummaryStatus({id}, {statusId}) {
         id = Number(id);
-        const [result,] = await this.connection.execute("select id from summary where id=?", [id]);
-        return result;
+        statusId = Number(statusId);
+        await this.connection.execute("update summary set status_id = ? where id=?", [statusId, id]);
+        return true
     };
 
     async post(
