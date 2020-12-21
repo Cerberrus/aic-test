@@ -64,7 +64,7 @@ export default class Sign extends Component{
                     <Header />
                     <main className="authorization">
                         <form className="authorization__form" onSubmit={this.onSubmit}>
-                            <h1 className="authorization__title title">Авторизация</h1>
+                            <h1 className="authorization__title">Авторизация</h1>
                             <div className="authorization__group">
                                 <label>
                                     <span>Логин</span>
