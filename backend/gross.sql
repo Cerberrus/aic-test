@@ -36,7 +36,7 @@ create table if not exists setting
 		primary key,
 	_key varchar(100) not null,
 	_value varchar(100) not null,
-	private tinyint(1) default 0 null,
+	private int unsigned default 0,
 	constraint setting_key_uindex
 		unique (_key)
 );
