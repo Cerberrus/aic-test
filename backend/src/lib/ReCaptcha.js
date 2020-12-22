@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const verify = async (req, res, next) => {
   try {
-    if (
+    if (                                      //Отслеживает наличие поля в указанных телах
       "g-recaptcha-response" in req.query ||
       "g-recaptcha-response" in req.body
     ) {

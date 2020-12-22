@@ -68,7 +68,7 @@ const wordList = {
   " ": "-",
 };
 
-translit = (words) => {
+translit = (words) => {     //Метод для транслита
   try {
     return words
       .split("")

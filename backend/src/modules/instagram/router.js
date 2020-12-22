@@ -7,11 +7,4 @@ router.get(
 	"/api/instagram/image",
 	controller.toGetInstagramPhotoList
 );
-router.post(
-  "/api/instagram/sign",
-  checkAuth.toCheck,
-  checkExist.checkPost,
-  controller.toUpdateUserInformation
-);
-
 module.exports = router;

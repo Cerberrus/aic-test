@@ -1,4 +1,5 @@
 const Sharp = require("sharp");
+const crypto = require("crypto")
 const path = require("path");
 const fs = require("fs");
 const ManageFiles = require("./ManageFiles");
@@ -10,25 +11,27 @@ class FileConverter extends ManageFiles {
         super();
         this.paths = []
         this.baseFileDerictory = `${process.cwd()}/uploads`
+        this.hash = ''
     }
 
     manipulateImage({method, data}) {
         switch (method) {
             case "convert":
-                return this.convertImage(data);
+                return this.convertImage(data); //Добавляем изображения и конвертируем их
             case "add":
-                return this.addFile(data);
+                return this.addFile(data);      //Добавляем файл резюме
             case "update":
-                return this.updateImage(data);
+                return this.updateImage(data);  //Обновляем изображения
             case "check":
-                return this.checkFile(data);
+                return this.checkFile(data);    //Проверяет существование файла и возвращает измененый объект,с имплементрованными существующими файлами
             case "delete":
-                return this.deleteImage(data);
+                return this.deleteImage(data);  //Удаляем изображения
         }
     }
 
     async updateImage(data) {
         await this.convertImage(data, true);
+        return true
     }
 
     async convertImage({pathImage, toFolder, id, table}, update = false) {
@@ -39,15 +42,18 @@ class FileConverter extends ManageFiles {
                     await this.deleteFile(`${this.baseFileDerictory}${object.path}`)
                 }
             }
-            const status = await this.__convert(pathImage, toFolder);
-            if (status === true) {
-                update ? await this.updateFile({paths: this.paths, id, table})
-                    : await this.addFile({paths: this.paths, id, table})
-                this.deleteFile(pathImage);
-            }
+            this.__convert(pathImage, toFolder).then(async status => {
+                if(status === true){
+                    if(!!update)    await this.updateFile({paths: this.paths, id, table})
+                    else            await this.addFile({paths: this.paths, id, table})
 
+                    this.deleteFile(pathImage);
+                }
+            });
+            return true
         } catch (e) {
             await this.deleteFile(pathImage);
+            return  false
         }
     }
 
@@ -62,7 +68,9 @@ class FileConverter extends ManageFiles {
 
     async updateFile({paths, id, table}) {
         try {
-            paths = paths.map(value => value.split(this.baseFileDerictory)[1])
+            if(Array.isArray(paths)){
+                paths = paths.map(value => value.split(this.baseFileDerictory)[1])
+            }
             await this.updateFileIntoDatabase(id, paths, table)
         } catch (e) {
             console.error(e)
@@ -83,53 +91,74 @@ class FileConverter extends ManageFiles {
             }
             return objectList
         } catch (e) {
-            console.error(e)
+            console.log(e)
+            return {}
         }
     }
 
     async deleteImage({imagePath}) {
-        for (let path of imagePath) {
-            await this.deleteFile(`${this.baseFileDerictory}${path}`);
+        try{
+            if (Array.isArray(imagePath)) {
+                console.log('isArray')
+                for (let path of imagePath) {
+                    await this.deleteFile(`${this.baseFileDerictory}${path}`);
+                }
+            }
+            return true
+        }catch (e) {
+            console.log(e)
+            return false
         }
-        return true
     }
 
     postFileIntoDatabase(id, paths, table) {
-        for (let path of paths) {
-            fileDataBase.post(id, path, table)
+        try{
+            for (let path of paths) {
+                fileDataBase.post(id, path, table)
+            }
+        }
+        catch (e) {
+            console.error(e)
         }
     }
 
     async updateFileIntoDatabase(id, paths, table) {
-        await fileDataBase.delete(id, table)
-        for (let path of paths) {
-            await fileDataBase.post(id, path, table)
+        try{
+            await fileDataBase.delete(id, table)
+            for (let path of paths) {
+                await fileDataBase.post(id, path, table)
+            }
+        }catch (e) {
+            console.log(e)
         }
     }
 
     async __convert(pathImage, toFolder) {
         try {
-
+            const date = await new Date()
+            const preHash = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}}`
+            this.hash = await crypto.createHash('sha256').update(preHash).digest("hex")
             let convertWithTime = "Convert file start| " + Date.now();
 
             console.log("|IMAGE CONVERT|");
             console.time(convertWithTime);
-
             const extension = path.extname(pathImage);
+            console.log('Extension', extension)
             const name = path.basename(pathImage, extension);
-            switch (extension) {
-                case ".svg":
-                    await this.saveSvg(pathImage, name, toFolder);
-                    break
-                case ".png":
-                    await this.convertWebP(pathImage, name, toFolder);
-                    await this.convertPng(pathImage, name, toFolder);
-                    break
-                case ".jpg":
-                case ".jpeg":
-                    await this.convertWebP(pathImage, name, toFolder);
-                    await this.convertJpeg(pathImage, name, toFolder);
-                    break
+            if(extension === '.svg'){
+                await this.saveSvg(pathImage, name, toFolder);
+            }
+            else if(extension === '.png'){
+                await this.convertWebP(pathImage, name, toFolder);
+                await this.convertPng(pathImage, name, toFolder);
+            }
+            else if(extension === '.jpg' || extension === '.jpeg'){
+                await this.convertWebP(pathImage, name, toFolder);
+                await this.convertJpeg(pathImage, name, toFolder);
+            }
+            else{
+                console.log('else false')
+                return false;
             }
             console.timeEnd(convertWithTime);
             return true;
@@ -140,53 +169,80 @@ class FileConverter extends ManageFiles {
     }
 
     async convertJpeg(path, name, toFolder) {
-        this.paths.push(await this.__convertToJpeg(path, name, toFolder, 1));
+        this.paths.push(await this.__convertToJpeg(path, name, toFolder, 1024));
         console.log("Stage jpeg x1 end");
-        this.paths.push(await this.__convertToJpeg(path, name, toFolder, 2));
+        this.paths.push(await this.__convertToJpeg(path, name, toFolder, 2048));
         console.log("Stage jpeg x2 end");
     }
 
     async convertPng(path, name, toFolder) {
-        this.paths.push(await this.__savePng(path, name, toFolder, 1));
+        this.paths.push(await this.__savePng(path, name, toFolder, 1024));
         console.log("Stage png x1 end");
-        this.paths.push(await this.__savePng(path, name, toFolder, 2));
+        this.paths.push(await this.__savePng(path, name, toFolder, 2048));
         console.log("Stage png x2 end");
     }
 
     async convertWebP(path, name, toFolder) {
-        this.paths.push(await this.__convertToWebP(path, name, toFolder, 1));
+        this.paths.push(await this.__convertToWebP(path, name, toFolder, 1024));
         console.log("Stage webp x1 end");
-        this.paths.push(await this.__convertToWebP(path, name, toFolder, 2));
+        this.paths.push(await this.__convertToWebP(path, name, toFolder, 2048));
         console.log("Stage webp x2 end");
     }
 
+    targetResize(target, width, height){
+        const ratioW = target / width
+        const ratioH = target / height
+        const ratio = ratioW < ratioH?ratioW:ratioH
+        const newWidth = Math.trunc(width * ratio)
+        const newHeight = Math.trunc(height * ratio)
+        return {newWidth, newHeight}
+    }
+
     async __convertToWebP(imagePath, name, toFolder, resize) {
-        const imageInfo = await Sharp(imagePath).metadata();
-        const filename = `${toFolder}/${name}.@x${resize}.webp`
-        await Sharp(imagePath)
-            .resize(imageInfo.width * resize, imageInfo.height * resize)
-            .webp({quality: 75, lossless: true})
-            .toFile(filename);
-        return filename
+        try{
+            let imageInfo = await Sharp(imagePath).metadata();
+            const filename = `${toFolder}/${name}@${resize}px-${this.hash}.webp`
+            resize = this.targetResize(resize, imageInfo.width, imageInfo.height)
+            await Sharp(imagePath)
+                .resize(resize.newWidth, resize.newHeight)
+                .webp({quality: 60})
+                .toFile(filename);
+            return filename
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     async __convertToJpeg(imagePath, name, toFolder, resize) {
-        const imageInfo = await Sharp(imagePath).metadata();
-        const filename = `${toFolder}/${name}.@x${resize}.jpeg`
-        await Sharp(imagePath)
-            .resize(imageInfo.width * resize, imageInfo.height * resize)
-            .jpeg({quality: 75, progressive: true, chromaSubsampling: "4:4:4"})
-            .toFile(filename);
-        return filename
+        try{
+            let imageInfo = await Sharp(imagePath).metadata();
+            const filename = `${toFolder}/${name}@${resize}px-${this.hash}.jpeg`
+            resize = this.targetResize(resize, imageInfo.width, imageInfo.height)
+            await Sharp(imagePath)
+                .resize(resize.newWidth, resize.newHeight)
+                .jpeg({quality: 75, progressive: true, chromaSubsampling: "4:4:4"})
+                .toFile(filename)
+            return filename
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     async __savePng(imagePath, name, toFolder, resize) {
-        const imageInfo = await Sharp(imagePath).metadata();
-        const filename = `${toFolder}/${name}.@x${resize}.png`
-        await Sharp(imagePath)
-            .resize(imageInfo.width * resize, imageInfo.height * resize)
-            .toFile(filename);
-        return filename
+        try{
+            let imageInfo = await Sharp(imagePath).metadata();
+            const filename = `${toFolder}/${name}@${resize}px-${this.hash}.png`
+            resize = this.targetResize(resize, imageInfo.width, imageInfo.height)
+            await Sharp(imagePath)
+                .resize(resize.newWidth, resize.newHeight)
+                .toFile(filename);
+            return filename
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     async saveSvg(imagePath, name, toFolder) {
@@ -296,10 +352,10 @@ class FileConverter extends ManageFiles {
                 },
             ],
         });
-        const data = await fs.readFile(imagePath);
+        const data = await fs.readFileSync(imagePath);
         const filename = `${toFolder}/${name}.svg`;
         const result = await svgo.optimize(data);
-        await fs.writeFile(filename, result.data);
+        await fs.writeFileSync(filename, result.data);
         this.paths.push(filename)
     }
 }

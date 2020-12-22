@@ -19,6 +19,7 @@ class SliderDataBase extends DataBase {
                 "select S.id, S.title, S.image_description  as imageDescription from slider as S  where S.id = ?",
                 [id]
             );
+            await super.implementPaths(result, 'slider_file') //Добавляем пути файлов
             return result
         } catch (e) {
             console.error(e);

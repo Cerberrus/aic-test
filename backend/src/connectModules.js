@@ -34,7 +34,7 @@ app.use(cookieParser(process.env.COOKIE_SECURE_KEY)); // use for get and set inf
 app.use("/static", express.static(process.cwd()+process.env.FILES_STATIC_FOLDER));
 app.use(
   "/private",
-  authCheck.toCheck,
+  /*authCheck.toCheck,*/
   express.static(process.cwd() + process.env.FILES_PRIVATE_FOLDER)
 );
 

@@ -1,4 +1,5 @@
 const settingDatabase = require("./model/SettingDataBase");
+const instagram = require("../instagram/model/Instagram");
 
 const toGetSettingList = (req, res) => {
   try {
@@ -33,6 +34,7 @@ const toPostSetting = async (req, res) => {
     for(let set in req.query){
       await settingDatabase.postSetting({key:set, value: req.query[set]})
     }
+    instagram.init()
     res.status(200).send('ok')
   } catch (e) {
     console.error(e)

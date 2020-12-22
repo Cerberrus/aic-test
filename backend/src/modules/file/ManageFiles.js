@@ -1,6 +1,6 @@
 const fs = require("fs");
 class ManageFiles {
-  deleteFile = (filePath) => {
+  deleteFile = (filePath) => {        //Принимает путь файла и удаляет его
     try {
       const exist = fs.existsSync(filePath)
       if(exist){

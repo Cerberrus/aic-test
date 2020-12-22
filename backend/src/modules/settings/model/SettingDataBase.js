@@ -13,7 +13,7 @@ class SettingDatabase extends DataBase{
   };
   async getSettingList(){
     const [result] = await this.connection.execute(
-        "select * from setting"
+        "select * from setting where private = 0 or private = 1"
     );
     const response = {}
     for(let object of result){

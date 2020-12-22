@@ -1,14 +1,14 @@
 const fs = require('fs')
 
 class Check {
-    async checkFieldsPost(object, {fieldsRequired, fieldsNotRequired}) {
+    async checkFieldsPost(object, {fieldsRequired, fieldsNotRequired}) {    //Суммарная проверка
         const checkExist = await Check.#checkExist(object, fieldsRequired);
         const checkNull = await Check.#checkNull(object);
         if(!!fieldsNotRequired) await Check.#addFields(object, fieldsNotRequired);
         return {checkExist, checkNull};
     };
 
-    async checkFileExist(pathList) {
+    async checkFileExist(pathList) {            //Проверка файла на существование
         const path = pathList
             ? pathList
                 .filter(path => fs.existsSync(path))
@@ -20,7 +20,7 @@ class Check {
         return pathList.map(path => path.split(folder)[1])
     }
 
-    static #addFields(object, fields) {
+    static #addFields(object, fields) {         //Добавление указанных полей
         if (fields) {
             for (let field of fields) {
                 if (!object[field]) {
@@ -30,7 +30,7 @@ class Check {
         }
     }
 
-    static #checkExist(object, fields) {
+    static #checkExist(object, fields) {        //Проверка на вхождение указанных полей
         let error = null;
         let passed = false;
         const fieldStack = [];
@@ -51,7 +51,7 @@ class Check {
         };
     }
 
-    static #checkNull(object) {
+    static #checkNull(object) {                 //Проверка поля на null значение
         let error = null;
         let passed = false;
         const fieldStack = [];

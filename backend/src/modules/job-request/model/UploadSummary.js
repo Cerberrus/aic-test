@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const translit = require("../../../lib/Translit");
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => { //Фильтр на определенные типы файлов
     if (
         file.mimetype === "text/plain" ||
         file.mimetype === "application/pdf" ||
