@@ -6,10 +6,20 @@ import Helmet from "react-helmet"
 import { renderToString } from "react-dom/server"
 import { StaticRouter } from "react-router"
 import { ChunkExtractor } from "@loadable/server"
+const cors = require("cors")
 
 const app = express()/*require('../../backend/src/connectModules')*/
 
 import App from "~src/App"
+
+const corsOptions = {
+    origin: ['https://aic.xutd.tk', 'http://localhost:3001'], // Указываем разрешенный хосты
+    methods: "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS",
+    credentials: true, // required to pass
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With",
+}
+
+app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, "../dist")))
 

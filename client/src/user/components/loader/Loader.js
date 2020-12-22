@@ -29,7 +29,7 @@ const Loader = () => (
                 }}
                 transition={{ duration: 0.6 }}
             >
-                <img src={logo} aria-hidden={true}/>
+                <img src={logo}  className="loader__image" aria-hidden={true}/>
             </motion.div>
     </motion.div>
 )

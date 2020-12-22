@@ -32,6 +32,7 @@
     transition: .3s ease-in-out;
     backface-visibility: hidden;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .vacancySlider__slideFront {
@@ -120,5 +121,11 @@
 
     .vacancySlider__slideFront {
         padding-top: 80px;
+    }
+
+    .vacancySlider__name {
+        top: 18px;
+        left: 18px;
+        font-size: 22px;
     }
 }
