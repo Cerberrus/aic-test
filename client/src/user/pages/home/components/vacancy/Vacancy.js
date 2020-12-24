@@ -30,8 +30,17 @@ const swiperBreakpoints = {
         centeredSlides: false,
         slideToClickedSlide: false,
         initialSlide: 0,
-        spaceBetween: 30
+        spaceBetween: 30,
     },
+    // when window width is >= 1200px
+    1200: {
+        slidesPerView: "auto",
+        centeredSlides: false,
+        slideToClickedSlide: false,
+        initialSlide: 0,
+        spaceBetween: 30,
+        shortSwipes: false
+    }
 }
 
 const swiperNavigation = {
@@ -80,6 +89,7 @@ export default class Vacancy extends Component {
                 <Swiper
                     breakpoints={swiperBreakpoints}
                     navigation={swiperNavigation}
+                    roundLengths={true}
                     className="vacancy__slider vacancySlider"
                 >
                     {vacancyList && vacancyList.map((vacancy) => (

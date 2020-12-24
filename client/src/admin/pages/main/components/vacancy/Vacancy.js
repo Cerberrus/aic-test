@@ -86,7 +86,7 @@ export default class Vacancy extends Component {
                                 custom={index}
                                 key={vacancy.id}
                             >
-                                <img src={vacancy.images[0]} alt={vacancy.alt}/>
+                                <img src={vacancy.images[2]} alt={vacancy.alt}/>
                                 <p>{vacancy.title}</p>
                                 <p>{vacancy.description}</p>
 

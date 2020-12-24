@@ -6,7 +6,6 @@ import model from "~src/model/model"
 
 // Import static files
 import "./Geography.css"
-import iconPlacemark from "~src/static/images/placemark.png"
 
 // Map config
 const mapState = {
@@ -36,7 +35,7 @@ const managerOptions = {
 
 const managerObjects = {
     iconLayout: "default#image",
-    iconImageHref: iconPlacemark,
+    iconImageHref: `${process.env.URL_BASE}/static/icons/placemark.png`,
     iconImageSize: [44, 44],
     iconImageOffset: [-5, -38],
 }

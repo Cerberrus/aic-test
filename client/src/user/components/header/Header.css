@@ -54,7 +54,7 @@
     }
 
     .header__link:hover {
-        background-color: var(--color-yellow);
+        background-color: var(--color-yellow) !important;
     }
 
     .header__link_fixed {

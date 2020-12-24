@@ -86,7 +86,7 @@ export default class Slider extends Component{
                                 custom={index}
                                 key={index}
                             >
-                                <img src={slider.images[0]} aria-hidden={true}/>
+                                <img src={slider.images[2]} aria-hidden={true}/>
                                 <p>{slider.title}</p>
                                 <p>{slider.alt}</p>
                                 <div className="admin__changeGroup">
