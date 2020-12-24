@@ -5,7 +5,7 @@ const workers = require("../../lib/Workers");
 const toGetJobVacancyList = (req, res) => {
     try {
         vacancyDataBase.getJobVacancyList()
-            .then(async vacancyList => {
+            .then(vacancyList => {
                 workers.postWorkerMessage("FileWorker", {
                     method: "check",
                     data: vacancyList
