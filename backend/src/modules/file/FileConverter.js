@@ -79,20 +79,21 @@ class FileConverter extends ManageFiles {
 
     async checkFile(objectList) {
         try {
-            for (let object of objectList) {
-                if (!!object.path) {
+            const newObjectList = objectList
+            for (let object of newObjectList) {
+                if (["path"] in object) {
                     const exist = await object.path.filter(path => fs.existsSync(this.baseFileDerictory + path))
-                    if (!!exist) {
+                    if (exist.length > 0) {
                         object.path = exist.map(path => ('https://aic.xutd.tk' + path))
                     } else {
                         object.path = null
                     }
                 }
             }
-            return objectList
+            return newObjectList
         } catch (e) {
             console.log(e)
-            return {}
+            return objectList
         }
     }
 
