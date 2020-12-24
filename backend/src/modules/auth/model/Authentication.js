@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const userDataBase = require('./UserDataBase')
 
-const paper = 'Afewf4!fFA$3g33%2dFE&AFRG@34g3fe'    //Секретный ключ для паролей
+const paper = process.env.PASSWORD_PAPER    //Секретный ключ для паролей
 
 const signIn = async ({body, headers, connection}) => { //Метод для входа пользователя
     try {
