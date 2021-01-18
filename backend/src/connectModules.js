@@ -41,9 +41,9 @@ app.use(
 app.use(require("./modules/auth/router")); //
 app.use(require("./modules/coordinate/router")); //
 app.use(require("./modules/job-request/router")); // include all routes
-app.use(require("./modules/job-vacancy/router")); //
-app.use(require("./modules/job-vacancy/router")); //
-app.use(require("./modules/slider/router")); //
+app.use(require("./modules/job-vacancy/vacancy.route")); //
+app.use(require("./modules/job-vacancy/vacancy.route")); //
+app.use(require("./modules/slider/slider.route")); //
 app.use(require("./modules/instagram/router")); //
 app.use(require("./modules/settings/router")); //
 

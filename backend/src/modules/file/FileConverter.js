@@ -39,7 +39,7 @@ class FileConverter extends ManageFiles {
             if (update) {
                 const oldPaths = await fileDataBase.get(id, table)
                 for (let object of oldPaths) {
-                    await this.deleteFile(`${this.baseFileDerictory}${object.path}`)
+                    await super.deleteFile(`${this.baseFileDerictory}${object.path}`)
                 }
             }
             this.__convert(pathImage, toFolder).then(async status => {
@@ -47,12 +47,12 @@ class FileConverter extends ManageFiles {
                     if(!!update)    await this.updateFile({paths: this.paths, id, table})
                     else            await this.addFile({paths: this.paths, id, table})
 
-                    this.deleteFile(pathImage);
+                    super.deleteFile(pathImage);
                 }
             });
             return true
         } catch (e) {
-            await this.deleteFile(pathImage);
+            await super.deleteFile(pathImage);
             return  false
         }
     }
@@ -102,7 +102,7 @@ class FileConverter extends ManageFiles {
             if (Array.isArray(imagePath)) {
                 console.log('isArray')
                 for (let path of imagePath) {
-                    await this.deleteFile(`${this.baseFileDerictory}${path}`);
+                    await super.deleteFile(`${this.baseFileDerictory}${path}`);
                 }
             }
             return true
