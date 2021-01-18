@@ -1,15 +1,15 @@
 const vacancyDataBase = require("./model/VacancyDataBase");
 const workers = require("../../lib/Workers");
+const ManageFiles = require('../file/ManageFiles')
+
 
 class VacancyController {
     async toGetVacancyList(req, res) {
         try {
             const vacancyList = await vacancyDataBase.getJobVacancyList()
-            const resultVacancyList = await workers.postWorkerMessage("FileWorker", {
-                method: "check",
-                data: vacancyList
-            })
-            res.status(400).send(resultVacancyList);
+            const resultVacancyList =
+                await ManageFiles.prototype.checkExistFileList(`${process.cwd()}/uploads`, vacancyList)
+            res.status(200).send(resultVacancyList);
         } catch (e) {
             res.status(500).send();
         }
@@ -21,11 +21,9 @@ class VacancyController {
             if (!result[0]) {
                 res.status(404)
             } else {
-                const resultVacancy = await workers.postWorkerMessage("FileWorker", {
-                    method: "check",
-                    data: vacancy
-                })
-                res.status(400).send(resultVacancy)
+                const resultVacancy =
+                    await ManageFiles.prototype.checkExistFileList(`${process.cwd()}/uploads`, vacancy)
+                res.status(200).send(resultVacancy)
             }
         } catch (e) {
             res.status(500).send()

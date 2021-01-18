@@ -1,14 +1,13 @@
 const sliderDataBase = require("./model/SliderDataBase");
 const workers = require("../../lib/Workers");
+const ManageFiles = require('../file/ManageFiles')
 class SliderController {
     async toGetSliderList(req, res){
         try{
             const sliderList = await sliderDataBase.getSliderDataList()
-            const resultSliderList = await workers.postWorkerMessage("FileWorker", {
-                method: "check",
-                data: sliderList
-            })
-            res.status(200).send(sliderList)
+            const resultSliderList =
+                await ManageFiles.prototype.checkExistFileList(`${process.cwd()}/uploads`, sliderList)
+            res.status(200).send(resultSliderList)
         }
         catch (e) {
             res.status(500).send()
@@ -18,10 +17,8 @@ class SliderController {
     async toGetSlider(req, res){
         try{
             const slider = await sliderDataBase.getSliderData(req.params.id)
-            const resultSlider = await workers.postWorkerMessage("FileWorker", {
-                method: "check",
-                data: slider
-            })
+            const resultSlider =
+                await ManageFiles.prototype.checkExistFileList(`${process.cwd()}/uploads`, slider)
             res.status(200).send(resultSlider[0])
         }
         catch (e) {
